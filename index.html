@@ -4,1331 +4,685 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>TreeBots</title>
+
 <style>
-:root{
-  --bg:#0b0d10;
-  --panel:#11151a;
-  --panel2:#171c22;
-  --border:#252c34;
-  --text:#f1f4f7;
-  --muted:#89929d;
-  --green:#42e695;
-  --red:#ff5c6c;
-  --blue:#6ea8ff;
-}
-*{box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box}
+
 body{
-  min-height:100vh;
-  background:
-    radial-gradient(circle at 80% -10%,#173226 0,transparent 35%),
-    radial-gradient(circle at -10% 90%,#14251e 0,transparent 30%),
-    var(--bg);
-  color:var(--text);
-  font-family:Segoe UI,Arial,sans-serif;
+  margin:0;
+  background:#171717;
+  color:#fff;
+  font-family:Arial,sans-serif;
 }
-button,input,select{font:inherit}
-button{cursor:pointer}
-.layout{display:flex;min-height:100vh}
 
-/* SIDEBAR */
-.sidebar{
-  width:230px;
-  position:fixed;
-  right:0;
-  top:0;
-  bottom:0;
-  padding:22px 15px;
-  background:rgba(13,16,20,.94);
-  border-left:1px solid var(--border);
-  backdrop-filter:blur(18px);
-  z-index:10;
-}
-.brand{
+header{
+  height:70px;
+  background:#202020;
+  border-bottom:1px solid #333;
   display:flex;
   align-items:center;
-  gap:10px;
-  padding:5px 8px 30px;
-  font-size:21px;
-  font-weight:800;
+  justify-content:space-between;
+  padding:0 25px;
 }
-.brandIcon{
-  width:40px;height:40px;
-  display:grid;place-items:center;
-  border-radius:12px;
-  background:var(--green);
-  color:#06130c;
-  box-shadow:0 0 30px #42e69525;
+
+.logo{
+  font-size:24px;
+  font-weight:bold;
 }
-.brand span{color:var(--green)}
-.group{
-  color:#59636e;
-  font-size:10px;
-  letter-spacing:1.5px;
-  margin:18px 10px 8px;
+
+.logo span{
+  color:#999;
 }
-.nav{
-  display:grid;
-  gap:4px;
+
+.user{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  color:#ccc;
 }
-.nav button{
-  width:100%;
+
+.logout{
   border:0;
-  background:transparent;
-  color:var(--muted);
-  text-align:right;
-  padding:12px;
-  border-radius:10px;
-  display:flex;
-  align-items:center;
-  gap:11px;
-  transition:.18s;
-}
-.nav button:hover,
-.nav button.active{
-  background:#182019;
-  color:var(--text);
-}
-.nav button.active{
-  box-shadow:inset -3px 0 var(--green);
-}
-.navIcon{width:22px;text-align:center}
-
-/* MAIN */
-.main{
-  width:calc(100% - 230px);
-  margin-right:230px;
-  padding:25px 30px;
-}
-.header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:28px;
-}
-.path{color:var(--muted);font-size:13px}
-.path b{color:var(--text)}
-.headerRight{display:flex;gap:10px;align-items:center}
-.avatar{
-  width:38px;height:38px;
-  border-radius:50%;
-  display:grid;place-items:center;
-  background:#1a2720;
-  border:1px solid #2e4c3b;
-  color:var(--green);
-  font-weight:800;
-}
-
-/* PAGE */
-.page{display:none}
-.page.active{display:block;animation:appear .2s ease}
-@keyframes appear{
-  from{opacity:0;transform:translateY(5px)}
-  to{opacity:1;transform:none}
-}
-.titleRow{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-end;
-  margin-bottom:22px;
-}
-.title h1{font-size:31px;margin-bottom:6px}
-.title p{color:var(--muted);font-size:13px}
-
-/* BUTTONS */
-.btn{
-  border:1px solid var(--border);
-  background:#171c21;
-  color:var(--text);
-  padding:10px 15px;
+  background:#333;
+  color:#fff;
+  padding:9px 14px;
   border-radius:9px;
-  font-size:13px;
-  transition:.15s;
-}
-.btn:hover{border-color:#3a454f;transform:translateY(-1px)}
-.btn.green{
-  background:var(--green);
-  color:#06130c;
-  border-color:var(--green);
-  font-weight:750;
-}
-.btn.red{
-  background:#29161b;
-  color:#ff7885;
-  border-color:#52252e;
+  cursor:pointer;
 }
 
-/* CARDS */
-.card{
-  background:linear-gradient(145deg,#151a20,#0f1317);
-  border:1px solid var(--border);
-  border-radius:14px;
+.container{
+  max-width:1200px;
+  margin:auto;
+  padding:35px 20px;
 }
 
-/* DASHBOARD */
 .welcome{
-  padding:25px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:15px;
+  margin-bottom:30px;
 }
-.welcome h2{font-size:21px;margin-bottom:6px}
-.welcome p{color:var(--muted);font-size:13px}
+
+.welcome h1{
+  margin:0 0 8px;
+  font-size:32px;
+}
+
+.welcome p{
+  color:#999;
+  margin:0;
+}
+
 .stats{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:13px;
-  margin-bottom:24px;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+  margin-bottom:30px;
 }
-.stat{padding:18px}
-.stat label{color:var(--muted);font-size:11px}
-.stat strong{display:block;font-size:27px;margin-top:9px}
-.stat small{color:#68727d;font-size:10px}
-.greenText{color:var(--green)}
+
+.stat{
+  background:#222;
+  border:1px solid #333;
+  border-radius:16px;
+  padding:22px;
+}
+
+.stat-title{
+  color:#999;
+  font-size:14px;
+}
+
+.stat-value{
+  font-size:30px;
+  font-weight:bold;
+  margin-top:8px;
+}
 
 .section{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:12px;
+  background:#222;
+  border:1px solid #333;
+  border-radius:18px;
+  padding:24px;
 }
-.section h2{font-size:17px}
-.section span{font-size:11px;color:var(--muted)}
+
+.section-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:20px;
+}
+
+.section-head h2{
+  margin:0;
+}
+
+.add{
+  border:0;
+  background:#fff;
+  color:#111;
+  padding:11px 16px;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
+}
 
 .bots{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:13px;
+  grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+  gap:16px;
 }
-.bot{padding:17px}
-.botTop{
+
+.bot{
+  background:#181818;
+  border:1px solid #333;
+  border-radius:15px;
+  padding:20px;
+}
+
+.bot-top{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:15px;
 }
-.botName{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  font-weight:750;
+
+.bot-name{
+  font-size:19px;
+  font-weight:bold;
 }
-.botIcon{
-  width:39px;height:39px;
-  display:grid;place-items:center;
-  border-radius:10px;
-  background:#1b2329;
-  border:1px solid #303941;
-}
-.badge{
-  font-size:9px;
-  padding:5px 8px;
+
+.status{
+  font-size:12px;
+  padding:5px 9px;
   border-radius:20px;
-  color:var(--green);
-  background:#10291d;
-  border:1px solid #27573d;
+  background:#333;
+  color:#aaa;
 }
-.badge.offline{
-  color:var(--red);
-  background:#29161b;
-  border-color:#52252e;
+
+.status.online{
+  color:#fff;
+  background:#343434;
 }
-.details{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:7px;
-  margin-bottom:13px;
+
+.info{
+  margin-top:18px;
+  color:#aaa;
+  line-height:1.9;
+  font-size:14px;
 }
-.detail{
-  padding:9px;
-  background:#0b0f13;
-  border:1px solid #20272e;
-  border-radius:8px;
-}
-.detail small{
-  display:block;
-  color:#66717c;
-  font-size:9px;
-  margin-bottom:4px;
-}
-.detail b{font-size:10px}
+
 .actions{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:7px;
-}
-
-/* EMPTY */
-.empty{
-  grid-column:1/-1;
-  padding:45px;
-  text-align:center;
-  color:var(--muted);
-}
-.empty div{font-size:38px;margin-bottom:10px}
-.empty b{display:block;color:var(--text);font-size:16px;margin-bottom:5px}
-
-/* CREATE */
-.formCard{max-width:720px;padding:23px}
-.field{margin-bottom:15px}
-.field label{
-  display:block;
-  color:#9ba4ad;
-  font-size:10px;
-  margin-bottom:6px;
-}
-.field input,.field select{
-  width:100%;
-  padding:12px;
-  color:var(--text);
-  background:#0a0e12;
-  border:1px solid #293139;
-  border-radius:9px;
-  outline:0;
-}
-.field input:focus,.field select:focus{border-color:var(--green)}
-.formActions{
-  display:flex;
-  justify-content:flex-start;
-  gap:8px;
-  margin-top:20px;
-}
-
-/* CONSOLE */
-.console{
-  padding:18px;
-  min-height:420px;
-}
-.consoleHead{
-  display:flex;
-  justify-content:space-between;
-  padding-bottom:13px;
-  border-bottom:1px solid var(--border);
-  margin-bottom:13px;
-}
-.consoleHead small{color:var(--muted)}
-.logs{
-  min-height:290px;
-  font:12px/2 Consolas,monospace;
-  color:#a7b0b9;
-  direction:ltr;
-  text-align:left;
-}
-.time{color:#59636d}
-.ok{color:var(--green)}
-.chat{
   display:flex;
   gap:8px;
+  margin-top:18px;
 }
-.chat input{
+
+.actions button{
   flex:1;
-  padding:11px;
-  background:#090d11;
-  color:white;
-  border:1px solid var(--border);
+  border:1px solid #444;
+  background:#252525;
+  color:#fff;
+  padding:10px;
   border-radius:9px;
+  cursor:pointer;
 }
 
-/* OTHER */
-.list{display:grid;gap:11px}
-.row{
-  padding:16px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.rowLeft{display:flex;align-items:center;gap:12px}
-.rowIcon{
-  width:43px;height:43px;
-  display:grid;place-items:center;
-  background:#1a2228;
-  border-radius:11px;
-}
-.row small{display:block;color:var(--muted);margin-top:4px;font-size:10px}
-
-.grid2{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:13px;
-}
-.infoCard{padding:20px}
-.infoCard h3{font-size:15px;margin-bottom:8px}
-.infoCard p{font-size:12px;color:var(--muted);line-height:1.7}
-
-.progress{
-  height:8px;
-  background:#090d10;
-  border-radius:20px;
-  overflow:hidden;
-  margin-top:13px;
-}
-.progress span{
-  display:block;
-  height:100%;
-  width:0;
-  background:var(--green);
+.actions button:hover{
+  background:#333;
 }
 
-.setting{
-  padding:17px 0;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.setting:last-child{border:0}
-.setting b{font-size:13px}
-.setting small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
-.toggle{
-  width:45px;height:24px;
-  border:0;border-radius:20px;
-  background:#293139;
-  position:relative;
-}
-.toggle:after{
-  content:"";
-  position:absolute;
-  width:18px;height:18px;
-  left:3px;top:3px;
-  border-radius:50%;
-  background:#89939d;
-  transition:.2s;
-}
-.toggle.on{background:var(--green)}
-.toggle.on:after{
-  left:24px;
-  background:#07130c;
+.empty{
+  text-align:center;
+  padding:45px 10px;
+  color:#777;
 }
 
-/* MODAL */
-.modalBg{
+.modal{
+  display:none;
   position:fixed;
   inset:0;
-  display:none;
-  place-items:center;
   background:#000b;
-  backdrop-filter:blur(6px);
-  z-index:100;
-}
-.modalBg.show{display:grid}
-.modal{
-  width:min(430px,calc(100% - 30px));
-  background:#12171c;
-  border:1px solid #303941;
-  border-radius:15px;
-  padding:22px;
-}
-.modal h2{margin-bottom:8px}
-.modal p{color:var(--muted);font-size:12px;line-height:1.7}
-.modalActions{
-  display:flex;
-  gap:8px;
-  margin-top:20px;
-  justify-content:flex-start;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
 }
 
-/* TOAST */
-.toast{
-  position:fixed;
-  left:25px;
-  bottom:25px;
-  background:#171e24;
-  border:1px solid #34404a;
-  padding:12px 16px;
+.modal-box{
+  width:min(430px,100%);
+  background:#222;
+  border:1px solid #333;
+  border-radius:18px;
+  padding:25px;
+}
+
+.modal-box h2{
+  margin-top:0;
+}
+
+.modal-box input{
+  width:100%;
+  margin:7px 0;
+  padding:13px;
   border-radius:10px;
-  opacity:0;
-  transform:translateY(12px);
-  transition:.2s;
-  z-index:200;
-  font-size:12px;
+  border:1px solid #444;
+  background:#151515;
+  color:#fff;
+  outline:none;
 }
-.toast.show{opacity:1;transform:none}
 
-/* MOBILE */
-@media(max-width:1050px){
-  .stats{grid-template-columns:1fr 1fr}
-  .bots{grid-template-columns:1fr 1fr}
+.modal-actions{
+  display:flex;
+  gap:10px;
+  margin-top:15px;
 }
-@media(max-width:760px){
-  .sidebar{width:65px;padding:15px 8px}
-  .brand{padding:3px 4px 25px}
-  .brandText,.group,.navText{display:none}
-  .nav button{justify-content:center;padding:12px}
-  .main{
-    width:calc(100% - 65px);
-    margin-right:65px;
-    padding:18px 13px;
+
+.modal-actions button{
+  flex:1;
+  padding:12px;
+  border:0;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.create{
+  background:#fff;
+  color:#111;
+}
+
+.cancel{
+  background:#333;
+  color:#fff;
+}
+
+@media(max-width:700px){
+  .stats{
+    grid-template-columns:1fr;
   }
-  .titleRow{align-items:flex-start;gap:12px;flex-direction:column}
-  .title h1{font-size:25px}
-  .stats,.bots,.grid2{grid-template-columns:1fr}
-  .welcome{align-items:flex-start;gap:15px;flex-direction:column}
+
+  header{
+    padding:0 15px;
+  }
+
+  .user-name{
+    display:none;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="layout">
+<header>
+  <div class="logo">🌳 Tree<span>Bots</span></div>
 
-<aside class="sidebar">
-  <div class="brand">
-    <div class="brandIcon">🌳</div>
-    <div class="brandText">Tree<span>Bots</span></div>
-  </div>
-
-  <div class="group">MAIN</div>
-  <nav class="nav">
-    <button class="active" data-page="dashboard"><span class="navIcon">⌂</span><span class="navText">Dashboard</span></button>
-    <button data-page="bots"><span class="navIcon">🤖</span><span class="navText">Bots</span></button>
-    <button data-page="create"><span class="navIcon">＋</span><span class="navText">Create Bot</span></button>
-    <button data-page="servers"><span class="navIcon">🖥</span><span class="navText">Servers</span></button>
-    <button data-page="console"><span class="navIcon">▣</span><span class="navText">Console</span></button>
-  </nav>
-
-  <div class="group">ACCOUNT</div>
-  <nav class="nav">
-    <button data-page="automation"><span class="navIcon">⚡</span><span class="navText">Automation</span></button>
-    <button data-page="usage"><span class="navIcon">📊</span><span class="navText">Usage</span></button>
-    <button data-page="plans"><span class="navIcon">💎</span><span class="navText">Plans</span></button>
-    <button data-page="redeem"><span class="navIcon">🔑</span><span class="navText">Redeem</span></button>
-    <button data-page="settings"><span class="navIcon">⚙</span><span class="navText">Settings</span></button>
-    <button data-page="help"><span class="navIcon">?</span><span class="navText">Help</span></button>
-  </nav>
-</aside>
-
-<main class="main">
-
-<header class="header">
-  <div class="path">TreeBots / <b id="breadcrumb">Dashboard</b></div>
-  <div class="headerRight">
-    <button class="btn">🔔</button>
-    <div class="avatar">T</div>
+  <div class="user">
+    <span class="user-name" id="userName">...</span>
+    <button class="logout" onclick="logout()">خروج</button>
   </div>
 </header>
 
-<!-- DASHBOARD -->
-<section class="page active" id="page-dashboard">
+<main class="container">
 
-  <div class="welcome card">
-    <div>
-      <h2>Welcome to TreeBots 🌳</h2>
-      <p>Control your Minecraft bots from one clean workspace.</p>
-    </div>
-    <button class="btn green" onclick="go('create')">＋ Create Bot</button>
+  <div class="welcome">
+    <h1 id="welcome">مرحبًا 👋</h1>
+    <p>إدارة بوتات Minecraft الخاصة بك من مكان واحد.</p>
   </div>
 
   <div class="stats">
-    <div class="card stat">
-      <label>Total Bots</label>
-      <strong id="statTotal">0 / 3</strong>
-      <small>Bot capacity</small>
+
+    <div class="stat">
+      <div class="stat-title">إجمالي البوتات</div>
+      <div class="stat-value" id="totalBots">0</div>
     </div>
-    <div class="card stat">
-      <label>Online</label>
-      <strong class="greenText" id="statOnline">0</strong>
-      <small>Currently online</small>
+
+    <div class="stat">
+      <div class="stat-title">البوتات المتصلة</div>
+      <div class="stat-value" id="onlineBots">0</div>
     </div>
-    <div class="card stat">
-      <label>CPU</label>
-      <strong>24%</strong>
-      <small>Workspace usage</small>
+
+    <div class="stat">
+      <div class="stat-title">حالة الخدمة</div>
+      <div class="stat-value">Online</div>
     </div>
-    <div class="card stat">
-      <label>Memory</label>
-      <strong>1.8 GB</strong>
-      <small>Allocated resources</small>
-    </div>
+
   </div>
 
-  <div class="section">
-    <h2>Your Bots</h2>
-    <span id="dashCount">0 bots</span>
-  </div>
+  <section class="section">
 
-  <div class="bots" id="dashboardBots"></div>
-</section>
-
-<!-- BOTS -->
-<section class="page" id="page-bots">
-  <div class="titleRow">
-    <div class="title">
-      <h1>My Bots 🤖</h1>
-      <p>Manage all bots connected to your account.</p>
-    </div>
-    <button class="btn green" onclick="go('create')">＋ Create Bot</button>
-  </div>
-
-  <div class="card infoCard" style="margin-bottom:14px">
-    <h3>Bot Capacity</h3>
-    <p id="capacityText">0 of 3 bot slots used.</p>
-    <div class="progress"><span id="capacityBar"></span></div>
-  </div>
-
-  <div class="bots" id="allBots"></div>
-</section>
-
-<!-- CREATE -->
-<section class="page" id="page-create">
-  <div class="titleRow">
-    <div class="title">
-      <h1>Create Bot 🤖</h1>
-      <p>Create a new Minecraft bot.</p>
-    </div>
-  </div>
-
-  <div class="card formCard">
-    <div class="field">
-      <label>BOT NAME</label>
-      <input id="createName" placeholder="SurvivalBot">
+    <div class="section-head">
+      <h2>My Bots</h2>
+      <button class="add" onclick="openModal()">+ إضافة بوت</button>
     </div>
 
-    <div class="field">
-      <label>MINECRAFT USERNAME</label>
-      <input id="createUsername" placeholder="TreeBot">
-    </div>
+    <div id="bots" class="bots"></div>
 
-    <div class="field">
-      <label>SERVER IP</label>
-      <input id="createIp" placeholder="play.example.net">
-    </div>
-
-    <div class="field">
-      <label>PORT</label>
-      <input id="createPort" type="number" value="25565">
-    </div>
-
-    <div class="field">
-      <label>MINECRAFT VERSION</label>
-      <select id="createVersion">
-        <option>1.21.x</option>
-        <option>1.21.1</option>
-        <option>1.20.6</option>
-        <option>1.20.4</option>
-        <option>1.20.1</option>
-      </select>
-    </div>
-
-    <div class="formActions">
-      <button class="btn" onclick="go('bots')">Cancel</button>
-      <button class="btn green" onclick="createBot()">Create Bot</button>
-    </div>
-  </div>
-</section>
-
-<!-- SERVERS -->
-<section class="page" id="page-servers">
-  <div class="titleRow">
-    <div class="title">
-      <h1>Servers 🖥</h1>
-      <p>Servers used by your bots.</p>
-    </div>
-  </div>
-
-  <div class="list">
-    <div class="card row">
-      <div class="rowLeft">
-        <div class="rowIcon">🌲</div>
-        <div>
-          <b>Connected Servers</b>
-          <small>Servers are loaded from your bots.</small>
-        </div>
-      </div>
-      <span class="badge">API</span>
-    </div>
-  </div>
-</section>
-
-<!-- CONSOLE -->
-<section class="page" id="page-console">
-  <div class="titleRow">
-    <div class="title">
-      <h1>Console 💬</h1>
-      <p>View bot events and send messages.</p>
-    </div>
-  </div>
-
-  <div class="card console">
-    <div class="consoleHead">
-      <b id="consoleTitle">TreeBots • Console</b>
-      <small>Backend connected</small>
-    </div>
-
-    <div class="logs" id="logs">
-      <div><span class="time">[system]</span> <span class="ok">READY</span> TreeBots console loaded.</div>
-      <div><span class="time">[system]</span> API connection initialized.</div>
-    </div>
-
-    <div class="chat">
-      <input id="chatInput" placeholder="Send a message...">
-      <button class="btn green" onclick="sendChat()">Send</button>
-    </div>
-  </div>
-</section>
-
-<!-- AUTOMATION -->
-<section class="page" id="page-automation">
-  <div class="titleRow">
-    <div class="title">
-      <h1>Automation ⚡</h1>
-      <p>Manage automation rules.</p>
-    </div>
-    <button class="btn green" onclick="addRule()">＋ Add Rule</button>
-  </div>
-
-  <div class="card infoCard">
-    <h3>Rules</h3>
-    <div id="rules">
-      <div style="margin-top:12px;color:var(--muted);font-size:12px">
-        WHEN bot joins → DO send welcome message
-      </div>
-      <div style="margin-top:12px;color:var(--muted);font-size:12px">
-        EVERY 60 seconds → DO check server
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- USAGE -->
-<section class="page" id="page-usage">
-  <div class="titleRow">
-    <div class="title">
-      <h1>Usage 📊</h1>
-      <p>Monitor your TreeBots resources.</p>
-    </div>
-  </div>
-
-  <div class="grid2">
-    <div class="card infoCard">
-      <h3>Bot Slots</h3>
-      <p id="usageBots">0 / 3</p>
-      <div class="progress"><span id="usageBotBar"></span></div>
-    </div>
-
-    <div class="card infoCard">
-      <h3>CPU</h3>
-      <p>24% workspace usage</p>
-      <div class="progress"><span style="width:24%"></span></div>
-    </div>
-
-    <div class="card infoCard">
-      <h3>Memory</h3>
-      <p>1.8 GB allocated</p>
-      <div class="progress"><span style="width:45%"></span></div>
-    </div>
-
-    <div class="card infoCard">
-      <h3>Plan</h3>
-      <p>Free • 3 bot slots</p>
-    </div>
-  </div>
-</section>
-
-<!-- PLANS -->
-<section class="page" id="page-plans">
-  <div class="titleRow">
-    <div class="title">
-      <h1>Plans 💎</h1>
-      <p>Choose your TreeBots plan.</p>
-    </div>
-  </div>
-
-  <div class="grid2">
-    <div class="card infoCard">
-      <h3>🌱 Free</h3>
-      <p>3 Bots<br>Basic Console<br>Auto Reconnect<br>Basic Automation</p>
-      <button class="btn" style="margin-top:15px;width:100%">Current Plan</button>
-    </div>
-
-    <div class="card infoCard">
-      <h3>⚡ Pro</h3>
-      <p>10 Bots<br>Advanced Console<br>Advanced Automation<br>Monitoring</p>
-      <button class="btn green" style="margin-top:15px;width:100%" onclick="showToast('Pro activation coming soon.')">50 EGP / Month</button>
-    </div>
-
-    <div class="card infoCard">
-      <h3>👑 Ultra</h3>
-      <p>25 Bots<br>Advanced Monitoring<br>Priority Infrastructure</p>
-      <button class="btn green" style="margin-top:15px;width:100%" onclick="showToast('Ultra activation coming soon.')">100 EGP / Month</button>
-    </div>
-  </div>
-</section>
-
-<!-- REDEEM -->
-<section class="page" id="page-redeem">
-  <div class="titleRow">
-    <div class="title">
-      <h1>Redeem Code 🔑</h1>
-      <p>Activate your TreeBots plan.</p>
-    </div>
-  </div>
-
-  <div class="card formCard">
-    <div class="field">
-      <label>ACTIVATION CODE</label>
-      <input id="redeemInput" placeholder="TP-PRO-XXXX-XXXX">
-    </div>
-    <button class="btn green" onclick="redeemCode()">Activate</button>
-  </div>
-</section>
-
-<!-- SETTINGS -->
-<section class="page" id="page-settings">
-  <div class="titleRow">
-    <div class="title">
-      <h1>Settings ⚙</h1>
-      <p>Manage your TreeBots preferences.</p>
-    </div>
-  </div>
-
-  <div class="card infoCard">
-    <div class="setting">
-      <div>
-        <b>Auto Reconnect</b>
-        <small>Reconnect bots after connection failure.</small>
-      </div>
-      <button class="toggle on" onclick="this.classList.toggle('on')"></button>
-    </div>
-
-    <div class="setting">
-      <div>
-        <b>Auto Start</b>
-        <small>Start enabled bots automatically.</small>
-      </div>
-      <button class="toggle" onclick="this.classList.toggle('on')"></button>
-    </div>
-
-    <div class="setting">
-      <div>
-        <b>Notifications</b>
-        <small>Receive bot status notifications.</small>
-      </div>
-      <button class="toggle on" onclick="this.classList.toggle('on')"></button>
-    </div>
-  </div>
-</section>
-
-<!-- HELP -->
-<section class="page" id="page-help">
-  <div class="titleRow">
-    <div class="title">
-      <h1>How to use TreeBots 📖</h1>
-      <p>Everything you need to manage your bots.</p>
-    </div>
-  </div>
-
-  <div class="grid2">
-    <div class="card infoCard">
-      <h3>1. Create a bot</h3>
-      <p>Enter the bot name, Minecraft username, server IP, port and version.</p>
-    </div>
-    <div class="card infoCard">
-      <h3>2. Start it</h3>
-      <p>Open My Bots and press Start to change its status.</p>
-    </div>
-    <div class="card infoCard">
-      <h3>3. Console</h3>
-      <p>Open the console to monitor events and send messages.</p>
-    </div>
-    <div class="card infoCard">
-      <h3>4. Automation</h3>
-      <p>Create rules for automated bot actions.</p>
-    </div>
-  </div>
-</section>
+  </section>
 
 </main>
-</div>
 
-<!-- DELETE -->
-<div class="modalBg" id="deleteModal">
-  <div class="modal">
-    <h2>Delete Bot؟ 🗑️</h2>
-    <p>هل أنت متأكد أنك تريد حذف هذا البوت؟</p>
-    <div class="modalActions">
-      <button class="btn" onclick="closeDelete()">Cancel</button>
-      <button class="btn red" onclick="confirmDelete()">Delete</button>
+
+<div id="modal" class="modal">
+
+  <div class="modal-box">
+
+    <h2>إضافة بوت</h2>
+
+    <input id="botName" placeholder="اسم البوت">
+
+    <input id="username" placeholder="Minecraft Username">
+
+    <input id="ip" placeholder="Server IP">
+
+    <input id="port" placeholder="Port" value="25565">
+
+    <input id="version" placeholder="Version" value="1.21.x">
+
+    <div class="modal-actions">
+      <button class="cancel" onclick="closeModal()">إلغاء</button>
+      <button class="create" onclick="createBot()">إنشاء</button>
     </div>
+
   </div>
+
 </div>
 
-<div class="toast" id="toast"></div>
 
 <script>
-/* ==========================
-   TREEBOTS API
-========================== */
 
 const API = "https://treebots-backend.505omerfive.workers.dev";
-const BOT_LIMIT = 3;
 
-let bots = [];
-let deleteId = null;
+const token = localStorage.getItem("treebots_token");
 
-const pageNames = {
-  dashboard:"Dashboard",
-  bots:"My Bots",
-  create:"Create Bot",
-  servers:"Servers",
-  console:"Console",
-  automation:"Automation",
-  usage:"Usage",
-  plans:"Plans",
-  redeem:"Redeem Code",
-  settings:"Settings",
-  help:"How to use"
-};
-
-document.querySelectorAll(".nav button").forEach(button=>{
-  button.addEventListener("click",()=>{
-    go(button.dataset.page);
-  });
-});
-
-function go(page){
-  document.querySelectorAll(".page").forEach(p=>{
-    p.classList.remove("active");
-  });
-
-  const target=document.getElementById("page-"+page);
-  if(target) target.classList.add("active");
-
-  document.querySelectorAll(".nav button").forEach(b=>{
-    b.classList.toggle("active",b.dataset.page===page);
-  });
-
-  document.getElementById("breadcrumb").textContent =
-    pageNames[page] || page;
-
-  if(["dashboard","bots","usage"].includes(page)){
-    render();
-  }
+if(!token){
+  window.location.href = "login.html";
 }
 
-/* API REQUEST */
-async function api(path, options={}){
-  const response=await fetch(API+path,{
-    ...options,
-    headers:{
-      "Content-Type":"application/json",
-      ...(options.headers||{})
-    }
-  });
 
-  let data={};
-
-  try{
-    data=await response.json();
-  }catch{
-    data={};
-  }
-
-  if(!response.ok){
-    throw new Error(data.error || "API request failed");
-  }
-
-  return data;
-}
-
-/* LOAD */
-async function loadBots(){
-  try{
-    const data=await api("/api/bots");
-
-    bots=Array.isArray(data)
-      ? data.map(normalizeBot)
-      : [];
-
-    render();
-
-  }catch(error){
-    bots=[];
-    render();
-    showToast("تعذر الاتصال بالـ API");
-    console.error(error);
-  }
-}
-
-function normalizeBot(bot){
+function authHeaders(){
   return {
-    id:bot.id,
-    name:bot.name || "Unnamed Bot",
-    username:bot.username || bot.name || "Bot",
-    ip:bot.ip || "—",
-    port:String(bot.port || "25565"),
-    version:bot.version || "1.21.x",
-    online:bot.status==="online",
-    uptime:bot.uptime || "—",
-    ping:bot.ping || "—"
+    "Content-Type":"application/json",
+    "Authorization":"Bearer " + token
   };
 }
 
-/* RENDER */
-function render(){
 
-  const online=bots.filter(b=>b.online).length;
+async function loadUser(){
 
-  document.getElementById("statTotal").textContent =
-    `${bots.length} / ${BOT_LIMIT}`;
+  try{
 
-  document.getElementById("statOnline").textContent =
-    online;
+    const res = await fetch(
+      API + "/api/auth/me",
+      {
+        headers:authHeaders()
+      }
+    );
 
-  document.getElementById("dashCount").textContent =
-    `${bots.length} bot${bots.length===1?"":"s"}`;
+    if(!res.ok){
+      localStorage.removeItem("treebots_token");
+      localStorage.removeItem("treebots_user");
+      window.location.href="login.html";
+      return;
+    }
 
-  document.getElementById("capacityText").textContent =
-    `${bots.length} of ${BOT_LIMIT} bot slots used.`;
+    const data = await res.json();
 
-  const capacity=Math.min(100,bots.length/BOT_LIMIT*100);
+    document.getElementById("userName").textContent =
+      data.user.fullName;
 
-  document.getElementById("capacityBar").style.width =
-    capacity+"%";
+    document.getElementById("welcome").textContent =
+      "مرحبًا، " + data.user.fullName + " 👋";
 
-  document.getElementById("usageBots").textContent =
-    `${bots.length} / ${BOT_LIMIT}`;
+  }catch(e){
 
-  document.getElementById("usageBotBar").style.width =
-    capacity+"%";
+    console.error(e);
 
-  const html=bots.length
-    ? bots.map(botCard).join("")
-    : emptyState();
-
-  document.getElementById("dashboardBots").innerHTML=html;
-  document.getElementById("allBots").innerHTML=html;
+  }
 }
 
-/* EMPTY */
-function emptyState(){
-  return `
-    <div class="card empty">
-      <div>🤖</div>
-      <b>No bots yet</b>
-      Create your first Minecraft bot.
-    </div>
-  `;
+
+async function loadBots(){
+
+  const container =
+    document.getElementById("bots");
+
+  container.innerHTML =
+    '<div class="empty">جاري تحميل البوتات...</div>';
+
+  try{
+
+    const res = await fetch(
+      API + "/api/bots",
+      {
+        headers:authHeaders()
+      }
+    );
+
+    if(res.status === 401){
+      logout();
+      return;
+    }
+
+    const bots = await res.json();
+
+    document.getElementById("totalBots").textContent =
+      bots.length;
+
+    document.getElementById("onlineBots").textContent =
+      bots.filter(b => b.status === "online").length;
+
+    if(!bots.length){
+
+      container.innerHTML =
+        '<div class="empty">لا توجد بوتات حتى الآن.<br>أضف أول بوت 🚀</div>';
+
+      return;
+    }
+
+    container.innerHTML =
+      bots.map(bot => `
+
+        <div class="bot">
+
+          <div class="bot-top">
+
+            <div class="bot-name">
+              🤖 ${escapeHtml(bot.name)}
+            </div>
+
+            <div class="status ${bot.status === "online" ? "online" : ""}">
+              ${bot.status}
+            </div>
+
+          </div>
+
+          <div class="info">
+
+            👤 Username:
+            ${escapeHtml(bot.username)}
+            <br>
+
+            🌐 Server:
+            ${escapeHtml(bot.ip)}:${escapeHtml(bot.port)}
+            <br>
+
+            🎮 Version:
+            ${escapeHtml(bot.version)}
+            <br>
+
+            📡 Ping:
+            ${escapeHtml(bot.ping)}
+            <br>
+
+            ⏱️ Uptime:
+            ${escapeHtml(bot.uptime)}
+
+          </div>
+
+          <div class="actions">
+
+            <button onclick="toggleBot(
+              '${bot.id}',
+              '${bot.status === "online" ? "offline" : "online"}'
+            )">
+              ${bot.status === "online" ? "إيقاف" : "تشغيل"}
+            </button>
+
+            <button onclick="deleteBot('${bot.id}')">
+              حذف
+            </button>
+
+          </div>
+
+        </div>
+
+      `).join("");
+
+  }catch(e){
+
+    container.innerHTML =
+      '<div class="empty">حدث خطأ أثناء تحميل البوتات.</div>';
+
+    console.error(e);
+
+  }
 }
 
-/* BOT CARD */
-function botCard(bot){
-  return `
-    <article class="card bot">
 
-      <div class="botTop">
-        <div class="botName">
-          <div class="botIcon">🤖</div>
-          ${escapeHTML(bot.name)}
-        </div>
-
-        <span class="badge ${bot.online?"":"offline"}">
-          ${bot.online?"● ONLINE":"● OFFLINE"}
-        </span>
-      </div>
-
-      <div class="details">
-
-        <div class="detail">
-          <small>SERVER</small>
-          <b>${escapeHTML(bot.ip)}:${escapeHTML(bot.port)}</b>
-        </div>
-
-        <div class="detail">
-          <small>VERSION</small>
-          <b>${escapeHTML(bot.version)}</b>
-        </div>
-
-        <div class="detail">
-          <small>USERNAME</small>
-          <b>${escapeHTML(bot.username)}</b>
-        </div>
-
-        <div class="detail">
-          <small>PING</small>
-          <b>${bot.online?escapeHTML(bot.ping):"—"}</b>
-        </div>
-
-        <div class="detail">
-          <small>UPTIME</small>
-          <b>${bot.online?escapeHTML(bot.uptime):"Offline"}</b>
-        </div>
-
-        <div class="detail">
-          <small>STATUS</small>
-          <b>${bot.online?"Connected":"Stopped"}</b>
-        </div>
-
-      </div>
-
-      <div class="actions">
-
-        <button
-          class="btn ${bot.online?"":"green"}"
-          onclick="toggleBot('${escapeAttr(bot.id)}')">
-          ${bot.online?"⏹ Stop":"▶ Start"}
-        </button>
-
-        <button
-          class="btn"
-          onclick="openConsole('${escapeAttr(bot.id)}')">
-          Console
-        </button>
-
-        <button
-          class="btn"
-          onclick="showToast('Bot settings coming soon.')">
-          ⚙ Settings
-        </button>
-
-        <button
-          class="btn red"
-          onclick="askDelete('${escapeAttr(bot.id)}')">
-          🗑 Delete
-        </button>
-
-      </div>
-    </article>
-  `;
-}
-
-/* CREATE */
 async function createBot(){
 
-  if(bots.length>=BOT_LIMIT){
-    showToast(`Bot limit reached: ${BOT_LIMIT}`);
-    return;
-  }
+  const name =
+    document.getElementById("botName").value.trim();
 
-  const name=document.getElementById("createName").value.trim();
-  const username=document.getElementById("createUsername").value.trim();
-  const ip=document.getElementById("createIp").value.trim();
-  const port=document.getElementById("createPort").value || "25565";
-  const version=document.getElementById("createVersion").value;
+  const username =
+    document.getElementById("username").value.trim();
+
+  const ip =
+    document.getElementById("ip").value.trim();
+
+  const port =
+    document.getElementById("port").value.trim();
+
+  const version =
+    document.getElementById("version").value.trim();
 
   if(!name){
-    showToast("اكتب اسم البوت");
-    return;
-  }
 
-  if(!ip){
-    showToast("اكتب IP السيرفر");
+    alert("اكتب اسم البوت");
+
     return;
   }
 
   try{
 
-    const bot=await api("/api/bots",{
-      method:"POST",
-      body:JSON.stringify({
-        name,
-        username:username || name,
-        ip,
-        port,
-        version
-      })
-    });
-
-    bots.unshift(normalizeBot(bot));
-
-    document.getElementById("createName").value="";
-    document.getElementById("createUsername").value="";
-    document.getElementById("createIp").value="";
-    document.getElementById("createPort").value="25565";
-
-    showToast("تم إنشاء البوت بنجاح ✓");
-
-    render();
-    go("bots");
-
-  }catch(error){
-    showToast(error.message);
-  }
-}
-
-/* START STOP */
-async function toggleBot(id){
-
-  const bot=bots.find(x=>String(x.id)===String(id));
-
-  if(!bot)return;
-
-  const nextStatus=bot.online?"offline":"online";
-
-  try{
-
-    const result=await api(
-      `/api/bots/${encodeURIComponent(id)}/status`,
+    const res = await fetch(
+      API + "/api/bots",
       {
         method:"POST",
+        headers:authHeaders(),
         body:JSON.stringify({
-          status:nextStatus
+          name,
+          username,
+          ip,
+          port,
+          version
         })
       }
     );
 
-    bot.online=result.status==="online";
-    bot.uptime=result.uptime;
-    bot.ping=result.ping;
+    const data = await res.json();
 
-    render();
+    if(!res.ok){
 
-    showToast(
-      bot.online
-      ? `${bot.name} is online`
-      : `${bot.name} stopped`
-    );
+      alert(data.error || "حدث خطأ");
 
-  }catch(error){
-    showToast(error.message);
+      return;
+    }
+
+    closeModal();
+
+    document.getElementById("botName").value="";
+    document.getElementById("username").value="";
+    document.getElementById("ip").value="";
+    document.getElementById("port").value="25565";
+    document.getElementById("version").value="1.21.x";
+
+    loadBots();
+
+  }catch(e){
+
+    alert("تعذر الاتصال بالسيرفر");
+
   }
 }
 
-/* DELETE */
-function askDelete(id){
-  deleteId=id;
-  document.getElementById("deleteModal").classList.add("show");
-}
 
-function closeDelete(){
-  deleteId=null;
-  document.getElementById("deleteModal").classList.remove("show");
-}
-
-async function confirmDelete(){
-
-  if(!deleteId)return;
-
-  const bot=bots.find(x=>String(x.id)===String(deleteId));
+async function toggleBot(id,status){
 
   try{
 
-    await api(
-      `/api/bots/${encodeURIComponent(deleteId)}`,
-      {method:"DELETE"}
+    const res = await fetch(
+      API + "/api/bots/" + id + "/status",
+      {
+        method:"POST",
+        headers:authHeaders(),
+        body:JSON.stringify({status})
+      }
     );
 
-    bots=bots.filter(
-      x=>String(x.id)!==String(deleteId)
-    );
+    const data = await res.json();
 
-    closeDelete();
-    render();
+    if(!res.ok){
 
-    showToast(`${bot?.name || "Bot"} deleted.`);
+      alert(data.error || "حدث خطأ");
 
-  }catch(error){
-    showToast(error.message);
+      return;
+    }
+
+    loadBots();
+
+  }catch(e){
+
+    alert("تعذر الاتصال بالسيرفر");
+
   }
 }
 
-/* CONSOLE */
-function openConsole(id){
 
-  const bot=bots.find(x=>String(x.id)===String(id));
+async function deleteBot(id){
 
-  if(!bot)return;
+  if(!confirm("هل تريد حذف هذا البوت؟")) return;
 
-  document.getElementById("consoleTitle").textContent =
-    `${bot.name} • Console`;
+  try{
 
-  const logs=document.getElementById("logs");
+    const res = await fetch(
+      API + "/api/bots/" + id,
+      {
+        method:"DELETE",
+        headers:authHeaders()
+      }
+    );
 
-  logs.innerHTML += `
-    <div>
-      <span class="time">[system]</span>
-      Selected bot: ${escapeHTML(bot.name)}
-    </div>
-  `;
+    const data = await res.json();
 
-  go("console");
-}
+    if(!res.ok){
 
-function sendChat(){
+      alert(data.error || "حدث خطأ");
 
-  const input=document.getElementById("chatInput");
-  const text=input.value.trim();
+      return;
+    }
 
-  if(!text)return;
+    loadBots();
 
-  const logs=document.getElementById("logs");
+  }catch(e){
 
-  const now=new Date().toLocaleTimeString();
+    alert("تعذر الاتصال بالسيرفر");
 
-  logs.innerHTML += `
-    <div>
-      <span class="time">[${escapeHTML(now)}]</span>
-      <span class="ok">YOU</span>
-      ${escapeHTML(text)}
-    </div>
-  `;
-
-  input.value="";
-}
-
-/* AUTOMATION */
-function addRule(){
-
-  document.getElementById("rules").insertAdjacentHTML(
-    "beforeend",
-    `
-      <div style="margin-top:12px;color:var(--muted);font-size:12px">
-        WHEN player joins → DO send welcome message
-      </div>
-    `
-  );
-
-  showToast("Rule added.");
-}
-
-/* REDEEM */
-function redeemCode(){
-
-  const input=document.getElementById("redeemInput");
-  const code=input.value.trim().toUpperCase();
-
-  if(!code){
-    showToast("Enter an activation code.");
-    return;
   }
-
-  showToast("Activation codes will be validated by the backend.");
 }
 
-/* TOAST */
-function showToast(message){
 
-  const toast=document.getElementById("toast");
+async function logout(){
 
-  toast.textContent=message;
-  toast.classList.add("show");
+  try{
 
-  clearTimeout(window.toastTimer);
+    await fetch(
+      API + "/api/auth/logout",
+      {
+        method:"POST",
+        headers:authHeaders()
+      }
+    );
 
-  window.toastTimer=setTimeout(()=>{
-    toast.classList.remove("show");
-  },2600);
+  }catch(e){}
+
+  localStorage.removeItem("treebots_token");
+  localStorage.removeItem("treebots_user");
+
+  window.location.href="login.html";
 }
 
-/* SECURITY */
-function escapeHTML(text){
-  return String(text).replace(
-    /[&<>"']/g,
-    c=>({
-      "&":"&amp;",
-      "<":"&lt;",
-      ">":"&gt;",
-      '"':"&quot;",
-      "'":"&#039;"
-    }[c])
-  );
+
+function openModal(){
+  document.getElementById("modal").style.display="flex";
 }
 
-function escapeAttr(text){
-  return String(text).replace(/[^a-zA-Z0-9_-]/g,"");
+
+function closeModal(){
+  document.getElementById("modal").style.display="none";
 }
 
-/* START */
+
+function escapeHtml(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+loadUser();
 loadBots();
+
 </script>
 
 </body>
