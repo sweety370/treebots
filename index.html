@@ -8,30 +8,34 @@
 
 <style>
 :root{
-  --bg:#0b0d10;
-  --bg2:#101318;
-  --card:#15191f;
-  --card2:#1a1f26;
-  --border:#292f38;
+  --bg:#08090b;
+  --bg2:#0d0f12;
+  --card:#111419;
+  --card2:#15181e;
+  --border:#242932;
   --text:#f1f3f5;
-  --muted:#8b949e;
-  --accent:#d8dde3;
-  --green:#43d17c;
-  --red:#ff5d6c;
-  --blue:#70a7ff;
-  --shadow:0 18px 60px rgba(0,0,0,.35);
+  --muted:#858c98;
+  --green:#39e58b;
+  --green2:#20b96b;
+  --red:#ff5c6c;
+  --blue:#6ca8ff;
+  --yellow:#f0c45b;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
 
-body{
-  min-height:100vh;
-  background:
-    radial-gradient(circle at 75% 0%,rgba(255,255,255,.07),transparent 28%),
-    radial-gradient(circle at 0% 70%,rgba(120,140,160,.06),transparent 30%),
-    var(--bg);
+html,body{
+  min-height:100%;
+  background:var(--bg);
   color:var(--text);
   font-family:Inter,Segoe UI,Arial,sans-serif;
+}
+
+body{
+  background:
+    radial-gradient(circle at 75% -10%,rgba(255,255,255,.06),transparent 28%),
+    radial-gradient(circle at 10% 80%,rgba(57,229,139,.035),transparent 30%),
+    var(--bg);
 }
 
 button,input,select{font:inherit}
@@ -39,14 +43,15 @@ button{cursor:pointer}
 
 .app{min-height:100vh;display:flex}
 
+/* SIDEBAR */
+
 .sidebar{
   position:fixed;
   inset:0 auto 0 0;
-  width:245px;
-  padding:20px 14px;
-  background:rgba(12,15,19,.94);
-  backdrop-filter:blur(20px);
+  width:250px;
+  background:rgba(11,13,16,.96);
   border-right:1px solid var(--border);
+  padding:20px 14px;
   z-index:20;
 }
 
@@ -54,27 +59,29 @@ button{cursor:pointer}
   display:flex;
   align-items:center;
   gap:11px;
-  padding:5px 10px 28px;
+  padding:4px 10px 30px;
   font-size:21px;
   font-weight:800;
 }
 
 .logoIcon{
-  width:38px;height:38px;
-  display:grid;place-items:center;
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
   border-radius:11px;
-  background:linear-gradient(145deg,#e8edf2,#8d969f);
-  color:#11151a;
-  box-shadow:0 8px 25px rgba(255,255,255,.09);
+  background:#191d23;
+  border:1px solid #303640;
+  font-size:20px;
 }
 
-.logo span{color:#cbd1d7}
+.logo span{color:var(--green)}
 
 .navTitle{
-  color:#69727c;
+  color:#606873;
   font-size:10px;
   text-transform:uppercase;
-  letter-spacing:1.6px;
+  letter-spacing:1.7px;
   padding:10px;
 }
 
@@ -84,49 +91,58 @@ button{cursor:pointer}
   gap:12px;
   padding:11px 12px;
   margin:3px 0;
-  border-radius:10px;
+  border-radius:9px;
   color:var(--muted);
   text-decoration:none;
-  font-size:14px;
-  transition:.2s;
+  font-size:13px;
+  transition:.18s;
 }
 
-.nav a:hover,
+.nav a:hover{
+  background:#171a20;
+  color:white;
+}
+
 .nav a.active{
-  background:#1b2027;
-  color:#fff;
+  background:#191d23;
+  color:white;
+  box-shadow:inset 3px 0 var(--green);
 }
 
-.nav a.active{
-  box-shadow:inset 3px 0 0 #e1e5e9;
+.navIcon{
+  width:20px;
+  text-align:center;
 }
-
-.navIcon{width:20px;text-align:center}
 
 .system{
   position:absolute;
-  left:15px;right:15px;bottom:20px;
+  left:15px;
+  right:15px;
+  bottom:20px;
   padding:12px;
   border:1px solid var(--border);
-  border-radius:12px;
+  border-radius:10px;
   color:var(--muted);
-  font-size:11px;
-  background:#12161b;
+  font-size:10px;
+  background:#111419;
 }
 
 .dot{
   display:inline-block;
-  width:7px;height:7px;
+  width:7px;
+  height:7px;
   border-radius:50%;
   background:var(--green);
-  box-shadow:0 0 9px var(--green);
+  box-shadow:0 0 8px var(--green);
   margin-right:7px;
 }
 
+/* MAIN */
+
 .main{
-  margin-left:245px;
-  width:calc(100% - 245px);
-  padding:28px 34px;
+  margin-left:250px;
+  width:calc(100% - 250px);
+  padding:27px 35px;
 }
 
 .topbar{
@@ -136,8 +152,12 @@ button{cursor:pointer}
   margin-bottom:30px;
 }
 
-.breadcrumb{color:var(--muted);font-size:13px}
-.breadcrumb b{color:#fff}
+.breadcrumb{
+  color:#747b86;
+  font-size:12px;
+}
+
+.breadcrumb b{color:#e8ebee}
 
 .topRight{
   display:flex;
@@ -146,50 +166,55 @@ button{cursor:pointer}
 }
 
 .avatar{
-  width:36px;height:36px;
-  border-radius:50%;
+  width:36px;
+  height:36px;
   display:grid;
   place-items:center;
-  background:#252b33;
-  border:1px solid #3a424c;
-  color:#fff;
+  border-radius:50%;
+  background:#191d23;
+  border:1px solid #303640;
+  color:var(--green);
   font-weight:800;
 }
 
+/* BUTTONS */
+
 .btn{
   border:1px solid var(--border);
-  background:#191e24;
-  color:#f3f4f5;
+  background:#16191e;
+  color:#e9ebee;
   padding:10px 15px;
-  border-radius:10px;
-  font-size:13px;
-  font-weight:650;
-  transition:.2s;
+  border-radius:9px;
+  font-size:12px;
+  font-weight:700;
+  transition:.18s;
 }
 
 .btn:hover{
   transform:translateY(-1px);
-  border-color:#4a535e;
-  background:#20262e;
+  border-color:#3a414c;
+  background:#1a1e24;
 }
 
 .btn.primary{
-  background:#e1e5e9;
-  color:#11151a;
-  border-color:#e1e5e9;
+  background:var(--green);
+  color:#06150d;
+  border-color:var(--green);
 }
 
 .btn.danger{
-  background:#29171b;
-  color:#ff7883;
-  border-color:#55262e;
+  background:#211519;
+  color:#ff7885;
+  border-color:#45262d;
 }
 
-.page{display:none;animation:fade .2s ease}
+/* PAGES */
+
+.page{display:none;animation:fade .18s ease}
 .page.active{display:block}
 
 @keyframes fade{
-  from{opacity:.2;transform:translateY(4px)}
+  from{opacity:.3;transform:translateY(4px)}
   to{opacity:1;transform:none}
 }
 
@@ -201,32 +226,56 @@ button{cursor:pointer}
 }
 
 .hero h1{
-  font-size:32px;
+  font-size:31px;
   letter-spacing:-1px;
   margin-bottom:6px;
 }
 
-.hero p{color:var(--muted);font-size:14px}
+.hero p{
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* CARDS */
 
 .card{
-  background:linear-gradient(145deg,rgba(25,30,37,.96),rgba(15,18,23,.96));
+  background:linear-gradient(145deg,#14171c,#0f1115);
   border:1px solid var(--border);
-  border-radius:15px;
-  box-shadow:var(--shadow);
+  border-radius:14px;
+  box-shadow:0 18px 55px rgba(0,0,0,.2);
 }
+
+/* STATS */
 
 .stats{
   display:grid;
   grid-template-columns:repeat(4,1fr);
   gap:14px;
-  margin-bottom:27px;
+  margin-bottom:28px;
 }
 
 .stat{padding:18px}
-.statTitle{color:var(--muted);font-size:12px;margin-bottom:10px}
-.statValue{font-size:26px;font-weight:800}
-.statDesc{color:#69737e;font-size:11px;margin-top:7px}
+
+.statTitle{
+  color:#858c97;
+  font-size:11px;
+  margin-bottom:10px;
+}
+
+.statValue{
+  font-size:25px;
+  font-weight:800;
+}
+
+.statDesc{
+  color:#656c77;
+  font-size:10px;
+  margin-top:7px;
+}
+
 .green{color:var(--green)}
+
+/* BOTS */
 
 .sectionHead{
   display:flex;
@@ -235,8 +284,8 @@ button{cursor:pointer}
   margin-bottom:13px;
 }
 
-.sectionHead h2{font-size:17px}
-.sectionHead span{color:var(--muted);font-size:12px}
+.sectionHead h2{font-size:16px}
+.sectionHead span{color:var(--muted);font-size:11px}
 
 .bots{
   display:grid;
@@ -250,13 +299,15 @@ button{cursor:pointer}
   overflow:hidden;
 }
 
-.bot::after{
+.bot:after{
   content:"";
   position:absolute;
-  width:120px;height:120px;
+  width:130px;
+  height:130px;
+  right:-70px;
+  top:-70px;
   border-radius:50%;
-  right:-55px;top:-55px;
-  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.035);
 }
 
 .botHeader{
@@ -274,111 +325,115 @@ button{cursor:pointer}
 }
 
 .botIcon{
-  width:38px;height:38px;
+  width:38px;
+  height:38px;
   display:grid;
   place-items:center;
   border-radius:10px;
-  background:#242a32;
-  border:1px solid #363e48;
-  font-size:19px;
+  background:#1a1e24;
+  border:1px solid #2c323b;
 }
 
 .badge{
   padding:5px 8px;
   border-radius:20px;
-  background:#10271a;
+  background:#10251a;
   color:var(--green);
-  border:1px solid #205539;
+  border:1px solid #245238;
   font-size:9px;
-  font-weight:700;
+  font-weight:800;
 }
 
 .badge.offline{
-  background:#29171b;
+  background:#211519;
   color:var(--red);
-  border-color:#54262e;
+  border-color:#45262d;
 }
 
 .botInfo{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:9px;
-  margin-bottom:16px;
+  gap:8px;
+  margin-bottom:15px;
 }
 
 .info{
   padding:9px;
-  border-radius:9px;
-  background:#101419;
-  border:1px solid #252c34;
-  overflow:hidden;
+  border-radius:8px;
+  background:#0d0f13;
+  border:1px solid #20242b;
+  min-width:0;
 }
 
 .info small{
   display:block;
-  color:#77818b;
-  font-size:9px;
+  color:#686f7a;
+  font-size:8px;
   margin-bottom:4px;
 }
 
 .info b{
-  font-size:11px;
-  word-break:break-all;
+  font-size:10px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  display:block;
 }
 
 .botButtons{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:8px;
+  gap:7px;
 }
 
-.botButtons .btn{padding:9px}
+.botButtons .btn{padding:9px 7px}
 
-.panel{padding:20px;margin-bottom:15px}
-.panel h2{font-size:17px;margin-bottom:7px}
-.panel p{color:var(--muted);font-size:13px;line-height:1.7}
+.wide{grid-column:1/-1}
+
+/* PANELS */
+
+.panel{
+  padding:20px;
+  margin-bottom:15px;
+}
+
+.panel h2{
+  font-size:16px;
+  margin-bottom:7px;
+}
+
+.panel p{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
+}
+
+/* FORM */
 
 .field{margin-bottom:14px}
+
 .field label{
   display:block;
-  color:#a5adb5;
-  font-size:10px;
+  color:#949ba5;
+  font-size:9px;
   margin-bottom:6px;
 }
 
-.field input,
-.field select,
-.chatInput{
+.field input,.field select{
   width:100%;
   padding:11px;
-  background:#0c1014;
-  border:1px solid #2b333c;
-  color:#fff;
-  border-radius:9px;
+  background:#0b0d10;
+  border:1px solid #292e36;
+  color:white;
+  border-radius:8px;
   outline:none;
 }
 
-.field input:focus,
-.field select:focus,
-.chatInput:focus{
-  border-color:#7b858f;
+.field input:focus,.field select:focus{
+  border-color:var(--green);
 }
 
-.progress{
-  height:8px;
-  background:#0b0e12;
-  border-radius:10px;
-  margin:14px 0 8px;
-  overflow:hidden;
-}
-
-.progress span{
-  display:block;
-  height:100%;
-  background:#d8dde3;
-  border-radius:10px;
-  transition:.3s;
-}
+/* USAGE */
 
 .usageGrid{
   display:grid;
@@ -387,8 +442,26 @@ button{cursor:pointer}
 }
 
 .usage{padding:20px}
-.usage h3{font-size:14px;margin-bottom:7px}
-.usage strong{font-size:28px}
+.usage h3{font-size:13px;margin-bottom:7px}
+.usage strong{font-size:27px}
+
+.progress{
+  height:7px;
+  background:#090b0e;
+  border-radius:10px;
+  margin:14px 0 8px;
+  overflow:hidden;
+}
+
+.progress span{
+  display:block;
+  height:100%;
+  background:var(--green);
+  border-radius:10px;
+  transition:.3s;
+}
+
+/* FEATURES */
 
 .featureGrid{
   display:grid;
@@ -397,9 +470,11 @@ button{cursor:pointer}
 }
 
 .feature{padding:20px}
-.featureIcon{font-size:25px;margin-bottom:10px}
-.feature h3{font-size:15px;margin-bottom:7px}
-.feature p{font-size:12px;color:var(--muted);line-height:1.6}
+.featureIcon{font-size:24px;margin-bottom:10px}
+.feature h3{font-size:14px;margin-bottom:7px}
+.feature p{font-size:11px;color:var(--muted);line-height:1.6}
+
+/* PLANS */
 
 .planGrid{
   display:grid;
@@ -407,31 +482,50 @@ button{cursor:pointer}
   gap:15px;
 }
 
-.plan{padding:22px;position:relative}
-.plan.popular{border-color:#65707b}
+.plan{
+  padding:22px;
+  position:relative;
+}
+
+.plan.popular{
+  border-color:#326044;
+}
 
 .planTag{
   position:absolute;
-  right:15px;top:15px;
-  font-size:9px;
-  color:#101318;
-  background:#e0e4e8;
+  right:15px;
+  top:15px;
+  font-size:8px;
+  color:#06150d;
+  background:var(--green);
   padding:5px 8px;
   border-radius:20px;
   font-weight:800;
 }
 
 .plan h2{margin-bottom:5px}
-.price{font-size:30px;font-weight:800;margin:13px 0}
-.price small{font-size:11px;color:var(--muted);font-weight:400}
+
+.price{
+  font-size:29px;
+  font-weight:800;
+  margin:13px 0;
+}
+
+.price small{
+  font-size:10px;
+  color:var(--muted);
+  font-weight:400;
+}
 
 .plan ul{
   list-style:none;
   color:var(--muted);
-  font-size:12px;
+  font-size:11px;
   line-height:2;
   margin-bottom:18px;
 }
+
+/* CONSOLE */
 
 .console{
   padding:18px;
@@ -447,33 +541,41 @@ button{cursor:pointer}
   border-bottom:1px solid var(--border);
 }
 
-.consoleHeader span{color:var(--green);font-size:10px}
+.consoleHeader span{
+  color:var(--muted);
+  font-size:10px;
+}
 
 .logs{
   font-family:Consolas,monospace;
-  color:#aeb7c0;
-  font-size:11px;
+  color:#a1a7b0;
+  font-size:10px;
   line-height:2;
-  max-height:350px;
-  overflow:auto;
 }
 
-.time{color:#606b76}
+.time{color:#59616c}
 .logOk{color:var(--green)}
+
+/* RULE */
 
 .rule{
   display:flex;
   align-items:center;
   gap:10px;
   padding:13px;
-  background:#101419;
+  background:#0d0f13;
   border:1px solid var(--border);
-  border-radius:10px;
+  border-radius:9px;
   margin-top:10px;
-  font-size:12px;
+  font-size:11px;
 }
 
-.rule span{color:#d9dee3;font-weight:700}
+.rule span{
+  color:var(--green);
+  font-weight:800;
+}
+
+/* SERVER */
 
 .serverList{display:grid;gap:12px}
 
@@ -491,19 +593,22 @@ button{cursor:pointer}
 }
 
 .serverIcon{
-  width:42px;height:42px;
+  width:42px;
+  height:42px;
   display:grid;
   place-items:center;
   border-radius:11px;
-  background:#242a31;
+  background:#191d23;
 }
 
 .server small{
   display:block;
   color:var(--muted);
   margin-top:4px;
-  font-size:11px;
+  font-size:10px;
 }
+
+/* SETTINGS */
 
 .settingsRow{
   display:flex;
@@ -514,41 +619,49 @@ button{cursor:pointer}
 }
 
 .settingsRow:last-child{border-bottom:0}
-.settingsRow b{font-size:13px}
 
+.settingsRow b{font-size:12px}
 .settingsRow small{
   display:block;
   color:var(--muted);
-  font-size:11px;
+  font-size:10px;
   margin-top:4px;
 }
 
 .toggle{
-  width:45px;height:24px;
+  width:45px;
+  height:24px;
   border-radius:20px;
   border:0;
-  background:#303740;
+  background:#292e36;
   position:relative;
 }
 
 .toggle:after{
   content:"";
   position:absolute;
-  width:18px;height:18px;
-  top:3px;left:4px;
+  width:18px;
+  height:18px;
+  top:3px;
+  left:4px;
   border-radius:50%;
-  background:#9aa3ac;
+  background:#89909b;
   transition:.2s;
 }
 
-.toggle.on{background:#e0e4e8}
-.toggle.on:after{left:23px;background:#11151a}
+.toggle.on{background:var(--green)}
+.toggle.on:after{
+  left:23px;
+  background:#06150d;
+}
+
+/* MODAL */
 
 .modalBg{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.72);
-  backdrop-filter:blur(7px);
+  background:rgba(0,0,0,.75);
+  backdrop-filter:blur(8px);
   display:none;
   place-items:center;
   padding:20px;
@@ -559,15 +672,19 @@ button{cursor:pointer}
 
 .modal{
   width:min(500px,100%);
-  background:#12161b;
-  border:1px solid #363e47;
-  border-radius:17px;
+  background:#111419;
+  border:1px solid #303640;
+  border-radius:15px;
   padding:23px;
-  box-shadow:0 30px 100px rgba(0,0,0,.6);
+  box-shadow:0 30px 100px rgba(0,0,0,.65);
 }
 
 .modal h2{margin-bottom:7px}
-.modal p{color:var(--muted);font-size:12px;line-height:1.7}
+.modal p{
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.7;
+}
 
 .modalActions{
   display:flex;
@@ -576,15 +693,17 @@ button{cursor:pointer}
   margin-top:20px;
 }
 
+/* TOAST */
+
 .toast{
   position:fixed;
   right:25px;
   bottom:25px;
   padding:12px 16px;
-  background:#1c2229;
-  border:1px solid #3c4650;
-  border-radius:10px;
-  font-size:13px;
+  background:#171b20;
+  border:1px solid #343a44;
+  border-radius:9px;
+  font-size:12px;
   opacity:0;
   transform:translateY(15px);
   pointer-events:none;
@@ -592,7 +711,12 @@ button{cursor:pointer}
   z-index:200;
 }
 
-.toast.show{opacity:1;transform:none}
+.toast.show{
+  opacity:1;
+  transform:none;
+}
+
+/* LOADING */
 
 .loading{
   grid-column:1/-1;
@@ -600,6 +724,20 @@ button{cursor:pointer}
   text-align:center;
   color:var(--muted);
 }
+
+.spinner{
+  width:25px;
+  height:25px;
+  margin:0 auto 12px;
+  border:3px solid #292e36;
+  border-top-color:var(--green);
+  border-radius:50%;
+  animation:spin .7s linear infinite;
+}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* RESPONSIVE */
 
 @media(max-width:1050px){
   .stats{grid-template-columns:1fr 1fr}
@@ -633,12 +771,9 @@ button{cursor:pointer}
     gap:15px;
   }
 
-  .hero h1{font-size:26px}
+  .hero h1{font-size:25px}
 
-  .stats,
-  .bots,
-  .usageGrid,
-  .featureGrid{
+  .stats,.bots,.usageGrid,.featureGrid{
     grid-template-columns:1fr;
   }
 
@@ -664,33 +799,27 @@ button{cursor:pointer}
 <nav class="nav">
 
 <a href="#" class="active" data-page="dashboard">
-  <span class="navIcon">⌂</span>
-  <span class="navText">Dashboard</span>
+<span class="navIcon">⌂</span><span class="navText">Dashboard</span>
 </a>
 
 <a href="#" data-page="bots">
-  <span class="navIcon">🤖</span>
-  <span class="navText">My Bots</span>
+<span class="navIcon">🤖</span><span class="navText">My Bots</span>
 </a>
 
 <a href="#" data-page="create">
-  <span class="navIcon">＋</span>
-  <span class="navText">Create Bot</span>
+<span class="navIcon">＋</span><span class="navText">Create Bot</span>
 </a>
 
 <a href="#" data-page="servers">
-  <span class="navIcon">🖥</span>
-  <span class="navText">Servers</span>
+<span class="navIcon">🖥</span><span class="navText">Servers</span>
 </a>
 
 <a href="#" data-page="console">
-  <span class="navIcon">▣</span>
-  <span class="navText">Console</span>
+<span class="navIcon">▣</span><span class="navText">Console</span>
 </a>
 
 <a href="#" data-page="automation">
-  <span class="navIcon">⚡</span>
-  <span class="navText">Automation</span>
+<span class="navIcon">⚡</span><span class="navText">Automation</span>
 </a>
 
 </nav>
@@ -700,35 +829,30 @@ button{cursor:pointer}
 <nav class="nav">
 
 <a href="#" data-page="usage">
-  <span class="navIcon">📊</span>
-  <span class="navText">Usage</span>
+<span class="navIcon">📊</span><span class="navText">Usage</span>
 </a>
 
 <a href="#" data-page="plans">
-  <span class="navIcon">💎</span>
-  <span class="navText">Plans</span>
+<span class="navIcon">💎</span><span class="navText">Plans</span>
 </a>
 
 <a href="#" data-page="redeem">
-  <span class="navIcon">🔑</span>
-  <span class="navText">Redeem Code</span>
+<span class="navIcon">🔑</span><span class="navText">Redeem Code</span>
 </a>
 
 <a href="#" data-page="settings">
-  <span class="navIcon">⚙</span>
-  <span class="navText">Settings</span>
+<span class="navIcon">⚙</span><span class="navText">Settings</span>
 </a>
 
 <a href="#" data-page="help">
-  <span class="navIcon">?</span>
-  <span class="navText">How to use</span>
+<span class="navIcon">?</span><span class="navText">How to use</span>
 </a>
 
 </nav>
 
 <div class="system">
-  <span class="dot"></span>
-  API Connected
+<span class="dot"></span>
+API Connected
 </div>
 
 </aside>
@@ -738,22 +862,24 @@ button{cursor:pointer}
 <div class="topbar">
 
 <div class="breadcrumb">
-  TreeBots / <b id="breadcrumb">Dashboard</b>
+TreeBots / <b id="breadcrumb">Dashboard</b>
 </div>
 
 <div class="topRight">
-  <button class="btn" onclick="loadBots()">↻</button>
-  <div class="avatar">T</div>
+<button class="btn" onclick="loadBots()">↻</button>
+<div class="avatar">T</div>
 </div>
 
 </div>
+
+<!-- DASHBOARD -->
 
 <section class="page active" id="page-dashboard">
 
 <div class="hero">
 <div>
 <h1>Welcome back 👋</h1>
-<p>Manage your Minecraft bots from one powerful dashboard.</p>
+<p>Manage your Minecraft bots from one dashboard.</p>
 </div>
 
 <button class="btn primary" onclick="go('create')">
@@ -777,14 +903,14 @@ button{cursor:pointer}
 
 <div class="card stat">
 <div class="statTitle">API</div>
-<div class="statValue green">Online</div>
-<div class="statDesc">Cloudflare Worker</div>
+<div class="statValue green" id="apiStatus">Online</div>
+<div class="statDesc">Backend connection</div>
 </div>
 
 <div class="card stat">
 <div class="statTitle">Database</div>
-<div class="statValue green">D1</div>
-<div class="statDesc">Persistent storage</div>
+<div class="statValue green" id="dbStatus">Connected</div>
+<div class="statDesc">Cloud database</div>
 </div>
 
 </div>
@@ -797,6 +923,8 @@ button{cursor:pointer}
 <section class="bots" id="dashboardBots"></section>
 
 </section>
+
+<!-- BOTS -->
 
 <section class="page" id="page-bots">
 
@@ -829,12 +957,14 @@ You currently have <b id="capacityText">0 of 3</b> bot slots in use.
 
 </section>
 
+<!-- CREATE -->
+
 <section class="page" id="page-create">
 
 <div class="hero">
 <div>
 <h1>Create a Bot 🤖</h1>
-<p>Add a new Minecraft bot to your account.</p>
+<p>Add a new bot to your TreeBots account.</p>
 </div>
 </div>
 
@@ -879,33 +1009,40 @@ You currently have <b id="capacityText">0 of 3</b> bot slots in use.
 </div>
 </section>
 
+<!-- SERVERS -->
+
 <section class="page" id="page-servers">
 
 <div class="hero">
 <div>
 <h1>Servers 🖥</h1>
-<p>Servers connected to your TreeBots bots.</p>
+<p>Servers configured for your bots.</p>
 </div>
 
-<button class="btn primary" onclick="showToast('Server management is ready for backend expansion.')">
+<button class="btn primary" onclick="showToast('Add server will be available soon.')">
 ＋ Add Server
 </button>
 </div>
 
-<div class="serverList" id="serverList">
+<div class="serverList">
+
 <div class="card server">
 <div class="serverLeft">
-<div class="serverIcon">🌳</div>
+<div class="serverIcon">🌲</div>
 <div>
-<b>Servers from your bots</b>
-<small>Server information is loaded from the API.</small>
-</div>
-</div>
-<span class="badge">● API</span>
+<b>Configured servers</b>
+<small id="serverSummary">Loading...</small>
 </div>
 </div>
 
+<span class="badge" id="serverStatus">● READY</span>
+
+</div>
+
+</div>
 </section>
+
+<!-- CONSOLE -->
 
 <section class="page" id="page-console">
 
@@ -920,29 +1057,41 @@ You currently have <b id="capacityText">0 of 3</b> bot slots in use.
 
 <div class="consoleHeader">
 <b id="consoleTitle">TreeBots • Console</b>
-<span>API Connected</span>
+<span id="consoleConnection">Ready</span>
 </div>
 
 <div class="logs" id="logs">
-<div><span class="time">[SYSTEM]</span> TreeBots console ready.</div>
-<div><span class="time">[API]</span> Connected to Cloudflare Worker.</div>
-<div><span class="time">[D1]</span> Database connection available.</div>
+<div>
+<span class="time">[SYSTEM]</span>
+<span class="logOk">INFO</span>
+TreeBots console ready.
+</div>
 </div>
 
 <div style="display:flex;gap:8px;margin-top:20px">
-<input class="chatInput" id="chatInput" placeholder="Send a message...">
+
+<input
+id="chatInput"
+placeholder="Send a message..."
+style="flex:1;padding:11px;background:#0b0d10;border:1px solid var(--border);border-radius:8px;color:white"
+
+>
+
 <button class="btn primary" onclick="sendChat()">Send</button>
+
 </div>
 
 </div>
 </section>
+
+<!-- AUTOMATION -->
 
 <section class="page" id="page-automation">
 
 <div class="hero">
 <div>
 <h1>Automation ⚡</h1>
-<p>Create rules for your Minecraft bots.</p>
+<p>Create automation rules for your bots.</p>
 </div>
 
 <button class="btn primary" onclick="addRule()">＋ Add Rule</button>
@@ -963,25 +1112,19 @@ Bot joins server
 Send welcome message
 </div>
 
-<div class="rule">
-<span>EVERY</span>
-60 seconds
-<span>→</span>
-<span>DO</span>
-Send /list
-</div>
-
 </div>
 
 </div>
 </section>
+
+<!-- USAGE -->
 
 <section class="page" id="page-usage">
 
 <div class="hero">
 <div>
 <h1>Usage & Limits 📊</h1>
-<p>Monitor your TreeBots resources.</p>
+<p>Current TreeBots account usage.</p>
 </div>
 </div>
 
@@ -990,33 +1133,41 @@ Send /list
 <div class="card usage">
 <h3>Bot Slots</h3>
 <strong id="usageBots">0 / 3</strong>
-<div class="progress"><span id="usageBotBar"></span></div>
-<p style="color:var(--muted);font-size:11px">Current plan limit</p>
+
+<div class="progress">
+<span id="usageBotBar"></span>
+</div>
+
+<p style="color:var(--muted);font-size:10px">Current plan limit</p>
 </div>
 
 <div class="card usage">
-<h3>API</h3>
-<strong>Online</strong>
-<div class="progress"><span style="width:100%"></span></div>
-<p style="color:var(--muted);font-size:11px">Cloudflare Worker</p>
+<h3>API Status</h3>
+<strong id="usageApi">Online</strong>
+
+<div class="progress">
+<span style="width:100%"></span>
+</div>
+
+<p style="color:var(--muted);font-size:10px">Backend connection</p>
 </div>
 
 <div class="card usage">
 <h3>Database</h3>
-<strong>D1</strong>
-<div class="progress"><span style="width:100%"></span></div>
-<p style="color:var(--muted);font-size:11px">Persistent storage</p>
+<strong id="usageDb">Connected</strong>
+
+<div class="progress">
+<span style="width:100%"></span>
 </div>
 
+<p style="color:var(--muted);font-size:10px">D1 database</p>
 </div>
 
-<div class="card panel" style="margin-top:15px">
-<h2>🌱 Free Plan</h2>
-<p>Your current dashboard supports up to 3 bots.</p>
-<div class="progress"><span id="usagePlanBar"></span></div>
 </div>
 
 </section>
+
+<!-- PLANS -->
 
 <section class="page" id="page-plans">
 
@@ -1032,20 +1183,25 @@ Send /list
 <div class="card plan">
 <h2>🌱 Free</h2>
 <div class="price">$0 <small>/ trial</small></div>
+
 <ul>
 <li>✓ 3 Bots</li>
 <li>✓ Basic Console</li>
 <li>✓ Auto Reconnect</li>
 <li>✓ Basic Automation</li>
-<li>✓ D1 Database</li>
 </ul>
+
 <button class="btn" style="width:100%">Current Plan</button>
+
 </div>
 
 <div class="card plan popular">
+
 <div class="planTag">POPULAR</div>
+
 <h2>⚡ Pro</h2>
 <div class="price">50 <small>EGP / month</small></div>
+
 <ul>
 <li>✓ 10 Bots</li>
 <li>✓ Advanced Console</li>
@@ -1053,31 +1209,40 @@ Send /list
 <li>✓ Monitoring</li>
 <li>✓ Longer Logs</li>
 </ul>
-<button class="btn primary" style="width:100%" onclick="showToast('Pro activation can be connected later.')">Get Pro</button>
+
+<button class="btn primary" style="width:100%" onclick="showToast('Pro activation coming soon.')">
+Get Pro
+</button>
 </div>
 
 <div class="card plan">
+
 <h2>👑 Ultra</h2>
 <div class="price">100 <small>EGP / month</small></div>
+
 <ul>
 <li>✓ 25 Bots</li>
 <li>✓ Advanced Monitoring</li>
 <li>✓ Advanced Automation</li>
 <li>✓ Priority Infrastructure</li>
-<li>✓ More Resources</li>
 </ul>
-<button class="btn primary" style="width:100%" onclick="showToast('Ultra activation can be connected later.')">Get Ultra</button>
+
+<button class="btn primary" style="width:100%" onclick="showToast('Ultra activation coming soon.')">
+Get Ultra
+</button>
 </div>
 
 </div>
 </section>
+
+<!-- REDEEM -->
 
 <section class="page" id="page-redeem">
 
 <div class="hero">
 <div>
 <h1>Redeem Code 🔑</h1>
-<p>Activate a TreeBots plan using an activation code.</p>
+<p>Activate a TreeBots plan.</p>
 </div>
 </div>
 
@@ -1093,12 +1258,14 @@ Send /list
 </div>
 </section>
 
+<!-- SETTINGS -->
+
 <section class="page" id="page-settings">
 
 <div class="hero">
 <div>
 <h1>Settings ⚙</h1>
-<p>Configure your TreeBots dashboard.</p>
+<p>Configure TreeBots.</p>
 </div>
 </div>
 
@@ -1123,7 +1290,7 @@ Send /list
 <div class="settingsRow">
 <div>
 <b>Bot Notifications</b>
-<small>Notify you when a bot has an error.</small>
+<small>Notify when a bot has an error.</small>
 </div>
 <button class="toggle on" onclick="this.classList.toggle('on')"></button>
 </div>
@@ -1131,12 +1298,14 @@ Send /list
 </div>
 </section>
 
+<!-- HELP -->
+
 <section class="page" id="page-help">
 
 <div class="hero">
 <div>
 <h1>How to use TreeBots 📖</h1>
-<p>Get your first bot running.</p>
+<p>Get your first bot configured.</p>
 </div>
 </div>
 
@@ -1145,37 +1314,37 @@ Send /list
 <div class="card feature">
 <div class="featureIcon">1️⃣</div>
 <h3>Create your bot</h3>
-<p>Open Create Bot and enter the Minecraft username, server IP, port and version.</p>
+<p>Open Create Bot and enter the bot name, username and server information.</p>
 </div>
 
 <div class="card feature">
 <div class="featureIcon">2️⃣</div>
 <h3>Start the bot</h3>
-<p>Open My Bots and press Start to update the bot status through the API.</p>
+<p>Open My Bots and press Start to change its status.</p>
 </div>
 
 <div class="card feature">
 <div class="featureIcon">3️⃣</div>
-<h3>Use Console</h3>
-<p>Open the console to monitor your selected bot.</p>
+<h3>Console</h3>
+<p>Open Console to monitor your selected bot.</p>
 </div>
 
 <div class="card feature">
 <div class="featureIcon">4️⃣</div>
 <h3>Automation</h3>
-<p>Create automated rules for approved actions.</p>
+<p>Create automation rules for your bot workflow.</p>
 </div>
 
 <div class="card feature">
 <div class="featureIcon">5️⃣</div>
-<h3>Upgrade</h3>
-<p>Upgrade your TreeBots plan when paid-plan validation is connected.</p>
+<h3>Plans</h3>
+<p>Manage your TreeBots plan and available bot capacity.</p>
 </div>
 
 <div class="card feature">
 <div class="featureIcon">6️⃣</div>
-<h3>Delete Bot</h3>
-<p>Delete bots directly from your D1 database using the Delete button.</p>
+<h3>Delete</h3>
+<p>Remove bots that you no longer need.</p>
 </div>
 
 </div>
@@ -1184,34 +1353,41 @@ Send /list
 </main>
 </div>
 
+<!-- DELETE MODAL -->
+
 <div class="modalBg" id="deleteModal">
 
 <div class="modal">
+
 <h2>Delete Bot? 🗑️</h2>
-<p>Are you sure you want to permanently delete this bot?</p>
+
+<p>
+Are you sure you want to permanently delete this bot?
+</p>
 
 <div class="modalActions">
 <button class="btn" onclick="closeDelete()">Cancel</button>
 <button class="btn danger" onclick="confirmDelete()">Delete Bot</button>
 </div>
-</div>
 
+</div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
 
-/* ==============================
-   TREEBOTS API
-============================== */
+/* ================================
+   TREEBOTS
+   CLOUDFLARE WORKER API
+================================ */
 
 const API = "https://treebots-backend.505omerfive.workers.dev";
 const BOT_LIMIT = 3;
 
 let bots = [];
 let deleteId = null;
-let selectedBotId = null;
+let selectedBot = null;
 
 const pageNames = {
   dashboard:"Dashboard",
@@ -1226,6 +1402,8 @@ const pageNames = {
   settings:"Settings",
   help:"How to use"
 };
+
+/* NAVIGATION */
 
 document.querySelectorAll(".nav a[data-page]").forEach(link=>{
   link.addEventListener("click",e=>{
@@ -1243,26 +1421,19 @@ function go(page){
 
   if(target) target.classList.add("active");
 
-  document.querySelectorAll(".nav a")
-    .forEach(a=>{
-      a.classList.toggle("active",a.dataset.page===page);
-    });
+  document.querySelectorAll(".nav a").forEach(a=>{
+    a.classList.toggle("active",a.dataset.page===page);
+  });
 
   document.getElementById("breadcrumb").textContent =
     pageNames[page] || page;
 
   if(page==="dashboard" || page==="bots" || page==="usage"){
-    render();
-  }
-
-  if(page==="servers"){
-    renderServers();
+    loadBots();
   }
 }
 
-/* ==============================
-   API REQUEST
-============================== */
+/* API */
 
 async function api(path,options={}){
 
@@ -1274,11 +1445,13 @@ async function api(path,options={}){
     }
   });
 
-  let data={};
+  let data;
 
   try{
     data=await response.json();
-  }catch{}
+  }catch{
+    data={};
+  }
 
   if(!response.ok){
     throw new Error(data.error || "API request failed");
@@ -1287,11 +1460,11 @@ async function api(path,options={}){
   return data;
 }
 
-/* ==============================
-   LOAD BOTS
-============================== */
+/* LOAD BOTS */
 
 async function loadBots(){
+
+  showLoading();
 
   try{
 
@@ -1301,85 +1474,145 @@ async function loadBots(){
 
     render();
 
-    renderServers();
+    checkStatus();
 
   }catch(error){
 
     console.error(error);
 
-    showToast("Could not connect to TreeBots API.");
+    document.getElementById("dashboardBots").innerHTML=`
+      <div class="loading">
+        <div style="font-size:30px">⚠️</div>
+        <h3 style="color:white;margin:8px">API connection failed</h3>
+        <div>${escapeHTML(error.message)}</div>
+      </div>
+    `;
 
-    bots=[];
+    document.getElementById("allBots").innerHTML=`
+      <div class="loading">
+        Unable to load bots.
+      </div>
+    `;
 
-    render();
+    document.getElementById("apiStatus").textContent="Offline";
+    document.getElementById("apiStatus").classList.remove("green");
+
   }
 }
 
-/* ==============================
-   RENDER
-============================== */
+/* STATUS */
+
+async function checkStatus(){
+
+  try{
+
+    const data=await api("/api/status");
+
+    document.getElementById("apiStatus").textContent =
+      data.status==="online" ? "Online":"Offline";
+
+    document.getElementById("dbStatus").textContent =
+      data.database==="connected" ? "Connected":"Offline";
+
+    document.getElementById("usageApi").textContent =
+      data.status==="online" ? "Online":"Offline";
+
+    document.getElementById("usageDb").textContent =
+      data.database==="connected" ? "Connected":"Offline";
+
+  }catch{
+
+    document.getElementById("apiStatus").textContent="Offline";
+    document.getElementById("dbStatus").textContent="Offline";
+  }
+}
+
+/* RENDER */
 
 function render(){
 
-  const online=bots.filter(bot=>bot.status==="online").length;
+  const online=bots.filter(
+    bot=>bot.status==="online"
+  ).length;
 
-  document.getElementById("statTotal").textContent=
+  document.getElementById("statTotal").textContent =
     `${bots.length} / ${BOT_LIMIT}`;
 
-  document.getElementById("statOnline").textContent=
-    online;
+  document.getElementById("statOnline").textContent=online;
 
-  document.getElementById("dashCount").textContent=
+  document.getElementById("dashCount").textContent =
     `${bots.length} bot${bots.length===1?"":"s"}`;
 
-  document.getElementById("capacityText").textContent=
+  document.getElementById("capacityText").textContent =
     `${bots.length} of ${BOT_LIMIT}`;
 
-  const percent=Math.min(100,bots.length/BOT_LIMIT*100);
+  const percent=Math.min(
+    100,
+    bots.length/BOT_LIMIT*100
+  );
 
-  document.getElementById("capacityBar").style.width=
-    percent+"%";
+  document.getElementById("capacityBar").style.width=percent+"%";
 
-  document.getElementById("usageBots").textContent=
+  document.getElementById("usageBots").textContent =
     `${bots.length} / ${BOT_LIMIT}`;
 
-  document.getElementById("usageBotBar").style.width=
+  document.getElementById("usageBotBar").style.width =
     percent+"%";
 
-  document.getElementById("usagePlanBar").style.width=
-    percent+"%";
+  document.getElementById("dashboardBots").innerHTML =
+    bots.length ? bots.map(botCard).join("") : emptyState();
 
-  document.getElementById("dashboardBots").innerHTML=
-    bots.length
-      ? bots.map(botCard).join("")
-      : emptyState();
+  document.getElementById("allBots").innerHTML =
+    bots.length ? bots.map(botCard).join("") : emptyState();
 
-  document.getElementById("allBots").innerHTML=
-    bots.length
-      ? bots.map(botCard).join("")
-      : emptyState();
+  document.getElementById("serverSummary").textContent =
+    `${bots.length} bot${bots.length===1?"":"s"} configured`;
+
+  document.getElementById("serverStatus").textContent =
+    bots.length ? "● READY":"● EMPTY";
 }
+
+/* LOADING */
+
+function showLoading(){
+
+  const html=`
+    <div class="loading">
+      <div class="spinner"></div>
+      Loading bots...
+    </div>
+  `;
+
+  document.getElementById("dashboardBots").innerHTML=html;
+  document.getElementById("allBots").innerHTML=html;
+}
+
+/* EMPTY */
 
 function emptyState(){
 
   return `
-    <div class="card loading">
-      <div style="font-size:38px">🤖</div>
-      <h3 style="color:#fff;margin:10px">No bots yet</h3>
+    <div class="loading">
+      <div style="font-size:35px">🤖</div>
+      <h3 style="color:white;margin:10px">No bots yet</h3>
       Create your first Minecraft bot.
+      <div style="margin-top:15px">
+        <button class="btn primary" onclick="go('create')">
+          ＋ Create Bot
+        </button>
+      </div>
     </div>
   `;
 }
 
-/* ==============================
-   BOT CARD
-============================== */
+/* BOT CARD */
 
 function botCard(bot){
 
   const online=bot.status==="online";
 
   return `
+
   <article class="card bot">
 
     <div class="botHeader">
@@ -1424,7 +1657,7 @@ function botCard(bot){
 
       <div class="info">
         <small>STATUS</small>
-        <b>${online?"Connected":"Stopped"}</b>
+        <b>${online?"Running":"Stopped"}</b>
       </div>
 
     </div>
@@ -1433,25 +1666,25 @@ function botCard(bot){
 
       <button
         class="btn ${online?"":"primary"}"
-        onclick="toggleBot('${escapeJS(bot.id)}')">
+        onclick="toggleBot('${escapeAttr(bot.id)}')">
         ${online?"⏹ Stop":"▶ Start"}
       </button>
 
       <button
         class="btn"
-        onclick="openConsole('${escapeJS(bot.id)}')">
+        onclick="openConsole('${escapeAttr(bot.id)}')">
         Console
       </button>
 
       <button
         class="btn"
-        onclick="showToast('Bot settings are coming soon.')">
+        onclick="showToast('Bot settings coming soon.')">
         ⚙ Settings
       </button>
 
       <button
         class="btn danger"
-        onclick="askDelete('${escapeJS(bot.id)}')">
+        onclick="askDelete('${escapeAttr(bot.id)}')">
         🗑 Delete
       </button>
 
@@ -1461,16 +1694,9 @@ function botCard(bot){
   `;
 }
 
-/* ==============================
-   CREATE BOT
-============================== */
+/* CREATE */
 
 async function createBot(){
-
-  if(bots.length>=BOT_LIMIT){
-    showToast(`Bot limit reached: ${BOT_LIMIT}.`);
-    return;
-  }
 
   const name=document.getElementById("createName").value.trim();
   const username=document.getElementById("createUsername").value.trim();
@@ -1478,12 +1704,24 @@ async function createBot(){
   const port=document.getElementById("createPort").value.trim();
   const version=document.getElementById("createVersion").value;
 
-  if(!name || !username || !ip){
-    showToast("Fill in the required fields.");
+  if(!name){
+    showToast("Enter a bot name.");
+    return;
+  }
+
+  if(!username){
+    showToast("Enter a Minecraft username.");
+    return;
+  }
+
+  if(!ip){
+    showToast("Enter a server IP.");
     return;
   }
 
   try{
+
+    showToast("Creating bot...");
 
     const bot=await api("/api/bots",{
       method:"POST",
@@ -1503,31 +1741,37 @@ async function createBot(){
     document.getElementById("createIp").value="";
     document.getElementById("createPort").value="25565";
 
+    render();
+
     showToast(`${name} created successfully.`);
 
-    render();
     go("bots");
 
   }catch(error){
 
     showToast(error.message);
+
   }
 }
 
-/* ==============================
-   START / STOP
-============================== */
+/* START STOP */
 
 async function toggleBot(id){
 
   const bot=bots.find(x=>String(x.id)===String(id));
 
-  if(!bot) return;
+  if(!bot)return;
 
   const newStatus=
-    bot.status==="online" ? "offline" : "online";
+    bot.status==="online" ? "offline":"online";
 
   try{
+
+    showToast(
+      newStatus==="online"
+      ? "Starting bot..."
+      : "Stopping bot..."
+    );
 
     const result=await api(
       `/api/bots/${encodeURIComponent(id)}/status`,
@@ -1547,19 +1791,18 @@ async function toggleBot(id){
 
     showToast(
       newStatus==="online"
-        ? `${bot.name} is online.`
-        : `${bot.name} stopped.`
+      ? `${bot.name} is online.`
+      : `${bot.name} stopped.`
     );
 
   }catch(error){
 
     showToast(error.message);
+
   }
 }
 
-/* ==============================
-   DELETE
-============================== */
+/* DELETE */
 
 function askDelete(id){
 
@@ -1581,9 +1824,11 @@ function closeDelete(){
 
 async function confirmDelete(){
 
-  if(!deleteId) return;
+  if(!deleteId)return;
 
-  const bot=bots.find(x=>String(x.id)===String(deleteId));
+  const bot=bots.find(
+    x=>String(x.id)===String(deleteId)
+  );
 
   try{
 
@@ -1597,186 +1842,123 @@ async function confirmDelete(){
     );
 
     closeDelete();
-    render();
-    renderServers();
 
-    showToast(`${bot?.name||"Bot"} deleted.`);
+    render();
+
+    showToast(
+      `${bot?bot.name:"Bot"} deleted.`
+    );
 
   }catch(error){
 
     showToast(error.message);
+
   }
 }
 
-/* ==============================
-   CONSOLE
-============================== */
+/* CONSOLE */
 
 function openConsole(id){
 
-  const bot=bots.find(x=>String(x.id)===String(id));
-
-  if(!bot) return;
-
-  selectedBotId=id;
-
-  document.getElementById("consoleTitle").textContent=
-    `${bot.name} • Live Console`;
-
-  addLog(
-    "SYSTEM",
-    `Selected ${bot.name}.`
+  const bot=bots.find(
+    x=>String(x.id)===String(id)
   );
+
+  if(!bot)return;
+
+  selectedBot=bot.id;
+
+  document.getElementById("consoleTitle").textContent =
+    `${bot.name} • Console`;
+
+  document.getElementById("consoleConnection").textContent =
+    bot.status==="online" ? "Online":"Offline";
+
+  document.getElementById("logs").innerHTML=`
+
+    <div>
+      <span class="time">[SYSTEM]</span>
+      <span class="logOk">INFO</span>
+      Selected ${escapeHTML(bot.name)}.
+    </div>
+
+    <div>
+      <span class="time">[SERVER]</span>
+      ${escapeHTML(bot.ip)}:${escapeHTML(bot.port)}
+    </div>
+
+    <div>
+      <span class="time">[STATUS]</span>
+      ${escapeHTML(bot.status)}
+    </div>
+
+  `;
 
   go("console");
 }
 
-function addLog(type,text){
-
-  const logs=document.getElementById("logs");
-
-  const time=new Date().toLocaleTimeString();
-
-  logs.insertAdjacentHTML(
-    "beforeend",
-    `
-    <div>
-      <span class="time">[${escapeHTML(time)}]</span>
-      <span class="logOk">${escapeHTML(type)}</span>
-      ${escapeHTML(text)}
-    </div>
-    `
-  );
-
-  logs.scrollTop=logs.scrollHeight;
-}
+/* CHAT */
 
 function sendChat(){
 
   const input=document.getElementById("chatInput");
   const text=input.value.trim();
 
-  if(!text) return;
+  if(!text)return;
 
-  addLog("YOU",text);
+  const logs=document.getElementById("logs");
+
+  logs.innerHTML+=`
+
+    <div>
+      <span class="time">[LOCAL]</span>
+      <span class="logOk">YOU</span>
+      ${escapeHTML(text)}
+    </div>
+
+  `;
 
   input.value="";
 
   showToast("Message added to console.");
 }
 
-/* ==============================
-   SERVERS
-============================== */
-
-function renderServers(){
-
-  const container=document.getElementById("serverList");
-
-  const unique=new Map();
-
-  bots.forEach(bot=>{
-    const key=`${bot.ip}:${bot.port}`;
-
-    if(!unique.has(key)){
-      unique.set(key,{
-        ip:bot.ip,
-        port:bot.port,
-        online:bot.status==="online",
-        count:1
-      });
-    }else{
-      const server=unique.get(key);
-      server.count++;
-      if(bot.status==="online") server.online=true;
-    }
-  });
-
-  if(!unique.size){
-
-    container.innerHTML=`
-      <div class="card loading">
-        No servers yet. Create a bot first.
-      </div>
-    `;
-
-    return;
-  }
-
-  container.innerHTML=[...unique.values()].map(server=>`
-
-    <div class="card server">
-
-      <div class="serverLeft">
-
-        <div class="serverIcon">🌳</div>
-
-        <div>
-          <b>${escapeHTML(server.ip)}</b>
-          <small>
-            ${escapeHTML(server.ip)}:${escapeHTML(server.port)}
-            • ${server.count} bot${server.count===1?"":"s"}
-          </small>
-        </div>
-
-      </div>
-
-      <span class="badge ${server.online?"":"offline"}">
-        ${server.online?"● ONLINE":"● OFFLINE"}
-      </span>
-
-    </div>
-
-  `).join("");
-}
-
-/* ==============================
-   AUTOMATION
-============================== */
+/* AUTOMATION */
 
 function addRule(){
 
   document.getElementById("rules").insertAdjacentHTML(
     "beforeend",
     `
-    <div class="rule">
-      <span>WHEN</span>
-      Player joins
-      <span>→</span>
-      <span>DO</span>
-      Send welcome message
-    </div>
+      <div class="rule">
+        <span>WHEN</span>
+        Player joins
+        <span>→</span>
+        <span>DO</span>
+        Send welcome message
+      </div>
     `
   );
 
   showToast("Automation rule added.");
 }
 
-/* ==============================
-   REDEEM
-============================== */
+/* REDEEM */
 
 function redeemCode(){
 
-  const code=document
-    .getElementById("redeemInput")
-    .value
-    .trim()
-    .toUpperCase();
+  const input=document.getElementById("redeemInput");
+  const code=input.value.trim().toUpperCase();
 
   if(!code){
     showToast("Enter an activation code.");
     return;
   }
 
-  showToast(
-    "Code validation is not connected to the backend yet."
-  );
+  showToast("Code validation will be connected to the backend.");
 }
 
-/* ==============================
-   TOAST
-============================== */
+/* TOAST */
 
 function showToast(message){
 
@@ -1792,9 +1974,7 @@ function showToast(message){
   },2800);
 }
 
-/* ==============================
-   SECURITY
-============================== */
+/* SECURITY */
 
 function escapeHTML(text){
 
@@ -1808,18 +1988,20 @@ function escapeHTML(text){
     }[character]));
 }
 
-function escapeJS(text){
-
+function escapeAttr(text){
   return String(text??"")
     .replace(/\\/g,"\\\\")
-    .replace(/'/g,"\\'")
-    .replace(/\n/g,"\\n")
-    .replace(/\r/g,"\\r");
+    .replace(/'/g,"\\'");
 }
 
-/* ==============================
-   START
-============================== */
+/* ENTER CHAT */
+
+document.getElementById("chatInput")
+  .addEventListener("keydown",e=>{
+    if(e.key==="Enter")sendChat();
+  });
+
+/* START */
 
 loadBots();
 
