@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TreePots</title>
+<title>TreeBots</title>
 
 <style>
 :root{
@@ -18,6 +18,7 @@
     --green2:#20b96b;
     --red:#ff5969;
     --yellow:#f2c14e;
+    --blue:#61a8ff;
 }
 
 *{
@@ -52,12 +53,12 @@ button{
 .sidebar{
     position:fixed;
     top:0;
-    right:0;
+    left:0;
     bottom:0;
     width:245px;
-    background:rgba(5,14,10,.96);
+    background:rgba(5,14,10,.94);
     backdrop-filter:blur(20px);
-    border-left:1px solid var(--border);
+    border-right:1px solid var(--border);
     padding:20px 14px;
     z-index:20;
 }
@@ -114,7 +115,7 @@ button{
 }
 
 .nav a.active{
-    box-shadow:inset -3px 0 0 var(--green);
+    box-shadow:inset 3px 0 0 var(--green);
 }
 
 .navIcon{
@@ -142,11 +143,11 @@ button{
     border-radius:50%;
     background:var(--green);
     box-shadow:0 0 9px var(--green);
-    margin-left:7px;
+    margin-right:7px;
 }
 
 .main{
-    margin-right:245px;
+    margin-left:245px;
     width:calc(100% - 245px);
     padding:28px 34px;
 }
@@ -329,7 +330,7 @@ button{
     width:100px;
     height:100px;
     border-radius:50%;
-    left:-45px;
+    right:-45px;
     top:-45px;
     background:rgba(57,229,139,.05);
 }
@@ -455,6 +456,22 @@ button{
     border-color:var(--green);
 }
 
+.progress{
+    height:8px;
+    background:#07110c;
+    border-radius:10px;
+    margin:14px 0 8px;
+    overflow:hidden;
+}
+
+.progress span{
+    display:block;
+    height:100%;
+    background:var(--green);
+    border-radius:10px;
+    transition:.3s;
+}
+
 .usageGrid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
@@ -472,21 +489,6 @@ button{
 
 .usage strong{
     font-size:28px;
-}
-
-.progress{
-    height:8px;
-    background:#07110c;
-    border-radius:10px;
-    margin:14px 0 8px;
-    overflow:hidden;
-}
-
-.progress span{
-    display:block;
-    height:100%;
-    background:var(--green);
-    border-radius:10px;
 }
 
 .featureGrid{
@@ -533,7 +535,7 @@ button{
 
 .planTag{
     position:absolute;
-    left:15px;
+    right:15px;
     top:15px;
     font-size:9px;
     color:#04140b;
@@ -591,8 +593,8 @@ button{
     color:#9bb4a6;
     font-size:11px;
     line-height:2;
-    direction:ltr;
-    text-align:left;
+    max-height:400px;
+    overflow:auto;
 }
 
 .time{
@@ -692,7 +694,7 @@ button{
     width:18px;
     height:18px;
     top:3px;
-    right:23px;
+    left:4px;
     border-radius:50%;
     background:#8aa99a;
     transition:.2s;
@@ -703,7 +705,7 @@ button{
 }
 
 .toggle.on:after{
-    right:4px;
+    left:23px;
     background:#062012;
 }
 
@@ -750,7 +752,7 @@ button{
 
 .toast{
     position:fixed;
-    left:25px;
+    right:25px;
     bottom:25px;
     padding:12px 16px;
     background:#102219;
@@ -820,7 +822,7 @@ button{
     }
 
     .main{
-        margin-right:65px;
+        margin-left:65px;
         width:calc(100% - 65px);
         padding:20px 15px;
     }
@@ -858,7 +860,7 @@ button{
 <div class="logo">
     <div class="logoIcon">🌳</div>
     <div class="logoText">
-        Tree<span>Pots</span>
+        Tree<span>Bots</span>
     </div>
 </div>
 
@@ -941,11 +943,11 @@ All systems operational
 <div class="topbar">
 
 <div class="breadcrumb">
-TreePots / <b id="breadcrumb">Dashboard</b>
+TreeBots / <b id="breadcrumb">Dashboard</b>
 </div>
 
 <div class="topRight">
-<button class="btn" onclick="loadBots()">↻</button>
+<button class="btn" onclick="loadBots()">↻ Refresh</button>
 <div class="avatar">T</div>
 </div>
 
@@ -982,14 +984,14 @@ TreePots / <b id="breadcrumb">Dashboard</b>
 
 <div class="card stat">
 <div class="statTitle">CPU Usage</div>
-<div class="statValue">24%</div>
-<div class="statDesc">Current workspace usage</div>
+<div class="statValue">—</div>
+<div class="statDesc">Backend monitoring</div>
 </div>
 
 <div class="card stat">
 <div class="statTitle">Memory</div>
-<div class="statValue">1.8 GB</div>
-<div class="statDesc">Allocated to your bots</div>
+<div class="statValue">—</div>
+<div class="statDesc">Backend monitoring</div>
 </div>
 
 </div>
@@ -1080,20 +1082,11 @@ bot slots in use.
 
 <select id="createVersion">
 <option>1.21.x</option>
+<option>1.21.11</option>
 <option>1.21.1</option>
 <option>1.20.6</option>
 <option>1.20.4</option>
 <option>1.20.1</option>
-</select>
-
-</div>
-
-<div class="field">
-<label>CONNECTION TYPE</label>
-
-<select id="connectionType">
-<option>Offline / Cracked</option>
-<option>Microsoft Account</option>
 </select>
 
 </div>
@@ -1120,25 +1113,34 @@ Create Bot
 
 <div>
 <h1>Servers 🖥</h1>
-<p>Servers connected to your TreePots bots.</p>
+<p>Servers connected to your TreeBots bots.</p>
 </div>
 
-<button class="btn primary" onclick="showToast('Servers are taken from your configured bots.')">
+<button class="btn primary" onclick="showToast('Server management will be connected to the backend.')">
 ＋ Add Server
 </button>
 
 </div>
 
-<div class="serverList" id="serverList">
+<div class="serverList">
+
 <div class="card server">
+
 <div class="serverLeft">
+
 <div class="serverIcon">🌲</div>
+
 <div>
-<b>No servers yet</b>
-<small>Create a bot to add a server.</small>
+<b>TreeBots Server Network</b>
+<small>Servers are taken from your bot configurations</small>
 </div>
+
 </div>
+
+<span class="badge">● API ONLINE</span>
+
 </div>
+
 </div>
 
 </section>
@@ -1149,7 +1151,7 @@ Create Bot
 
 <div>
 <h1>Console & Chat 💬</h1>
-<p>Monitor your selected bot.</p>
+<p>Monitor logs and communicate with your bot.</p>
 </div>
 
 </div>
@@ -1159,19 +1161,24 @@ Create Bot
 <div class="consoleHeader">
 
 <b id="consoleTitle">
-TreeBot • Live Console
+TreeBots • Live Console
 </b>
 
-<span id="consoleStatus">Disconnected</span>
+<span id="consoleStatus">API Connected</span>
 
 </div>
 
 <div class="logs" id="logs">
 
 <div>
-<span class="time">[SYSTEM]</span>
+<span class="time">[TreeBots]</span>
 <span class="logOk">INFO</span>
-TreePots console ready.
+Backend console ready.
+</div>
+
+<div>
+<span class="time">[TreeBots]</span>
+INFO Select a bot from My Bots.
 </div>
 
 </div>
@@ -1187,8 +1194,7 @@ padding:11px;
 background:#07110c;
 border:1px solid var(--border);
 border-radius:9px;
-color:white;
-">
+color:white;">
 
 <button class="btn primary" onclick="sendChat()">
 Send
@@ -1249,7 +1255,7 @@ Send "/list"
 
 <div>
 <h1>Usage & Limits 📊</h1>
-<p>Monitor your TreePots resources.</p>
+<p>Monitor your TreeBots resources.</p>
 </div>
 
 </div>
@@ -1276,14 +1282,14 @@ Current plan limit
 
 <h3>CPU</h3>
 
-<strong>24%</strong>
+<strong>—</strong>
 
 <div class="progress">
-<span style="width:24%"></span>
+<span style="width:0%"></span>
 </div>
 
 <p style="color:var(--muted);font-size:11px">
-Workspace usage
+Not available yet
 </p>
 
 </div>
@@ -1292,14 +1298,14 @@ Workspace usage
 
 <h3>Memory</h3>
 
-<strong>1.8 GB</strong>
+<strong>—</strong>
 
 <div class="progress">
-<span style="width:45%"></span>
+<span style="width:0%"></span>
 </div>
 
 <p style="color:var(--muted);font-size:11px">
-Allocated
+Not available yet
 </p>
 
 </div>
@@ -1308,18 +1314,18 @@ Allocated
 
 <div class="card panel" style="margin-top:15px">
 
-<h2>🌱 Free Trial</h2>
+<h2>🌱 Free Plan</h2>
 
 <p>
-Your free trial includes up to 3 bots.
+Your current backend limit is 3 bots.
 </p>
 
 <div class="progress">
-<span style="width:65%"></span>
+<span id="usagePlanBar"></span>
 </div>
 
 <p style="font-size:11px">
-Trial status
+Bot capacity
 </p>
 
 </div>
@@ -1350,9 +1356,8 @@ $0 <small>/ trial</small>
 <ul>
 <li>✓ 3 Bots</li>
 <li>✓ Basic Console</li>
-<li>✓ Auto Reconnect</li>
+<li>✓ API Database</li>
 <li>✓ Basic Automation</li>
-<li>✓ 3 Days</li>
 </ul>
 
 <button class="btn" style="width:100%">
@@ -1384,7 +1389,7 @@ POPULAR
 <button
 class="btn primary"
 style="width:100%"
-onclick="showToast('Contact TreePots to purchase Pro.')">
+onclick="showToast('Pro activation is handled by the TreeBots administrator.')">
 Get Pro
 </button>
 
@@ -1409,7 +1414,7 @@ Get Pro
 <button
 class="btn primary"
 style="width:100%"
-onclick="showToast('Contact TreePots to purchase Ultra.')">
+onclick="showToast('Ultra activation is handled by the TreeBots administrator.')">
 Get Ultra
 </button>
 
@@ -1425,7 +1430,7 @@ Get Ultra
 
 <div>
 <h1>Redeem Code 🔑</h1>
-<p>Activate a TreePots plan using your activation code.</p>
+<p>Activate a TreeBots plan using your activation code.</p>
 </div>
 
 </div>
@@ -1443,7 +1448,9 @@ style="font-size:16px;letter-spacing:1px">
 
 </div>
 
-<button class="btn primary" onclick="redeemCode()">
+<button
+class="btn primary"
+onclick="redeemCode()">
 Activate Plan
 </button>
 
@@ -1457,7 +1464,7 @@ Activate Plan
 
 <div>
 <h1>Settings ⚙</h1>
-<p>Configure your TreePots account.</p>
+<p>Configure your TreeBots account.</p>
 </div>
 
 </div>
@@ -1512,7 +1519,7 @@ onclick="this.classList.toggle('on')">
 <div class="hero">
 
 <div>
-<h1>How to use TreePots 📖</h1>
+<h1>How to use TreeBots 📖</h1>
 <p>Get your first Minecraft bot running.</p>
 </div>
 
@@ -1529,31 +1536,31 @@ onclick="this.classList.toggle('on')">
 <div class="card feature">
 <div class="featureIcon">2️⃣</div>
 <h3>Start the bot</h3>
-<p>Open My Bots and press Start to change the bot status.</p>
+<p>Open My Bots and press Start to update the bot status through the API.</p>
 </div>
 
 <div class="card feature">
 <div class="featureIcon">3️⃣</div>
 <h3>Use Console</h3>
-<p>Monitor the selected bot from the console.</p>
+<p>Open Console to monitor the TreeBots backend.</p>
 </div>
 
 <div class="card feature">
 <div class="featureIcon">4️⃣</div>
 <h3>Automation</h3>
-<p>Create automated rules for your bots.</p>
+<p>Create automation rules for your bot workflow.</p>
 </div>
 
 <div class="card feature">
 <div class="featureIcon">5️⃣</div>
 <h3>Upgrade</h3>
-<p>Activate a paid plan using a TreePots code.</p>
+<p>Upgrade your TreeBots plan when paid plans are enabled.</p>
 </div>
 
 <div class="card feature">
 <div class="featureIcon">6️⃣</div>
 <h3>Delete Bot</h3>
-<p>Delete bots you no longer need.</p>
+<p>Delete bots directly from the D1 database using the Delete button.</p>
 </div>
 
 </div>
@@ -1561,7 +1568,6 @@ onclick="this.classList.toggle('on')">
 </section>
 
 </main>
-
 </div>
 
 <div class="modalBg" id="deleteModal">
@@ -1572,7 +1578,7 @@ onclick="this.classList.toggle('on')">
 
 <p>
 Are you sure you want to delete this bot?
-This action removes it from your TreePots account.
+This action removes it permanently from the TreeBots database.
 </p>
 
 <div class="modalActions">
@@ -1595,12 +1601,12 @@ Delete Bot
 
 <script>
 
-/* =====================================================
-   TREEPOTS API
-   ضع رابط Cloudflare Worker هنا
-===================================================== */
+/* =========================================
+   TREEBOTS API
+   ضع رابط Worker هنا
+========================================= */
 
-const API_URL = "https://treebots-backend.YOUR-SUBDOMAIN.workers.dev";
+const API_URL = "https://YOUR-WORKER.workers.dev";
 
 const BOT_LIMIT = 3;
 
@@ -1611,68 +1617,11 @@ let deleteId = null;
 let selectedBotId = null;
 
 
-/* =====================================================
-   PAGES
-===================================================== */
-
-const pageNames = {
-    dashboard:"Dashboard",
-    bots:"My Bots",
-    create:"Create Bot",
-    servers:"Servers",
-    console:"Console",
-    automation:"Automation",
-    usage:"Usage",
-    plans:"Plans",
-    redeem:"Redeem Code",
-    settings:"Settings",
-    help:"How to use"
-};
-
-document.querySelectorAll(".nav a[data-page]").forEach(link=>{
-    link.addEventListener("click",function(e){
-        e.preventDefault();
-        go(this.dataset.page);
-    });
-});
-
-function go(page){
-
-    document.querySelectorAll(".page")
-        .forEach(p=>p.classList.remove("active"));
-
-    const target = document.getElementById("page-"+page);
-
-    if(target){
-        target.classList.add("active");
-    }
-
-    document.querySelectorAll(".nav a").forEach(a=>{
-        a.classList.toggle(
-            "active",
-            a.dataset.page===page
-        );
-    });
-
-    document.getElementById("breadcrumb").textContent =
-        pageNames[page] || page;
-
-    if(
-        page==="dashboard" ||
-        page==="bots" ||
-        page==="usage" ||
-        page==="servers"
-    ){
-        loadBots();
-    }
-}
-
-
-/* =====================================================
+/* =========================================
    API REQUEST
-===================================================== */
+========================================= */
 
-async function api(path, options={}){
+async function api(path, options = {}){
 
     const response = await fetch(
         API_URL + path,
@@ -1694,165 +1643,152 @@ async function api(path, options={}){
     }
 
     if(!response.ok){
+
         throw new Error(
             data.error ||
             data.message ||
-            `HTTP ${response.status}`
+            `API Error ${response.status}`
         );
+
     }
 
     return data;
+
 }
 
 
-/* =====================================================
+/* =========================================
    LOAD BOTS
-===================================================== */
+========================================= */
 
 async function loadBots(){
 
     try{
 
+        setLoading();
+
         const data = await api("/api/bots");
 
-        bots = Array.isArray(data) ? data : [];
+        bots = Array.isArray(data)
+            ? data
+            : [];
 
         render();
+
+        showToast("Bots loaded from D1 database.");
 
     }catch(error){
 
         console.error(error);
 
         showToast(
-            "تعذر الاتصال بالـ API"
+            "Could not connect to TreeBots API."
         );
 
-        renderError();
+        bots = [];
+
+        render();
 
     }
+
 }
 
 
-/* =====================================================
+/* =========================================
    RENDER
-===================================================== */
+========================================= */
 
 function render(){
 
     const online =
-        bots.filter(bot =>
-            bot.status === "online"
+        bots.filter(
+            bot =>
+                bot.status === "online"
         ).length;
 
-    document.getElementById("statTotal")
-        .textContent =
+
+    document.getElementById(
+        "statTotal"
+    ).textContent =
         `${bots.length} / ${BOT_LIMIT}`;
 
-    document.getElementById("statOnline")
-        .textContent =
+
+    document.getElementById(
+        "statOnline"
+    ).textContent =
         online;
 
-    document.getElementById("dashCount")
-        .textContent =
-        `${bots.length} bot${bots.length===1?"":"s"}`;
 
-    document.getElementById("capacityText")
-        .textContent =
+    document.getElementById(
+        "dashCount"
+    ).textContent =
+        `${bots.length} bot${bots.length === 1 ? "" : "s"}`;
+
+
+    document.getElementById(
+        "capacityText"
+    ).textContent =
         `${bots.length} of ${BOT_LIMIT}`;
 
-    document.getElementById("capacityBar")
-        .style.width =
+
+    const percentage =
         Math.min(
             100,
-            bots.length/BOT_LIMIT*100
-        )+"%";
+            bots.length / BOT_LIMIT * 100
+        );
 
-    document.getElementById("usageBots")
-        .textContent =
+
+    document.getElementById(
+        "capacityBar"
+    ).style.width =
+        percentage + "%";
+
+
+    document.getElementById(
+        "usageBots"
+    ).textContent =
         `${bots.length} / ${BOT_LIMIT}`;
 
-    document.getElementById("usageBotBar")
-        .style.width =
-        Math.min(
-            100,
-            bots.length/BOT_LIMIT*100
-        )+"%";
 
-    document.getElementById("dashboardBots")
-        .innerHTML =
+    document.getElementById(
+        "usageBotBar"
+    ).style.width =
+        percentage + "%";
+
+
+    document.getElementById(
+        "usagePlanBar"
+    ).style.width =
+        percentage + "%";
+
+
+    document.getElementById(
+        "dashboardBots"
+    ).innerHTML =
         bots.length
-        ? bots.map(botCard).join("")
-        : emptyState();
+            ? bots.map(botCard).join("")
+            : emptyState();
 
-    document.getElementById("allBots")
-        .innerHTML =
+
+    document.getElementById(
+        "allBots"
+    ).innerHTML =
         bots.length
-        ? bots.map(botCard).join("")
-        : emptyState();
+            ? bots.map(botCard).join("")
+            : emptyState();
 
-    renderServers();
 }
 
 
-/* =====================================================
-   ERROR
-===================================================== */
-
-function renderError(){
-
-    const html = `
-        <div class="card empty">
-            <div style="font-size:35px">⚠️</div>
-            <h3 style="color:white;margin:10px">
-                API connection failed
-            </h3>
-            <p>
-                Check your Cloudflare Worker URL.
-            </p>
-            <button
-                class="btn primary"
-                style="margin-top:15px"
-                onclick="loadBots()">
-                Retry
-            </button>
-        </div>
-    `;
-
-    document.getElementById("dashboardBots").innerHTML = html;
-    document.getElementById("allBots").innerHTML = html;
-}
-
-
-/* =====================================================
-   EMPTY
-===================================================== */
-
-function emptyState(){
-
-    return `
-        <div class="card empty">
-            <div style="font-size:35px">🤖</div>
-
-            <h3 style="color:white;margin:10px">
-                No bots yet
-            </h3>
-
-            <p>
-                Create your first Minecraft bot.
-            </p>
-        </div>
-    `;
-}
-
-
-/* =====================================================
+/* =========================================
    BOT CARD
-===================================================== */
+========================================= */
 
 function botCard(bot){
 
     const online =
         bot.status === "online";
+
 
     return `
 
@@ -1870,117 +1806,94 @@ function botCard(bot){
 
             </div>
 
-            <div class="badge ${
-                online ? "" : "offline"
-            }">
+            <div class="badge ${online ? "" : "offline"}">
 
-                ${
-                    online
-                    ? "● ONLINE"
-                    : "● OFFLINE"
-                }
+                ${online ? "● ONLINE" : "● OFFLINE"}
 
             </div>
 
         </div>
+
 
         <div class="botInfo">
 
             <div class="info">
-
                 <small>SERVER</small>
-
                 <b>
-                ${escapeHTML(bot.ip)}:${escapeHTML(bot.port)}
+                    ${escapeHTML(bot.ip)}:${escapeHTML(bot.port)}
                 </b>
-
             </div>
 
             <div class="info">
-
                 <small>VERSION</small>
-
                 <b>
-                ${escapeHTML(bot.version)}
+                    ${escapeHTML(bot.version)}
                 </b>
-
             </div>
 
             <div class="info">
-
                 <small>USERNAME</small>
-
                 <b>
-                ${escapeHTML(bot.username)}
+                    ${escapeHTML(bot.username)}
                 </b>
-
             </div>
 
             <div class="info">
-
                 <small>PING</small>
-
                 <b>
-                ${online ? escapeHTML(bot.ping || "—") : "—"}
+                    ${online ? escapeHTML(bot.ping || "45ms") : "—"}
                 </b>
-
             </div>
 
             <div class="info">
-
                 <small>UPTIME</small>
-
                 <b>
-                ${online ? escapeHTML(bot.uptime || "0m") : "Offline"}
+                    ${online ? escapeHTML(bot.uptime || "0m") : "Offline"}
                 </b>
-
             </div>
 
             <div class="info">
-
-                <small>RECONNECT</small>
-
+                <small>ID</small>
                 <b>
-                Enabled
+                    ${escapeHTML(bot.id)}
                 </b>
-
             </div>
 
         </div>
 
+
         <div class="botButtons">
 
             <button
-            class="btn ${online ? "" : "primary"}"
-            onclick="toggleBot('${escapeAttribute(bot.id)}')">
+                class="btn ${online ? "" : "primary"}"
+                onclick="toggleBot('${escapeJS(bot.id)}')">
 
-                ${
-                    online
-                    ? "⏹ Stop"
-                    : "▶ Start"
-                }
+                ${online ? "⏹ Stop" : "▶ Start"}
 
             </button>
 
+
             <button
-            class="btn"
-            onclick="openConsole('${escapeAttribute(bot.id)}')">
+                class="btn"
+                onclick="openConsole('${escapeJS(bot.id)}')">
 
                 Console
 
             </button>
 
+
             <button
-            class="btn"
-            onclick="showToast('Bot settings will be added soon.')">
+                class="btn"
+                onclick="showToast('Bot settings are coming soon.')">
 
                 ⚙ Settings
 
             </button>
 
+
             <button
-            class="btn danger"
-            onclick="askDelete('${escapeAttribute(bot.id)}')">
+                class="btn danger"
+                onclick="askDelete('${escapeJS(bot.id)}')">
 
                 🗑 Delete
 
@@ -1991,176 +1904,218 @@ function botCard(bot){
     </article>
 
     `;
+
 }
 
 
-/* =====================================================
+/* =========================================
    CREATE BOT
-===================================================== */
+========================================= */
 
 async function createBot(){
 
     if(bots.length >= BOT_LIMIT){
 
         showToast(
-            `Bot limit reached: ${BOT_LIMIT} bots.`
+            `Bot limit reached: ${BOT_LIMIT}`
         );
 
         return;
+
     }
+
+
+    const name =
+        document
+        .getElementById("createName")
+        .value
+        .trim();
+
+
+    const username =
+        document
+        .getElementById("createUsername")
+        .value
+        .trim()
+        || name;
+
+
+    const ip =
+        document
+        .getElementById("createIp")
+        .value
+        .trim();
+
+
+    const port =
+        document
+        .getElementById("createPort")
+        .value
+        .trim()
+        || "25565";
+
+
+    const version =
+        document
+        .getElementById("createVersion")
+        .value;
+
+
+    if(!name){
+
+        showToast(
+            "Enter a bot name."
+        );
+
+        return;
+
+    }
+
+
+    if(!ip){
+
+        showToast(
+            "Enter the server IP."
+        );
+
+        return;
+
+    }
+
 
     const button =
         document.getElementById("createBtn");
 
-    const name =
-        document.getElementById("createName")
-        .value.trim();
-
-    const username =
-        document.getElementById("createUsername")
-        .value.trim();
-
-    const ip =
-        document.getElementById("createIp")
-        .value.trim();
-
-    const port =
-        document.getElementById("createPort")
-        .value.trim();
-
-    const version =
-        document.getElementById("createVersion")
-        .value;
-
-    if(!name){
-
-        showToast("اكتب اسم البوت.");
-
-        return;
-    }
-
-    if(!ip){
-
-        showToast("اكتب IP السيرفر.");
-
-        return;
-    }
 
     button.disabled = true;
-    button.textContent = "Creating...";
+
+    button.textContent =
+        "Creating...";
+
 
     try{
 
-        const bot =
-            await api(
-                "/api/bots",
-                {
-                    method:"POST",
+        await api(
+            "/api/bots",
+            {
+                method:"POST",
 
-                    body:JSON.stringify({
+                body:JSON.stringify({
 
-                        name,
+                    name,
+                    username,
+                    ip,
+                    port,
+                    version
 
-                        username:
-                            username || name,
+                })
+            }
+        );
 
-                        ip,
 
-                        port:
-                            port || "25565",
+        document.getElementById(
+            "createName"
+        ).value = "";
 
-                        version
 
-                    })
-                }
-            );
+        document.getElementById(
+            "createUsername"
+        ).value = "";
 
-        bots.unshift(bot);
 
-        document.getElementById("createName").value="";
-        document.getElementById("createUsername").value="";
-        document.getElementById("createIp").value="";
-        document.getElementById("createPort").value="25565";
+        document.getElementById(
+            "createIp"
+        ).value = "";
+
+
+        await loadBots();
+
 
         showToast(
             `${name} created successfully.`
         );
 
-        render();
 
         go("bots");
+
 
     }catch(error){
 
         showToast(
-            error.message ||
-            "Failed to create bot."
+            error.message
         );
 
     }finally{
 
         button.disabled = false;
-        button.textContent = "Create Bot";
+
+        button.textContent =
+            "Create Bot";
 
     }
+
 }
 
 
-/* =====================================================
+/* =========================================
    START / STOP
-===================================================== */
+========================================= */
 
 async function toggleBot(id){
 
     const bot =
-        bots.find(x => String(x.id) === String(id));
+        bots.find(
+            x => String(x.id) === String(id)
+        );
+
 
     if(!bot) return;
 
+
     const newStatus =
         bot.status === "online"
-        ? "offline"
-        : "online";
+            ? "offline"
+            : "online";
+
 
     try{
 
-        const result =
-            await api(
-                `/api/bots/${encodeURIComponent(id)}/status`,
-                {
-                    method:"POST",
+        await api(
+            `/api/bots/${encodeURIComponent(id)}/status`,
+            {
+                method:"POST",
 
-                    body:JSON.stringify({
-                        status:newStatus
-                    })
-                }
-            );
+                body:JSON.stringify({
+                    status:newStatus
+                })
+            }
+        );
 
-        bot.status = result.status;
-        bot.uptime = result.uptime;
-        bot.ping = result.ping;
 
-        render();
+        await loadBots();
+
 
         showToast(
             newStatus === "online"
-            ? `${bot.name} is connecting…`
-            : `${bot.name} stopped.`
+                ? `${bot.name} started.`
+                : `${bot.name} stopped.`
         );
+
 
     }catch(error){
 
         showToast(
-            error.message ||
-            "Failed to change bot status."
+            error.message
         );
+
     }
+
 }
 
 
-/* =====================================================
+/* =========================================
    DELETE
-===================================================== */
+========================================= */
 
 function askDelete(id){
 
@@ -2169,7 +2124,9 @@ function askDelete(id){
     document
         .getElementById("deleteModal")
         .classList.add("show");
+
 }
+
 
 function closeDelete(){
 
@@ -2178,13 +2135,29 @@ function closeDelete(){
     document
         .getElementById("deleteModal")
         .classList.remove("show");
+
 }
+
 
 async function confirmDelete(){
 
-    if(!deleteId) return;
+    if(!deleteId){
+
+        closeDelete();
+
+        return;
+
+    }
+
 
     const id = deleteId;
+
+
+    const bot =
+        bots.find(
+            x => String(x.id) === String(id)
+        );
+
 
     try{
 
@@ -2195,37 +2168,31 @@ async function confirmDelete(){
             }
         );
 
-        const bot =
-            bots.find(
-                x => String(x.id) === String(id)
-            );
-
-        bots =
-            bots.filter(
-                x => String(x.id) !== String(id)
-            );
 
         closeDelete();
 
-        render();
+        await loadBots();
+
 
         showToast(
             `${bot ? bot.name : "Bot"} deleted.`
         );
 
+
     }catch(error){
 
         showToast(
-            error.message ||
-            "Failed to delete bot."
+            error.message
         );
+
     }
+
 }
 
 
-/* =====================================================
+/* =========================================
    CONSOLE
-===================================================== */
+========================================= */
 
 function openConsole(id){
 
@@ -2234,197 +2201,121 @@ function openConsole(id){
             x => String(x.id) === String(id)
         );
 
+
     if(!bot) return;
+
 
     selectedBotId = id;
 
-    document
-        .getElementById("consoleTitle")
-        .textContent =
+
+    document.getElementById(
+        "consoleTitle"
+    ).textContent =
         `${bot.name} • Live Console`;
 
-    document
-        .getElementById("consoleStatus")
-        .textContent =
-        bot.status === "online"
-        ? "Connected"
-        : "Offline";
+
+    addLog(
+        "INFO",
+        `Selected bot: ${bot.name}`
+    );
+
+
+    addLog(
+        "INFO",
+        `Server: ${bot.ip}:${bot.port}`
+    );
+
+
+    go("console");
+
+}
+
+
+function addLog(type,message){
 
     const logs =
         document.getElementById("logs");
 
-    logs.innerHTML = `
+
+    const now =
+        new Date()
+        .toLocaleTimeString();
+
+
+    logs.insertAdjacentHTML(
+        "beforeend",
+
+        `
 
         <div>
-            <span class="time">[SYSTEM]</span>
-            <span class="logOk">INFO</span>
-            Selected bot: ${escapeHTML(bot.name)}
+
+            <span class="time">
+                [${escapeHTML(now)}]
+            </span>
+
+            <span class="${type === "INFO" ? "logOk" : ""}">
+                ${escapeHTML(type)}
+            </span>
+
+            ${escapeHTML(message)}
+
         </div>
 
-        <div>
-            <span class="time">[SERVER]</span>
-            ${escapeHTML(bot.ip)}:${escapeHTML(bot.port)}
-        </div>
+        `
+    );
 
-        <div>
-            <span class="time">[STATUS]</span>
-            ${escapeHTML(bot.status)}
-        </div>
 
-    `;
+    logs.scrollTop =
+        logs.scrollHeight;
 
-    go("console");
 }
 
-
-/* =====================================================
-   CHAT
-===================================================== */
 
 function sendChat(){
 
     const input =
-        document.getElementById("chatInput");
+        document.getElementById(
+            "chatInput"
+        );
+
 
     const text =
         input.value.trim();
 
+
     if(!text) return;
 
-    const logs =
-        document.getElementById("logs");
 
-    logs.innerHTML += `
+    addLog(
+        "YOU",
+        text
+    );
 
-        <div>
-            <span class="time">
-                [${new Date().toLocaleTimeString()}]
-            </span>
 
-            <span class="logOk">
-                YOU
-            </span>
+    input.value = "";
 
-            ${escapeHTML(text)}
-        </div>
-
-    `;
-
-    input.value="";
 
     showToast(
         "Message added to console."
     );
+
 }
 
 
-/* =====================================================
-   SERVERS
-===================================================== */
-
-function renderServers(){
-
-    const list =
-        document.getElementById("serverList");
-
-    if(!bots.length){
-
-        list.innerHTML = `
-            <div class="card server">
-                <div class="serverLeft">
-                    <div class="serverIcon">🌲</div>
-                    <div>
-                        <b>No servers yet</b>
-                        <small>Create a bot to add a server.</small>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        return;
-    }
-
-    const servers = {};
-
-    bots.forEach(bot=>{
-
-        const key =
-            `${bot.ip}:${bot.port}`;
-
-        if(!servers[key]){
-            servers[key] = [];
-        }
-
-        servers[key].push(bot);
-
-    });
-
-    list.innerHTML =
-        Object.entries(servers)
-        .map(([address, serverBots])=>{
-
-            const online =
-                serverBots.some(
-                    b => b.status === "online"
-                );
-
-            return `
-
-            <div class="card server">
-
-                <div class="serverLeft">
-
-                    <div class="serverIcon">
-                        🌲
-                    </div>
-
-                    <div>
-
-                        <b>
-                            ${escapeHTML(address)}
-                        </b>
-
-                        <small>
-                            ${serverBots.length}
-                            bot${serverBots.length===1?"":"s"}
-                        </small>
-
-                    </div>
-
-                </div>
-
-                <span class="badge ${
-                    online ? "" : "offline"
-                }">
-
-                    ${
-                        online
-                        ? "● ONLINE"
-                        : "● OFFLINE"
-                    }
-
-                </span>
-
-            </div>
-
-            `;
-
-        })
-        .join("");
-}
-
-
-/* =====================================================
+/* =========================================
    AUTOMATION
-===================================================== */
+========================================= */
 
 function addRule(){
 
     document
         .getElementById("rules")
         .insertAdjacentHTML(
+
             "beforeend",
+
             `
+
             <div class="rule">
 
                 <span>WHEN</span>
@@ -2438,26 +2329,35 @@ function addRule(){
                 Send welcome message
 
             </div>
+
             `
         );
+
 
     showToast(
         "Automation rule added."
     );
+
 }
 
 
-/* =====================================================
+/* =========================================
    REDEEM
-===================================================== */
+========================================= */
 
 function redeemCode(){
 
     const input =
-        document.getElementById("redeemInput");
+        document.getElementById(
+            "redeemInput"
+        );
+
 
     const code =
-        input.value.trim().toUpperCase();
+        input.value
+        .trim()
+        .toUpperCase();
+
 
     if(!code){
 
@@ -2466,71 +2366,243 @@ function redeemCode(){
         );
 
         return;
+
     }
 
+
     showToast(
-        "Code validation will be handled by the backend."
+        "Code validation will be connected to the backend."
     );
+
 }
 
 
-/* =====================================================
+/* =========================================
+   PAGES
+========================================= */
+
+const pageNames = {
+
+    dashboard:"Dashboard",
+    bots:"My Bots",
+    create:"Create Bot",
+    servers:"Servers",
+    console:"Console",
+    automation:"Automation",
+    usage:"Usage",
+    plans:"Plans",
+    redeem:"Redeem Code",
+    settings:"Settings",
+    help:"How to use"
+
+};
+
+
+document
+    .querySelectorAll(
+        ".nav a[data-page]"
+    )
+    .forEach(
+        link => {
+
+            link.addEventListener(
+                "click",
+                function(e){
+
+                    e.preventDefault();
+
+                    go(
+                        this.dataset.page
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+function go(page){
+
+    document
+        .querySelectorAll(".page")
+        .forEach(
+            p =>
+                p.classList.remove(
+                    "active"
+                )
+        );
+
+
+    const target =
+        document.getElementById(
+            "page-" + page
+        );
+
+
+    if(!target) return;
+
+
+    target.classList.add("active");
+
+
+    document
+        .querySelectorAll(
+            ".nav a"
+        )
+        .forEach(
+            a => {
+
+                a.classList.toggle(
+                    "active",
+                    a.dataset.page === page
+                );
+
+            }
+        );
+
+
+    document.getElementById(
+        "breadcrumb"
+    ).textContent =
+        pageNames[page] || page;
+
+}
+
+
+/* =========================================
+   EMPTY / LOADING
+========================================= */
+
+function emptyState(){
+
+    return `
+
+    <div class="card empty">
+
+        <div style="font-size:35px">
+            🤖
+        </div>
+
+        <h3 style="color:white;margin:10px">
+            No bots yet
+        </h3>
+
+        Create your first Minecraft bot.
+
+        <br><br>
+
+        <button
+            class="btn primary"
+            onclick="go('create')">
+
+            ＋ Create Bot
+
+        </button>
+
+    </div>
+
+    `;
+
+}
+
+
+function setLoading(){
+
+    document.getElementById(
+        "dashboardBots"
+    ).innerHTML =
+        `<div class="loading">Loading bots...</div>`;
+
+
+    document.getElementById(
+        "allBots"
+    ).innerHTML =
+        `<div class="loading">Loading bots...</div>`;
+
+}
+
+
+/* =========================================
    TOAST
-===================================================== */
+========================================= */
 
 function showToast(message){
 
     const toast =
-        document.getElementById("toast");
+        document.getElementById(
+            "toast"
+        );
+
 
     toast.textContent =
         message;
 
-    toast.classList.add("show");
+
+    toast.classList.add(
+        "show"
+    );
+
 
     clearTimeout(
         window.toastTimer
     );
 
+
     window.toastTimer =
-        setTimeout(()=>{
+        setTimeout(
+            () =>
+                toast.classList.remove(
+                    "show"
+                ),
+            2800
+        );
 
-            toast.classList.remove("show");
-
-        },2600);
 }
 
 
-/* =====================================================
+/* =========================================
    SECURITY
-===================================================== */
+========================================= */
 
 function escapeHTML(text){
 
     return String(text ?? "")
         .replace(
             /[&<>"']/g,
+
             character => ({
+
                 "&":"&amp;",
                 "<":"&lt;",
                 ">":"&gt;",
                 '"':"&quot;",
                 "'":"&#039;"
+
             }[character])
         );
+
 }
 
-function escapeAttribute(text){
+
+function escapeJS(text){
 
     return String(text ?? "")
-        .replace(/\\/g,"\\\\")
-        .replace(/'/g,"\\'");
+        .replace(
+            /\\/g,
+            "\\\\"
+        )
+        .replace(
+            /'/g,
+            "\\'"
+        );
+
 }
 
 
-/* =====================================================
+/* =========================================
    START
-===================================================== */
+========================================= */
 
 loadBots();
 
