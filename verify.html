@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TreeBots | تأكيد الحساب</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#171717;
+  color:#fff;
+  font-family:Arial,sans-serif;
+}
+.card{
+  width:min(430px,92%);
+  background:#222;
+  border:1px solid #333;
+  border-radius:20px;
+  padding:32px;
+  text-align:center;
+  box-shadow:0 20px 60px #0008;
+}
+.logo{font-size:30px;font-weight:800;margin-bottom:8px}
+.logo span{color:#aaa}
+p{color:#999;line-height:1.7}
+input{
+  width:100%;
+  padding:16px;
+  border-radius:11px;
+  border:1px solid #444;
+  background:#151515;
+  color:#fff;
+  text-align:center;
+  font-size:24px;
+  letter-spacing:8px;
+  outline:none;
+}
+button{
+  width:100%;
+  margin-top:20px;
+  padding:14px;
+  border:0;
+  border-radius:11px;
+  background:#fff;
+  color:#111;
+  font-weight:bold;
+  cursor:pointer;
+}
+#msg{margin-top:16px;min-height:22px}
+</style>
+</head>
+
+<body>
+<div class="card">
+  <div class="logo">🌳 Tree<span>Bots</span></div>
+
+  <p>
+    أدخل كود التحقق المكون من 6 أرقام.
+  </p>
+
+  <input
+    id="code"
+    maxlength="6"
+    inputmode="numeric"
+    placeholder="000000"
+  >
+
+  <button onclick="verify()">تأكيد الحساب</button>
+
+  <div id="msg"></div>
+</div>
+
+<script>
+const API = "https://treebots-backend.505omerfive.workers.dev";
+
+async function verify(){
+
+  const email = sessionStorage.getItem("verifyEmail");
+  const code = document.getElementById("code").value.trim();
+  const msg = document.getElementById("msg");
+
+  if(!email){
+    msg.textContent = "بيانات التسجيل غير موجودة";
+    msg.style.color = "#ff7777";
+    return;
+  }
+
+  if(code.length !== 6){
+    msg.textContent = "اكتب كود التحقق كاملًا";
+    msg.style.color = "#ff7777";
+    return;
+  }
+
+  msg.textContent = "جاري التحقق...";
+  msg.style.color = "#aaa";
+
+  try{
+
+    const res = await fetch(`${API}/api/auth/verify`,{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        email,
+        code
+      })
+    });
+
+    const data = await res.json();
+
+    if(!res.ok){
+      throw new Error(data.error || "كود غير صحيح");
+    }
+
+    sessionStorage.removeItem("verifyEmail");
+    sessionStorage.removeItem("verificationCode");
+
+    msg.textContent = "تم تأكيد الحساب بنجاح ✓";
+    msg.style.color = "#8cff9a";
+
+    setTimeout(()=>{
+      window.location.href = "login.html";
+    },1200);
+
+  }catch(err){
+    msg.textContent = err.message;
+    msg.style.color = "#ff7777";
+  }
+}
+</script>
+</body>
+</html>
