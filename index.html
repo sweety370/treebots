@@ -3,42 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TreeBots | Minecraft Bot Hosting</title>
+<title>TreePots</title>
 
 <style>
 :root{
     --bg:#07100c;
-    --bg2:#0b1711;
-    --card:#0e1d15;
-    --card2:#12251b;
-    --border:#1c3828;
-    --text:#f1fff7;
-    --muted:#88a293;
-    --green:#38e58b;
-    --green2:#1dbb69;
+    --bg2:#0a1510;
+    --card:#0d1c14;
+    --card2:#11251a;
+    --border:#1d3828;
+    --text:#effff6;
+    --muted:#829b8d;
+    --green:#39e58b;
+    --green2:#20b96b;
     --red:#ff5969;
     --yellow:#f2c14e;
+    --blue:#61a8ff;
 }
 
 *{
+    box-sizing:border-box;
     margin:0;
     padding:0;
-    box-sizing:border-box;
 }
 
 body{
-    font-family:Inter,Segoe UI,Arial,sans-serif;
     background:
-        radial-gradient(circle at 80% 0%,rgba(56,229,139,.13),transparent 30%),
-        radial-gradient(circle at 0% 50%,rgba(29,187,105,.08),transparent 25%),
+        radial-gradient(circle at 80% 0%,rgba(57,229,139,.12),transparent 30%),
+        radial-gradient(circle at 0% 50%,rgba(32,185,107,.08),transparent 28%),
         var(--bg);
     color:var(--text);
+    font-family:Inter,Segoe UI,Arial,sans-serif;
     min-height:100vh;
 }
 
-button,
-input,
-select{
+button,input,select{
     font:inherit;
 }
 
@@ -47,51 +46,51 @@ button{
 }
 
 .app{
-    display:flex;
     min-height:100vh;
+    display:flex;
 }
 
 /* SIDEBAR */
 
 .sidebar{
     position:fixed;
-    left:0;
     top:0;
+    left:0;
     bottom:0;
     width:245px;
-    background:rgba(6,15,11,.88);
+    background:rgba(5,14,10,.94);
     backdrop-filter:blur(20px);
     border-right:1px solid var(--border);
     padding:20px 14px;
-    z-index:10;
+    z-index:20;
 }
 
 .logo{
     display:flex;
     align-items:center;
     gap:11px;
-    padding:5px 10px 30px;
+    padding:5px 10px 28px;
     font-size:21px;
     font-weight:800;
 }
 
-.logo-icon{
+.logoIcon{
     width:38px;
     height:38px;
     display:grid;
     place-items:center;
     border-radius:11px;
     background:linear-gradient(145deg,var(--green),#159256);
-    color:#04140b;
-    box-shadow:0 8px 25px rgba(56,229,139,.2);
+    color:#03140b;
+    box-shadow:0 8px 25px rgba(57,229,139,.2);
 }
 
 .logo span{
     color:var(--green);
 }
 
-.nav-title{
-    color:#597264;
+.navTitle{
+    color:#587164;
     font-size:10px;
     text-transform:uppercase;
     letter-spacing:1.6px;
@@ -111,27 +110,26 @@ button{
     transition:.2s;
 }
 
-.nav a:hover{
-    background:#102219;
+.nav a:hover,
+.nav a.active{
+    background:#10271b;
     color:var(--text);
 }
 
 .nav a.active{
-    background:#10271b;
-    color:var(--text);
     box-shadow:inset 3px 0 0 var(--green);
 }
 
-.nav-icon{
+.navIcon{
     width:20px;
     text-align:center;
 }
 
 .system{
     position:absolute;
-    bottom:20px;
     left:15px;
     right:15px;
+    bottom:20px;
     padding:12px;
     border:1px solid var(--border);
     border-radius:12px;
@@ -140,7 +138,7 @@ button{
     background:#0b1711;
 }
 
-.online-dot{
+.dot{
     display:inline-block;
     width:7px;
     height:7px;
@@ -174,7 +172,7 @@ button{
     color:var(--text);
 }
 
-.top-right{
+.topRight{
     display:flex;
     align-items:center;
     gap:10px;
@@ -214,14 +212,36 @@ button{
     background:var(--green);
     color:#03140b;
     border-color:var(--green);
-    box-shadow:0 8px 25px rgba(56,229,139,.14);
+    box-shadow:0 8px 25px rgba(57,229,139,.14);
 }
 
-.btn.primary:hover{
-    background:#58efa1;
+.btn.danger{
+    background:#28151a;
+    color:#ff7883;
+    border-color:#54262e;
 }
 
-/* HERO */
+/* PAGES */
+
+.page{
+    display:none;
+    animation:fade .2s ease;
+}
+
+.page.active{
+    display:block;
+}
+
+@keyframes fade{
+    from{
+        opacity:.3;
+        transform:translateY(4px);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
 
 .hero{
     display:flex;
@@ -241,6 +261,19 @@ button{
     font-size:14px;
 }
 
+/* CARDS */
+
+.card{
+    background:linear-gradient(
+        145deg,
+        rgba(17,34,25,.94),
+        rgba(9,20,14,.94)
+    );
+    border:1px solid var(--border);
+    border-radius:15px;
+    box-shadow:0 15px 50px rgba(0,0,0,.22);
+}
+
 /* STATS */
 
 .stats{
@@ -250,58 +283,48 @@ button{
     margin-bottom:27px;
 }
 
-.card{
-    background:
-        linear-gradient(145deg,rgba(17,34,25,.94),rgba(9,20,14,.94));
-    border:1px solid var(--border);
-    border-radius:15px;
-    box-shadow:0 15px 50px rgba(0,0,0,.22);
-}
-
 .stat{
     padding:18px;
 }
 
-.stat-title{
+.statTitle{
     color:var(--muted);
     font-size:12px;
     margin-bottom:10px;
 }
 
-.stat-value{
+.statValue{
     font-size:26px;
     font-weight:800;
 }
 
-.stat-value.green{
-    color:var(--green);
-}
-
-.stat-desc{
+.statDesc{
     color:#688174;
     font-size:11px;
     margin-top:7px;
 }
 
-/* SECTION */
+.green{
+    color:var(--green);
+}
 
-.section-head{
+/* BOTS */
+
+.sectionHead{
     display:flex;
     justify-content:space-between;
     align-items:center;
     margin-bottom:13px;
 }
 
-.section-head h2{
+.sectionHead h2{
     font-size:17px;
 }
 
-.section-head span{
+.sectionHead span{
     color:var(--muted);
     font-size:12px;
 }
-
-/* BOTS */
 
 .bots{
     display:grid;
@@ -323,24 +346,24 @@ button{
     border-radius:50%;
     right:-45px;
     top:-45px;
-    background:rgba(56,229,139,.05);
+    background:rgba(57,229,139,.05);
 }
 
-.bot-header{
+.botHeader{
     display:flex;
     justify-content:space-between;
     align-items:center;
     margin-bottom:17px;
 }
 
-.bot-name{
+.botName{
     display:flex;
     align-items:center;
     gap:10px;
     font-weight:750;
 }
 
-.bot-icon{
+.botIcon{
     width:38px;
     height:38px;
     display:grid;
@@ -367,7 +390,7 @@ button{
     border-color:#54262e;
 }
 
-.bot-info{
+.botInfo{
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:9px;
@@ -392,132 +415,42 @@ button{
     font-size:11px;
 }
 
-.bot-buttons{
-    display:flex;
+.botButtons{
+    display:grid;
+    grid-template-columns:1fr 1fr;
     gap:8px;
 }
 
-.bot-buttons .btn{
-    flex:1;
+.botButtons .btn{
     padding:9px;
 }
 
-/* CONSOLE */
-
-.bottom-grid{
-    display:grid;
-    grid-template-columns:1.5fr .8fr;
-    gap:15px;
-    margin-top:24px;
+.wide{
+    grid-column:1/-1;
 }
 
-.console{
-    padding:18px;
-    min-height:270px;
-}
+/* PANELS */
 
-.console-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding-bottom:13px;
-    margin-bottom:13px;
-    border-bottom:1px solid var(--border);
-}
-
-.console-header b{
-    font-size:14px;
-}
-
-.console-header span{
-    color:var(--muted);
-    font-size:10px;
-}
-
-.logs{
-    font-family:Consolas,monospace;
-    color:#9bb4a6;
-    font-size:11px;
-    line-height:2;
-}
-
-.time{
-    color:#4e6d5c;
-}
-
-.log-ok{
-    color:var(--green);
-}
-
-.log-warn{
-    color:var(--yellow);
-}
-
-/* QUICK */
-
-.quick{
-    padding:18px;
-}
-
-.quick-list{
-    display:grid;
-    gap:9px;
-}
-
-.quick-list button{
-    text-align:left;
-}
-
-/* MODAL */
-
-.modal-bg{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.72);
-    backdrop-filter:blur(7px);
-    display:none;
-    place-items:center;
+.panel{
     padding:20px;
-    z-index:100;
+    margin-bottom:15px;
 }
 
-.modal-bg.show{
-    display:grid;
+.panel h2{
+    font-size:17px;
+    margin-bottom:7px;
 }
 
-.modal{
-    width:min(500px,100%);
-    background:#0b1811;
-    border:1px solid #294734;
-    border-radius:17px;
-    padding:23px;
-    box-shadow:0 30px 100px rgba(0,0,0,.6);
-    animation:modalIn .2s ease;
-}
-
-@keyframes modalIn{
-    from{
-        transform:scale(.96);
-        opacity:0;
-    }
-    to{
-        transform:scale(1);
-        opacity:1;
-    }
-}
-
-.modal h2{
-    margin-bottom:5px;
-}
-
-.modal-description{
+.panel p{
     color:var(--muted);
-    font-size:12px;
-    margin-bottom:20px;
+    font-size:13px;
+    line-height:1.7;
 }
+
+/* FORM */
 
 .field{
-    margin-bottom:13px;
+    margin-bottom:14px;
 }
 
 .field label{
@@ -543,11 +476,311 @@ button{
     border-color:var(--green);
 }
 
-.modal-actions{
+/* USAGE */
+
+.usageGrid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.usage{
+    padding:20px;
+}
+
+.usage h3{
+    font-size:14px;
+    margin-bottom:7px;
+}
+
+.usage strong{
+    font-size:28px;
+}
+
+.progress{
+    height:8px;
+    background:#07110c;
+    border-radius:10px;
+    margin:14px 0 8px;
+    overflow:hidden;
+}
+
+.progress span{
+    display:block;
+    height:100%;
+    background:var(--green);
+    border-radius:10px;
+}
+
+/* FEATURES */
+
+.featureGrid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+.feature{
+    padding:20px;
+}
+
+.featureIcon{
+    font-size:25px;
+    margin-bottom:10px;
+}
+
+.feature h3{
+    font-size:15px;
+    margin-bottom:7px;
+}
+
+.feature p{
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.6;
+}
+
+/* PLAN */
+
+.planGrid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.plan{
+    padding:22px;
+    position:relative;
+}
+
+.plan.popular{
+    border-color:#2f7951;
+    box-shadow:0 0 35px rgba(57,229,139,.08);
+}
+
+.planTag{
+    position:absolute;
+    right:15px;
+    top:15px;
+    font-size:9px;
+    color:#04140b;
+    background:var(--green);
+    padding:5px 8px;
+    border-radius:20px;
+    font-weight:800;
+}
+
+.plan h2{
+    margin-bottom:5px;
+}
+
+.price{
+    font-size:30px;
+    font-weight:800;
+    margin:13px 0;
+}
+
+.price small{
+    font-size:11px;
+    color:var(--muted);
+    font-weight:400;
+}
+
+.plan ul{
+    list-style:none;
+    color:var(--muted);
+    font-size:12px;
+    line-height:2;
+    margin-bottom:18px;
+}
+
+/* CONSOLE */
+
+.console{
+    padding:18px;
+    min-height:300px;
+}
+
+.consoleHeader{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding-bottom:13px;
+    margin-bottom:13px;
+    border-bottom:1px solid var(--border);
+}
+
+.consoleHeader span{
+    color:var(--muted);
+    font-size:10px;
+}
+
+.logs{
+    font-family:Consolas,monospace;
+    color:#9bb4a6;
+    font-size:11px;
+    line-height:2;
+}
+
+.time{
+    color:#4e6d5c;
+}
+
+.logOk{
+    color:var(--green);
+}
+
+/* RULE */
+
+.rule{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:13px;
+    background:#091610;
+    border:1px solid var(--border);
+    border-radius:10px;
+    margin-top:10px;
+    font-size:12px;
+}
+
+.rule span{
+    color:var(--green);
+    font-weight:700;
+}
+
+/* SERVER */
+
+.serverList{
+    display:grid;
+    gap:12px;
+}
+
+.server{
+    padding:17px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.serverLeft{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.serverIcon{
+    width:42px;
+    height:42px;
+    display:grid;
+    place-items:center;
+    border-radius:11px;
+    background:#172b20;
+}
+
+.server small{
+    display:block;
+    color:var(--muted);
+    margin-top:4px;
+    font-size:11px;
+}
+
+/* SETTINGS */
+
+.settingsRow{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:16px 0;
+    border-bottom:1px solid var(--border);
+}
+
+.settingsRow:last-child{
+    border-bottom:0;
+}
+
+.settingsRow b{
+    font-size:13px;
+}
+
+.settingsRow small{
+    display:block;
+    color:var(--muted);
+    font-size:11px;
+    margin-top:4px;
+}
+
+.toggle{
+    width:45px;
+    height:24px;
+    border-radius:20px;
+    border:0;
+    background:#294233;
+    position:relative;
+}
+
+.toggle:after{
+    content:"";
+    position:absolute;
+    width:18px;
+    height:18px;
+    top:3px;
+    left:4px;
+    border-radius:50%;
+    background:#8aa99a;
+    transition:.2s;
+}
+
+.toggle.on{
+    background:var(--green);
+}
+
+.toggle.on:after{
+    left:23px;
+    background:#062012;
+}
+
+/* MODAL */
+
+.modalBg{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.72);
+    backdrop-filter:blur(7px);
+    display:none;
+    place-items:center;
+    padding:20px;
+    z-index:100;
+}
+
+.modalBg.show{
+    display:grid;
+}
+
+.modal{
+    width:min(500px,100%);
+    background:#0b1811;
+    border:1px solid #294734;
+    border-radius:17px;
+    padding:23px;
+    box-shadow:0 30px 100px rgba(0,0,0,.6);
+}
+
+.modal h2{
+    margin-bottom:7px;
+}
+
+.modal p{
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.7;
+}
+
+.modalActions{
     display:flex;
     justify-content:flex-end;
     gap:8px;
-    margin-top:18px;
+    margin-top:20px;
 }
 
 /* TOAST */
@@ -585,9 +818,10 @@ button{
         grid-template-columns:1fr 1fr;
     }
 
-    .bottom-grid{
+    .planGrid{
         grid-template-columns:1fr;
     }
+
 }
 
 @media(max-width:760px){
@@ -601,9 +835,9 @@ button{
         padding:4px 4px 25px;
     }
 
-    .logo-text,
-    .nav-title,
-    .nav-text,
+    .logoText,
+    .navTitle,
+    .navText,
     .system{
         display:none;
     }
@@ -629,15 +863,14 @@ button{
         font-size:26px;
     }
 
-    .stats{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .bots{
+    .stats,
+    .bots,
+    .usageGrid,
+    .featureGrid{
         grid-template-columns:1fr;
     }
 
-    .top-right .btn{
+    .topRight .btn{
         display:none;
     }
 }
@@ -652,59 +885,84 @@ button{
 
 <aside class="sidebar">
 
-    <div class="logo">
-        <div class="logo-icon">🌳</div>
-        <div class="logo-text">
-            Tree<span>Bots</span>
-        </div>
+<div class="logo">
+    <div class="logoIcon">🌳</div>
+    <div class="logoText">
+        Tree<span>Pots</span>
     </div>
+</div>
 
-    <div class="nav-title">Workspace</div>
+<div class="navTitle">Workspace</div>
 
-    <nav class="nav">
+<nav class="nav">
 
-        <a href="#" class="active">
-            <span class="nav-icon">⌂</span>
-            <span class="nav-text">Dashboard</span>
-        </a>
+<a href="#" class="active" data-page="dashboard">
+    <span class="navIcon">⌂</span>
+    <span class="navText">Dashboard</span>
+</a>
 
-        <a href="#">
-            <span class="nav-icon">🤖</span>
-            <span class="nav-text">My Bots</span>
-        </a>
+<a href="#" data-page="bots">
+    <span class="navIcon">🤖</span>
+    <span class="navText">My Bots</span>
+</a>
 
-        <a href="#" onclick="openModal();return false">
-            <span class="nav-icon">＋</span>
-            <span class="nav-text">Create Bot</span>
-        </a>
+<a href="#" data-page="create">
+    <span class="navIcon">＋</span>
+    <span class="navText">Create Bot</span>
+</a>
 
-        <a href="#" onclick="showToast('Console is ready.');return false">
-            <span class="nav-icon">▣</span>
-            <span class="nav-text">Console</span>
-        </a>
+<a href="#" data-page="servers">
+    <span class="navIcon">🖥</span>
+    <span class="navText">Servers</span>
+</a>
 
-    </nav>
+<a href="#" data-page="console">
+    <span class="navIcon">▣</span>
+    <span class="navText">Console</span>
+</a>
 
-    <div class="nav-title">Account</div>
+<a href="#" data-page="automation">
+    <span class="navIcon">⚡</span>
+    <span class="navText">Automation</span>
+</a>
 
-    <nav class="nav">
+</nav>
 
-        <a href="#">
-            <span class="nav-icon">⚙</span>
-            <span class="nav-text">Settings</span>
-        </a>
+<div class="navTitle">Account</div>
 
-        <a href="#">
-            <span class="nav-icon">?</span>
-            <span class="nav-text">Help</span>
-        </a>
+<nav class="nav">
 
-    </nav>
+<a href="#" data-page="usage">
+    <span class="navIcon">📊</span>
+    <span class="navText">Usage</span>
+</a>
 
-    <div class="system">
-        <span class="online-dot"></span>
-        All systems operational
-    </div>
+<a href="#" data-page="plans">
+    <span class="navIcon">💎</span>
+    <span class="navText">Plans</span>
+</a>
+
+<a href="#" data-page="redeem">
+    <span class="navIcon">🔑</span>
+    <span class="navText">Redeem Code</span>
+</a>
+
+<a href="#" data-page="settings">
+    <span class="navIcon">⚙</span>
+    <span class="navText">Settings</span>
+</a>
+
+<a href="#" data-page="help">
+    <span class="navIcon">?</span>
+    <span class="navText">How to use</span>
+</a>
+
+</nav>
+
+<div class="system">
+<span class="dot"></span>
+All systems operational
+</div>
 
 </aside>
 
@@ -713,556 +971,1175 @@ button{
 
 <main class="main">
 
-    <div class="topbar">
+<div class="topbar">
 
-        <div class="breadcrumb">
-            Workspace / <b>Dashboard</b>
-        </div>
+<div class="breadcrumb">
+TreePots / <b id="breadcrumb">Dashboard</b>
+</div>
 
-        <div class="top-right">
+<div class="topRight">
+<button class="btn">🔔</button>
+<div class="avatar">T</div>
+</div>
 
-            <button class="btn"
-                    onclick="showToast('No new notifications.')">
-                🔔
-            </button>
+</div>
 
-            <div class="avatar">
-                T
-            </div>
 
-        </div>
+<!-- DASHBOARD -->
 
-    </div>
+<section class="page active" id="page-dashboard">
 
+<div class="hero">
 
-    <!-- HERO -->
+<div>
+<h1>Good evening 👋</h1>
+<p>Manage your Minecraft bots from one powerful dashboard.</p>
+</div>
 
-    <div class="hero">
+<button class="btn primary" onclick="go('create')">
+＋ Create Bot
+</button>
 
-        <div>
-            <h1>Welcome to TreeBots 🌳</h1>
-            <p>
-                Manage your Minecraft bots from one simple dashboard.
-            </p>
-        </div>
+</div>
 
-        <button class="btn primary" onclick="openModal()">
-            ＋ Create Bot
-        </button>
 
-    </div>
+<div class="stats">
 
+<div class="card stat">
+<div class="statTitle">Bots</div>
+<div class="statValue" id="statTotal">0 / 3</div>
+<div class="statDesc">Bots used from your limit</div>
+</div>
 
-    <!-- STATS -->
+<div class="card stat">
+<div class="statTitle">Online</div>
+<div class="statValue green" id="statOnline">0</div>
+<div class="statDesc">Currently connected</div>
+</div>
 
-    <section class="stats">
+<div class="card stat">
+<div class="statTitle">CPU Usage</div>
+<div class="statValue">24%</div>
+<div class="statDesc">Current workspace usage</div>
+</div>
 
-        <div class="card stat">
-            <div class="stat-title">Total Bots</div>
-            <div class="stat-value" id="totalBots">3</div>
-            <div class="stat-desc">Bots in your workspace</div>
-        </div>
+<div class="card stat">
+<div class="statTitle">Memory</div>
+<div class="statValue">1.8 GB</div>
+<div class="statDesc">Allocated to your bots</div>
+</div>
 
-        <div class="card stat">
-            <div class="stat-title">Online</div>
-            <div class="stat-value green" id="onlineBots">2</div>
-            <div class="stat-desc">Currently connected</div>
-        </div>
+</div>
 
-        <div class="card stat">
-            <div class="stat-title">CPU Usage</div>
-            <div class="stat-value">12%</div>
-            <div class="stat-desc">Current usage</div>
-        </div>
 
-        <div class="card stat">
-            <div class="stat-title">Uptime</div>
-            <div class="stat-value">99.9%</div>
-            <div class="stat-desc">Last 30 days</div>
-        </div>
+<div class="sectionHead">
+<h2>Your Bots</h2>
+<span id="dashCount">0 bots</span>
+</div>
 
-    </section>
+<section class="bots" id="dashboardBots"></section>
 
+</section>
 
-    <!-- BOTS -->
 
-    <div class="section-head">
-        <h2>Your Bots</h2>
-        <span id="botCount">3 bots</span>
-    </div>
+<!-- BOTS -->
 
-    <section class="bots" id="bots">
+<section class="page" id="page-bots">
 
-        <!-- BOT 1 -->
+<div class="hero">
 
-        <article class="card bot" data-online="true">
+<div>
+<h1>My Bots 🤖</h1>
+<p>Manage every Minecraft bot in your account.</p>
+</div>
 
-            <div class="bot-header">
+<button class="btn primary" onclick="go('create')">
+＋ Create Bot
+</button>
 
-                <div class="bot-name">
-                    <div class="bot-icon">⛏️</div>
-                    TreeBot
-                </div>
+</div>
 
-                <div class="badge">
-                    ● ONLINE
-                </div>
+<div class="card panel">
 
-            </div>
+<h2>Bot Capacity</h2>
 
-            <div class="bot-info">
+<p>
+You currently have
+<b id="capacityText">0 of 3</b>
+bot slots in use.
+</p>
 
-                <div class="info">
-                    <small>SERVER</small>
-                    <b>play.example.net</b>
-                </div>
+<div class="progress">
+<span id="capacityBar"></span>
+</div>
 
-                <div class="info">
-                    <small>VERSION</small>
-                    <b>1.21.x</b>
-                </div>
+</div>
 
-                <div class="info">
-                    <small>UPTIME</small>
-                    <b>4h 18m</b>
-                </div>
+<section class="bots" id="allBots"></section>
 
-                <div class="info">
-                    <small>RECONNECT</small>
-                    <b>Enabled</b>
-                </div>
+</section>
 
-            </div>
 
-            <div class="bot-buttons">
+<!-- CREATE -->
 
-                <button class="btn"
-                        onclick="toggleBot(this)">
-                    ⏹ Stop
-                </button>
+<section class="page" id="page-create">
 
-                <button class="btn"
-                        onclick="showToast('Opening TreeBot console...')">
-                    Console
-                </button>
+<div class="hero">
 
-            </div>
+<div>
+<h1>Create a Bot 🤖</h1>
+<p>Configure your Minecraft bot.</p>
+</div>
 
-        </article>
+</div>
 
+<div class="card panel">
 
-        <!-- BOT 2 -->
+<div class="field">
+<label>BOT NAME</label>
+<input id="createName" placeholder="SurvivalBot">
+</div>
 
-        <article class="card bot" data-online="true">
+<div class="field">
+<label>MINECRAFT USERNAME</label>
+<input id="createUsername" placeholder="TreeBot">
+</div>
 
-            <div class="bot-header">
+<div class="field">
+<label>SERVER IP</label>
+<input id="createIp" placeholder="play.example.net">
+</div>
 
-                <div class="bot-name">
-                    <div class="bot-icon">🌲</div>
-                    ForestBot
-                </div>
+<div class="field">
+<label>PORT</label>
+<input id="createPort" type="number" value="25565">
+</div>
 
-                <div class="badge">
-                    ● ONLINE
-                </div>
+<div class="field">
+<label>MINECRAFT VERSION</label>
 
-            </div>
+<select id="createVersion">
+<option>1.21.x</option>
+<option>1.21.1</option>
+<option>1.20.6</option>
+<option>1.20.4</option>
+<option>1.20.1</option>
+</select>
 
-            <div class="bot-info">
+</div>
 
-                <div class="info">
-                    <small>SERVER</small>
-                    <b>mc.myserver.com</b>
-                </div>
+<div class="field">
+<label>CONNECTION TYPE</label>
 
-                <div class="info">
-                    <small>VERSION</small>
-                    <b>1.20.4</b>
-                </div>
+<select>
+<option>Offline / Cracked</option>
+<option>Microsoft Account</option>
+</select>
 
-                <div class="info">
-                    <small>UPTIME</small>
-                    <b>1d 02h</b>
-                </div>
+</div>
 
-                <div class="info">
-                    <small>RECONNECT</small>
-                    <b>Enabled</b>
-                </div>
+<div style="display:flex;justify-content:flex-end;gap:8px">
 
-            </div>
+<button class="btn" onclick="go('bots')">
+Cancel
+</button>
 
-            <div class="bot-buttons">
+<button class="btn primary" onclick="createBot()">
+Create Bot
+</button>
 
-                <button class="btn"
-                        onclick="toggleBot(this)">
-                    ⏹ Stop
-                </button>
+</div>
 
-                <button class="btn"
-                        onclick="showToast('Opening ForestBot console...')">
-                    Console
-                </button>
+</div>
 
-            </div>
+</section>
 
-        </article>
 
+<!-- SERVERS -->
 
-        <!-- BOT 3 -->
+<section class="page" id="page-servers">
 
-        <article class="card bot" data-online="false">
+<div class="hero">
 
-            <div class="bot-header">
+<div>
+<h1>Servers 🖥</h1>
+<p>Servers connected to your TreePots bots.</p>
+</div>
 
-                <div class="bot-name">
-                    <div class="bot-icon">🧱</div>
-                    StoneBot
-                </div>
+<button class="btn primary" onclick="showToast('Server creation will be connected to the backend.')">
+＋ Add Server
+</button>
 
-                <div class="badge offline">
-                    ● OFFLINE
-                </div>
+</div>
 
-            </div>
+<div class="serverList">
 
-            <div class="bot-info">
+<div class="card server">
 
-                <div class="info">
-                    <small>SERVER</small>
-                    <b>survival.test.net</b>
-                </div>
+<div class="serverLeft">
 
-                <div class="info">
-                    <small>VERSION</small>
-                    <b>1.21.1</b>
-                </div>
+<div class="serverIcon">🌲</div>
 
-                <div class="info">
-                    <small>LAST ONLINE</small>
-                    <b>32m ago</b>
-                </div>
+<div>
+<b>Example Survival</b>
+<small>play.example.net:25565 • 2 bots</small>
+</div>
 
-                <div class="info">
-                    <small>RECONNECT</small>
-                    <b>Enabled</b>
-                </div>
+</div>
 
-            </div>
+<span class="badge">● ONLINE</span>
 
-            <div class="bot-buttons">
+</div>
 
-                <button class="btn primary"
-                        onclick="toggleBot(this)">
-                    ▶ Start
-                </button>
 
-                <button class="btn"
-                        onclick="showToast('Opening StoneBot console...')">
-                    Console
-                </button>
+<div class="card server">
 
-            </div>
+<div class="serverLeft">
 
-        </article>
+<div class="serverIcon">🏰</div>
 
-    </section>
+<div>
+<b>Lobby Server</b>
+<small>lobby.example.net:25565 • 1 bot</small>
+</div>
 
+</div>
 
-    <!-- BOTTOM -->
+<span class="badge offline">● OFFLINE</span>
 
-    <section class="bottom-grid">
+</div>
 
-        <div class="card console">
+</div>
 
-            <div class="console-header">
-                <b>Live Console</b>
-                <span>TreeBot • Connected</span>
-            </div>
+</section>
 
-            <div class="logs">
 
-                <div>
-                    <span class="time">[19:21:04]</span>
-                    <span class="log-ok">INFO</span>
-                    Bot connected successfully.
-                </div>
+<!-- CONSOLE -->
 
-                <div>
-                    <span class="time">[19:21:06]</span>
-                    INFO Logged in as TreeBot.
-                </div>
+<section class="page" id="page-console">
 
-                <div>
-                    <span class="time">[19:21:08]</span>
-                    INFO Spawn position received.
-                </div>
+<div class="hero">
 
-                <div>
-                    <span class="time">[19:21:14]</span>
-                    INFO Keep-alive packet received.
-                </div>
+<div>
+<h1>Console & Chat 💬</h1>
+<p>Monitor logs and communicate with your bot.</p>
+</div>
 
-                <div>
-                    <span class="time">[19:21:27]</span>
-                    <span class="log-ok">INFO</span>
-                    Connection stable.
-                </div>
+</div>
 
-            </div>
+<div class="card console">
 
-        </div>
+<div class="consoleHeader">
 
+<b id="consoleTitle">
+TreeBot • Live Console
+</b>
 
-        <div class="card quick">
+<span>Connected</span>
 
-            <div class="console-header">
-                <b>Quick Actions</b>
-                <span>Tools</span>
-            </div>
+</div>
 
-            <div class="quick-list">
+<div class="logs" id="logs">
 
-                <button class="btn"
-                        onclick="openModal()">
-                    🤖 Create a new bot
-                </button>
+<div>
+<span class="time">[19:32:01]</span>
+<span class="logOk">INFO</span>
+Connected to server.
+</div>
 
-                <button class="btn"
-                        onclick="showToast('All connections checked.')">
-                    ↻ Check connections
-                </button>
+<div>
+<span class="time">[19:32:04]</span>
+INFO Spawned.
+</div>
 
-                <button class="btn"
-                        onclick="showToast('Auto-reconnect is enabled.')">
-                    ⚡ Auto-reconnect
-                </button>
+<div>
+<span class="time">[19:32:15]</span>
+&lt;Steve&gt; hello
+</div>
 
-                <button class="btn"
-                        onclick="showToast('Settings opened.')">
-                    ⚙ Bot settings
-                </button>
+<div>
+<span class="time">[19:32:20]</span>
+<span class="logOk">INFO</span>
+Bot joined the game.
+</div>
 
-            </div>
+</div>
 
-        </div>
+<div style="display:flex;gap:8px;margin-top:20px">
 
-    </section>
+<input
+id="chatInput"
+placeholder="Send a message..."
+style="
+flex:1;
+padding:11px;
+background:#07110c;
+border:1px solid var(--border);
+border-radius:9px;
+color:white;
+">
+
+<button class="btn primary" onclick="sendChat()">
+Send
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- AUTOMATION -->
+
+<section class="page" id="page-automation">
+
+<div class="hero">
+
+<div>
+<h1>Automation ⚡</h1>
+<p>Create rules for your Minecraft bots.</p>
+</div>
+
+<button class="btn primary" onclick="addRule()">
+＋ Add Rule
+</button>
+
+</div>
+
+<div class="card panel">
+
+<h2>Automation Rules</h2>
+
+<div id="rules">
+
+<div class="rule">
+<span>WHEN</span>
+Bot joins server
+<span>→</span>
+<span>DO</span>
+Send "Hello!"
+</div>
+
+<div class="rule">
+<span>EVERY</span>
+60 seconds
+<span>→</span>
+<span>DO</span>
+Send "/list"
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- USAGE -->
+
+<section class="page" id="page-usage">
+
+<div class="hero">
+
+<div>
+<h1>Usage & Limits 📊</h1>
+<p>Monitor your TreePots resources.</p>
+</div>
+
+</div>
+
+<div class="usageGrid">
+
+<div class="card usage">
+
+<h3>Bot Slots</h3>
+
+<strong id="usageBots">
+0 / 3
+</strong>
+
+<div class="progress">
+<span id="usageBotBar"></span>
+</div>
+
+<p style="color:var(--muted);font-size:11px">
+Current plan limit
+</p>
+
+</div>
+
+
+<div class="card usage">
+
+<h3>CPU</h3>
+
+<strong>24%</strong>
+
+<div class="progress">
+<span style="width:24%"></span>
+</div>
+
+<p style="color:var(--muted);font-size:11px">
+Workspace usage
+</p>
+
+</div>
+
+
+<div class="card usage">
+
+<h3>Memory</h3>
+
+<strong>1.8 GB</strong>
+
+<div class="progress">
+<span style="width:45%"></span>
+</div>
+
+<p style="color:var(--muted);font-size:11px">
+Allocated
+</p>
+
+</div>
+
+</div>
+
+
+<div class="card panel" style="margin-top:15px">
+
+<h2>🌱 Free Trial</h2>
+
+<p>
+Your free trial includes up to 3 bots and lasts for 3 days after registration.
+</p>
+
+<div class="progress">
+<span style="width:65%"></span>
+</div>
+
+<p style="font-size:11px">
+2 days remaining
+</p>
+
+</div>
+
+</section>
+
+
+<!-- PLANS -->
+
+<section class="page" id="page-plans">
+
+<div class="hero">
+
+<div>
+<h1>Plans 💎</h1>
+<p>Choose the plan that fits your bot setup.</p>
+</div>
+
+</div>
+
+<div class="planGrid">
+
+<div class="card plan">
+
+<h2>🌱 Free</h2>
+
+<div class="price">
+$0 <small>/ trial</small>
+</div>
+
+<ul>
+<li>✓ 3 Bots</li>
+<li>✓ Basic Console</li>
+<li>✓ Auto Reconnect</li>
+<li>✓ Basic Automation</li>
+<li>✓ 3 Days</li>
+</ul>
+
+<button class="btn" style="width:100%">
+Current Plan
+</button>
+
+</div>
+
+
+<div class="card plan popular">
+
+<div class="planTag">
+POPULAR
+</div>
+
+<h2>⚡ Pro</h2>
+
+<div class="price">
+50 <small>EGP / month</small>
+</div>
+
+<ul>
+<li>✓ 10 Bots</li>
+<li>✓ Advanced Console</li>
+<li>✓ Advanced Automation</li>
+<li>✓ Monitoring</li>
+<li>✓ Longer Logs</li>
+</ul>
+
+<button
+class="btn primary"
+style="width:100%"
+onclick="showToast('Contact TreePots to purchase Pro.')"
+>
+Get Pro
+</button>
+
+</div>
+
+
+<div class="card plan">
+
+<h2>👑 Ultra</h2>
+
+<div class="price">
+100 <small>EGP / month</small>
+</div>
+
+<ul>
+<li>✓ 25 Bots</li>
+<li>✓ Advanced Monitoring</li>
+<li>✓ Advanced Automation</li>
+<li>✓ Priority Infrastructure</li>
+<li>✓ More Resources</li>
+</ul>
+
+<button
+class="btn primary"
+style="width:100%"
+onclick="showToast('Contact TreePots to purchase Ultra.')"
+>
+Get Ultra
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- REDEEM -->
+
+<section class="page" id="page-redeem">
+
+<div class="hero">
+
+<div>
+<h1>Redeem Code 🔑</h1>
+<p>Activate a TreePots plan using your activation code.</p>
+</div>
+
+</div>
+
+<div class="card panel" style="max-width:600px">
+
+<div class="field">
+
+<label>ACTIVATION CODE</label>
+
+<input
+id="redeemInput"
+placeholder="TP-PRO-XXXX-XXXX"
+style="font-size:16px;letter-spacing:1px"
+>
+
+</div>
+
+<button
+class="btn primary"
+onclick="redeemCode()"
+>
+Activate Plan
+</button>
+
+</div>
+
+</section>
+
+
+<!-- SETTINGS -->
+
+<section class="page" id="page-settings">
+
+<div class="hero">
+
+<div>
+<h1>Settings ⚙</h1>
+<p>Configure your TreePots account.</p>
+</div>
+
+</div>
+
+<div class="card panel">
+
+<div class="settingsRow">
+
+<div>
+<b>Auto Reconnect</b>
+<small>Reconnect bots after connection failure.</small>
+</div>
+
+<button class="toggle on"
+onclick="this.classList.toggle('on')">
+</button>
+
+</div>
+
+
+<div class="settingsRow">
+
+<div>
+<b>Auto Start</b>
+<small>Start enabled bots automatically.</small>
+</div>
+
+<button class="toggle"
+onclick="this.classList.toggle('on')">
+</button>
+
+</div>
+
+
+<div class="settingsRow">
+
+<div>
+<b>Bot Notifications</b>
+<small>Notify you when a bot has an error.</small>
+</div>
+
+<button class="toggle on"
+onclick="this.classList.toggle('on')">
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- HELP -->
+
+<section class="page" id="page-help">
+
+<div class="hero">
+
+<div>
+<h1>How to use TreePots 📖</h1>
+<p>Get your first Minecraft bot running.</p>
+</div>
+
+</div>
+
+<div class="featureGrid">
+
+<div class="card feature">
+
+<div class="featureIcon">1️⃣</div>
+
+<h3>Create your bot</h3>
+
+<p>
+Open Create Bot and enter the Minecraft username,
+server IP, port and version.
+</p>
+
+</div>
+
+
+<div class="card feature">
+
+<div class="featureIcon">2️⃣</div>
+
+<h3>Start the bot</h3>
+
+<p>
+Open My Bots and press Start to connect your bot.
+</p>
+
+</div>
+
+
+<div class="card feature">
+
+<div class="featureIcon">3️⃣</div>
+
+<h3>Use Console</h3>
+
+<p>
+Monitor logs and communicate with the bot from the Console.
+</p>
+
+</div>
+
+
+<div class="card feature">
+
+<div class="featureIcon">4️⃣</div>
+
+<h3>Automation</h3>
+
+<p>
+Create automated rules for messages and approved actions.
+</p>
+
+</div>
+
+
+<div class="card feature">
+
+<div class="featureIcon">5️⃣</div>
+
+<h3>Upgrade</h3>
+
+<p>
+After the trial, activate a paid plan using a TreePots code.
+</p>
+
+</div>
+
+
+<div class="card feature">
+
+<div class="featureIcon">6️⃣</div>
+
+<h3>Delete Bot</h3>
+
+<p>
+Delete bots you no longer need using the Delete button.
+</p>
+
+</div>
+
+</div>
+
+</section>
 
 </main>
 
 </div>
 
 
-<!-- CREATE BOT MODAL -->
+<!-- DELETE MODAL -->
 
-<div class="modal-bg" id="modal">
+<div class="modalBg" id="deleteModal">
 
-    <div class="modal">
+<div class="modal">
 
-        <h2>Create a Bot 🤖</h2>
+<h2>Delete Bot? 🗑️</h2>
 
-        <p class="modal-description">
-            Configure your Minecraft bot. Backend connection will be added later.
-        </p>
+<p>
+Are you sure you want to delete this bot?
+This action removes it from your TreePots account.
+</p>
 
-        <div class="field">
+<div class="modalActions">
 
-            <label>BOT NAME</label>
+<button class="btn" onclick="closeDelete()">
+Cancel
+</button>
 
-            <input
-                id="botName"
-                type="text"
-                placeholder="MyBot"
-            >
-
-        </div>
-
-
-        <div class="field">
-
-            <label>SERVER IP</label>
-
-            <input
-                id="serverIp"
-                type="text"
-                placeholder="play.example.net"
-            >
-
-        </div>
-
-
-        <div class="field">
-
-            <label>SERVER PORT</label>
-
-            <input
-                id="serverPort"
-                type="number"
-                value="25565"
-            >
-
-        </div>
-
-
-        <div class="field">
-
-            <label>MINECRAFT VERSION</label>
-
-            <select id="version">
-
-                <option>1.21.x</option>
-                <option>1.21.1</option>
-                <option>1.20.6</option>
-                <option>1.20.4</option>
-                <option>1.20.1</option>
-
-            </select>
-
-        </div>
-
-
-        <div class="modal-actions">
-
-            <button class="btn"
-                    onclick="closeModal()">
-                Cancel
-            </button>
-
-            <button class="btn primary"
-                    onclick="createBot()">
-                Create Bot
-            </button>
-
-        </div>
-
-    </div>
+<button class="btn danger" onclick="confirmDelete()">
+Delete Bot
+</button>
 
 </div>
 
+</div>
+
+</div>
+
+
+<!-- TOAST -->
 
 <div class="toast" id="toast"></div>
 
 
 <script>
 
-/* MODAL */
+/* =========================
+   TREEPOTS FRONTEND
+========================= */
 
-const modal = document.getElementById("modal");
+const BOT_LIMIT = 3;
 
-function openModal(){
+let bots = JSON.parse(
+    localStorage.getItem("treepots_bots") || "null"
+) || [
 
-    modal.classList.add("show");
+    {
+        id:1,
+        name:"TreeBot",
+        username:"TreeBot",
+        ip:"play.example.net",
+        port:"25565",
+        version:"1.21.x",
+        online:true,
+        uptime:"4h 18m",
+        ping:"42ms"
+    },
 
-    setTimeout(() => {
-        document.getElementById("botName").focus();
-    },100);
-
-}
-
-function closeModal(){
-
-    modal.classList.remove("show");
-
-}
-
-modal.addEventListener("click",function(e){
-
-    if(e.target === modal){
-        closeModal();
+    {
+        id:2,
+        name:"ForestBot",
+        username:"ForestBot",
+        ip:"mc.example.net",
+        port:"25565",
+        version:"1.20.4",
+        online:false,
+        uptime:"—",
+        ping:"—"
     }
+
+];
+
+let deleteId = null;
+
+
+/* PAGES */
+
+const pageNames = {
+
+    dashboard:"Dashboard",
+    bots:"My Bots",
+    create:"Create Bot",
+    servers:"Servers",
+    console:"Console",
+    automation:"Automation",
+    usage:"Usage",
+    plans:"Plans",
+    redeem:"Redeem Code",
+    settings:"Settings",
+    help:"How to use"
+
+};
+
+
+document
+.querySelectorAll(".nav a[data-page]")
+.forEach(link=>{
+
+    link.addEventListener("click",function(e){
+
+        e.preventDefault();
+
+        go(this.dataset.page);
+
+    });
 
 });
 
 
-/* TOAST */
+function go(page){
 
-function showToast(message){
+    document
+    .querySelectorAll(".page")
+    .forEach(p=>p.classList.remove("active"));
 
-    const toast = document.getElementById("toast");
+    document
+    .getElementById("page-"+page)
+    .classList.add("active");
 
-    toast.textContent = message;
+    document
+    .querySelectorAll(".nav a")
+    .forEach(a=>{
 
-    toast.classList.add("show");
+        a.classList.toggle(
+            "active",
+            a.dataset.page===page
+        );
 
-    clearTimeout(window.toastTimer);
+    });
 
-    window.toastTimer = setTimeout(() => {
+    document
+    .getElementById("breadcrumb")
+    .textContent = pageNames[page];
 
-        toast.classList.remove("show");
+    if(
+        page==="dashboard" ||
+        page==="bots" ||
+        page==="usage"
+    ){
 
-    },2600);
-
-}
-
-
-/* STATS */
-
-function updateStats(){
-
-    const bots = [
-        ...document.querySelectorAll(".bot")
-    ];
-
-    const online = bots.filter(
-        bot => bot.dataset.online === "true"
-    ).length;
-
-    document.getElementById("totalBots").textContent =
-        bots.length;
-
-    document.getElementById("onlineBots").textContent =
-        online;
-
-    document.getElementById("botCount").textContent =
-        bots.length + " bot" + (bots.length === 1 ? "" : "s");
-
-}
-
-
-/* START / STOP */
-
-function toggleBot(button){
-
-    const bot = button.closest(".bot");
-
-    const badge = bot.querySelector(".badge");
-
-    const isOnline =
-        bot.dataset.online === "true";
-
-
-    if(isOnline){
-
-        bot.dataset.online = "false";
-
-        badge.className = "badge offline";
-
-        badge.textContent = "● OFFLINE";
-
-        button.className = "btn primary";
-
-        button.textContent = "▶ Start";
-
-        showToast("Bot stopped.");
-
-    }else{
-
-        bot.dataset.online = "true";
-
-        badge.className = "badge";
-
-        badge.textContent = "● ONLINE";
-
-        button.className = "btn";
-
-        button.textContent = "⏹ Stop";
-
-        showToast("Bot started.");
+        render();
 
     }
 
-    updateStats();
+}
+
+
+/* RENDER */
+
+function render(){
+
+    localStorage.setItem(
+        "treepots_bots",
+        JSON.stringify(bots)
+    );
+
+
+    const online =
+        bots.filter(bot=>bot.online).length;
+
+
+    document
+    .getElementById("statTotal")
+    .textContent =
+    `${bots.length} / ${BOT_LIMIT}`;
+
+
+    document
+    .getElementById("statOnline")
+    .textContent =
+    online;
+
+
+    document
+    .getElementById("dashCount")
+    .textContent =
+    `${bots.length} bot${bots.length===1?"":"s"}`;
+
+
+    document
+    .getElementById("capacityText")
+    .textContent =
+    `${bots.length} of ${BOT_LIMIT}`;
+
+
+    document
+    .getElementById("capacityBar")
+    .style.width =
+    Math.min(
+        100,
+        bots.length/BOT_LIMIT*100
+    )+"%";
+
+
+    document
+    .getElementById("usageBots")
+    .textContent =
+    `${bots.length} / ${BOT_LIMIT}`;
+
+
+    document
+    .getElementById("usageBotBar")
+    .style.width =
+    Math.min(
+        100,
+        bots.length/BOT_LIMIT*100
+    )+"%";
+
+
+    document
+    .getElementById("dashboardBots")
+    .innerHTML =
+    bots.length
+    ? bots.map(botCard).join("")
+    : emptyState();
+
+
+    document
+    .getElementById("allBots")
+    .innerHTML =
+    bots.length
+    ? bots.map(botCard).join("")
+    : emptyState();
+
+}
+
+
+function emptyState(){
+
+    return `
+
+    <div
+    class="card"
+    style="
+    grid-column:1/-1;
+    padding:40px;
+    text-align:center;
+    color:var(--muted);
+    ">
+
+    <div style="font-size:35px">
+    🤖
+    </div>
+
+    <h3 style="color:white;margin:10px">
+    No bots yet
+    </h3>
+
+    Create your first Minecraft bot.
+
+    </div>
+
+    `;
+
+}
+
+
+/* BOT CARD */
+
+function botCard(bot){
+
+    return `
+
+    <article class="card bot">
+
+        <div class="botHeader">
+
+            <div class="botName">
+
+                <div class="botIcon">
+                    🤖
+                </div>
+
+                ${escapeHTML(bot.name)}
+
+            </div>
+
+            <div class="badge ${
+                bot.online ? "" : "offline"
+            }">
+
+                ${
+                    bot.online
+                    ? "● ONLINE"
+                    : "● OFFLINE"
+                }
+
+            </div>
+
+        </div>
+
+
+        <div class="botInfo">
+
+            <div class="info">
+
+                <small>SERVER</small>
+
+                <b>
+                ${escapeHTML(bot.ip)}:${escapeHTML(bot.port)}
+                </b>
+
+            </div>
+
+
+            <div class="info">
+
+                <small>VERSION</small>
+
+                <b>
+                ${escapeHTML(bot.version)}
+                </b>
+
+            </div>
+
+
+            <div class="info">
+
+                <small>USERNAME</small>
+
+                <b>
+                ${escapeHTML(bot.username)}
+                </b>
+
+            </div>
+
+
+            <div class="info">
+
+                <small>PING</small>
+
+                <b>
+                ${bot.online ? bot.ping : "—"}
+                </b>
+
+            </div>
+
+
+            <div class="info">
+
+                <small>UPTIME</small>
+
+                <b>
+                ${bot.online ? bot.uptime : "Offline"}
+                </b>
+
+            </div>
+
+
+            <div class="info">
+
+                <small>RECONNECT</small>
+
+                <b>
+                Enabled
+                </b>
+
+            </div>
+
+        </div>
+
+
+        <div class="botButtons">
+
+            <button
+            class="btn ${
+                bot.online ? "" : "primary"
+            }"
+            onclick="toggleBot(${bot.id})">
+
+                ${
+                    bot.online
+                    ? "⏹ Stop"
+                    : "▶ Start"
+                }
+
+            </button>
+
+
+            <button
+            class="btn"
+            onclick="openConsole(${bot.id})">
+
+                Console
+
+            </button>
+
+
+            <button
+            class="btn"
+            onclick="showToast('Bot settings opened.')">
+
+                ⚙ Settings
+
+            </button>
+
+
+            <button
+            class="btn danger"
+            onclick="askDelete(${bot.id})">
+
+                🗑 Delete
+
+            </button>
+
+        </div>
+
+    </article>
+
+    `;
 
 }
 
@@ -1271,107 +2148,366 @@ function toggleBot(button){
 
 function createBot(){
 
+    if(bots.length >= BOT_LIMIT){
+
+        showToast(
+            `Bot limit reached: ${BOT_LIMIT} bots.`
+        );
+
+        return;
+
+    }
+
+
     const name =
-        document.getElementById("botName").value.trim()
-        || "NewBot";
+    document.getElementById("createName")
+    .value.trim()
+    || "NewBot";
+
+
+    const username =
+    document.getElementById("createUsername")
+    .value.trim()
+    || name;
+
 
     const ip =
-        document.getElementById("serverIp").value.trim()
-        || "play.example.net";
+    document.getElementById("createIp")
+    .value.trim()
+    || "play.example.net";
+
 
     const port =
-        document.getElementById("serverPort").value
-        || "25565";
+    document.getElementById("createPort")
+    .value
+    || "25565";
+
 
     const version =
-        document.getElementById("version").value;
+    document.getElementById("createVersion")
+    .value;
 
 
-    const bot = document.createElement("article");
+    bots.push({
 
-    bot.className = "card bot";
+        id:Date.now(),
 
-    bot.dataset.online = "false";
+        name,
 
+        username,
 
-    bot.innerHTML = `
+        ip,
 
-        <div class="bot-header">
+        port,
 
-            <div class="bot-name">
+        version,
 
-                <div class="bot-icon">
-                    🤖
-                </div>
+        online:false,
 
-                ${escapeHTML(name)}
+        uptime:"—",
 
-            </div>
+        ping:"—"
 
-            <div class="badge offline">
-                ● OFFLINE
-            </div>
-
-        </div>
+    });
 
 
-        <div class="bot-info">
-
-            <div class="info">
-                <small>SERVER</small>
-                <b>${escapeHTML(ip)}:${escapeHTML(port)}</b>
-            </div>
-
-            <div class="info">
-                <small>VERSION</small>
-                <b>${escapeHTML(version)}</b>
-            </div>
-
-            <div class="info">
-                <small>STATUS</small>
-                <b>Ready</b>
-            </div>
-
-            <div class="info">
-                <small>RECONNECT</small>
-                <b>Enabled</b>
-            </div>
-
-        </div>
+    document.getElementById("createName").value="";
+    document.getElementById("createUsername").value="";
+    document.getElementById("createIp").value="";
 
 
-        <div class="bot-buttons">
+    showToast(
+        `${name} created successfully.`
+    );
 
-            <button
-                class="btn primary"
-                onclick="toggleBot(this)">
-                ▶ Start
-            </button>
 
-            <button
-                class="btn"
-                onclick="showToast('Opening console...')">
-                Console
-            </button>
+    render();
 
-        </div>
+    go("bots");
+
+}
+
+
+/* START / STOP */
+
+function toggleBot(id){
+
+    const bot =
+    bots.find(x=>x.id===id);
+
+
+    if(!bot) return;
+
+
+    bot.online =
+    !bot.online;
+
+
+    bot.uptime =
+    bot.online
+    ? "0m"
+    : "—";
+
+
+    bot.ping =
+    bot.online
+    ? "45ms"
+    : "—";
+
+
+    showToast(
+
+        bot.online
+        ? `${bot.name} is connecting…`
+        : `${bot.name} stopped.`
+
+    );
+
+
+    render();
+
+}
+
+
+/* DELETE */
+
+function askDelete(id){
+
+    deleteId=id;
+
+    document
+    .getElementById("deleteModal")
+    .classList.add("show");
+
+}
+
+
+function closeDelete(){
+
+    deleteId=null;
+
+    document
+    .getElementById("deleteModal")
+    .classList.remove("show");
+
+}
+
+
+function confirmDelete(){
+
+    const bot =
+    bots.find(x=>x.id===deleteId);
+
+
+    bots =
+    bots.filter(
+        x=>x.id!==deleteId
+    );
+
+
+    closeDelete();
+
+    render();
+
+
+    showToast(
+        `${bot ? bot.name : "Bot"} deleted.`
+    );
+
+}
+
+
+/* CONSOLE */
+
+function openConsole(id){
+
+    const bot =
+    bots.find(x=>x.id===id);
+
+
+    if(!bot) return;
+
+
+    document
+    .getElementById("consoleTitle")
+    .textContent =
+    `${bot.name} • Live Console`;
+
+
+    go("console");
+
+}
+
+
+function sendChat(){
+
+    const input =
+    document.getElementById("chatInput");
+
+
+    const text =
+    input.value.trim();
+
+
+    if(!text) return;
+
+
+    const logs =
+    document.getElementById("logs");
+
+
+    logs.innerHTML += `
+
+    <div>
+
+    <span class="time">
+    [19:35:${new Date().getSeconds()}]
+    </span>
+
+    <span class="logOk">
+    YOU
+    </span>
+
+    ${escapeHTML(text)}
+
+    </div>
 
     `;
 
 
-    document.getElementById("bots").appendChild(bot);
+    input.value="";
 
-    closeModal();
-
-    updateStats();
 
     showToast(
-        name + " created successfully."
+        "Message added to console."
+    );
+
+}
+
+
+/* AUTOMATION */
+
+function addRule(){
+
+    document
+    .getElementById("rules")
+    .insertAdjacentHTML(
+
+        "beforeend",
+
+        `
+
+        <div class="rule">
+
+        <span>WHEN</span>
+
+        Player joins
+
+        <span>→</span>
+
+        <span>DO</span>
+
+        Send welcome message
+
+        </div>
+
+        `
+
     );
 
 
-    document.getElementById("botName").value = "";
-    document.getElementById("serverIp").value = "";
+    showToast(
+        "Automation rule added."
+    );
+
+}
+
+
+/* REDEEM */
+
+function redeemCode(){
+
+    const input =
+    document.getElementById("redeemInput");
+
+
+    const code =
+    input.value.trim().toUpperCase();
+
+
+    if(!code){
+
+        showToast(
+            "Enter an activation code."
+        );
+
+        return;
+
+    }
+
+
+    /*
+       DEMO ONLY
+
+       Real codes will be checked
+       by the backend later.
+    */
+
+
+    if(code.startsWith("TP-PRO-")){
+
+        showToast(
+            "Demo: Pro plan activated! Backend validation will be added later."
+        );
+
+        return;
+
+    }
+
+
+    if(code.startsWith("TP-ULTRA-")){
+
+        showToast(
+            "Demo: Ultra plan activated! Backend validation will be added later."
+        );
+
+        return;
+
+    }
+
+
+    showToast(
+        "Invalid activation code."
+    );
+
+}
+
+
+/* TOAST */
+
+function showToast(message){
+
+    const toast =
+    document.getElementById("toast");
+
+
+    toast.textContent=message;
+
+
+    toast.classList.add("show");
+
+
+    clearTimeout(
+        window.toastTimer
+    );
+
+
+    window.toastTimer =
+    setTimeout(()=>{
+
+        toast.classList.remove("show");
+
+    },2600);
 
 }
 
@@ -1380,9 +2516,11 @@ function createBot(){
 
 function escapeHTML(text){
 
-    return text.replace(/[&<>"']/g,function(char){
+    return String(text)
+    .replace(
+        /[&<>"']/g,
 
-        return {
+        character=>({
 
             "&":"&amp;",
             "<":"&lt;",
@@ -1390,11 +2528,16 @@ function escapeHTML(text){
             '"':"&quot;",
             "'":"&#039;"
 
-        }[char];
+        }[character])
 
-    });
+    );
 
 }
+
+
+/* INITIAL */
+
+render();
 
 </script>
 
