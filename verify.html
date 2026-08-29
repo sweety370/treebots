@@ -1,138 +1,610 @@
 <!DOCTYPE html>
+
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>TreeBots | تأكيد الحساب</title>
+
 <style>
-*{box-sizing:border-box}
-body{
+*{
+  box-sizing:border-box;
+}
+
+html,body{
   margin:0;
+  min-height:100%;
+}
+
+body{
   min-height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:#171717;
+  background:
+    radial-gradient(circle at 50% 0%,#202020 0%,#111 45%,#050505 100%);
   color:#fff;
-  font-family:Arial,sans-serif;
+  font-family:Inter,Arial,sans-serif;
+  overflow:hidden;
 }
+
+/* BACKGROUND */
+
+.bg{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.glow{
+  position:absolute;
+  width:420px;
+  height:420px;
+  border-radius:50%;
+  background:radial-gradient(circle,#fff1,transparent 70%);
+  filter:blur(35px);
+  animation:float 9s ease-in-out infinite;
+}
+
+.glow.one{
+  top:-190px;
+  right:-120px;
+}
+
+.glow.two{
+  bottom:-230px;
+  left:-150px;
+  animation-delay:-4.5s;
+}
+
+@keyframes float{
+  0%,100%{
+    transform:translate(0,0) scale(1);
+  }
+
+  50%{
+    transform:translate(25px,25px) scale(1.08);
+  }
+}
+
+/* CARD */
+
 .card{
+  position:relative;
   width:min(430px,92%);
-  background:#222;
-  border:1px solid #333;
-  border-radius:20px;
-  padding:32px;
+  padding:34px;
   text-align:center;
-  box-shadow:0 20px 60px #0008;
+
+  background:rgba(20,20,20,.88);
+
+  border:1px solid #303030;
+  border-radius:22px;
+
+  backdrop-filter:blur(20px);
+
+  box-shadow:
+    0 30px 100px #000b,
+    inset 0 1px #ffffff0a;
+
+  animation:
+    cardIn .7s cubic-bezier(.2,.8,.2,1);
 }
-.logo{font-size:30px;font-weight:800;margin-bottom:8px}
-.logo span{color:#aaa}
-p{color:#999;line-height:1.7}
+
+@keyframes cardIn{
+  from{
+    opacity:0;
+    transform:translateY(25px) scale(.97);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+}
+
+/* LOGO */
+
+.logo{
+  font-size:30px;
+  font-weight:800;
+  letter-spacing:-1px;
+  margin-bottom:8px;
+}
+
+.logo-mark{
+  display:inline-grid;
+  place-items:center;
+
+  width:42px;
+  height:42px;
+
+  margin-left:7px;
+  vertical-align:middle;
+
+  border-radius:12px;
+  border:1px solid #3a3a3a;
+
+  background:
+    linear-gradient(145deg,#292929,#0b0b0b);
+
+  box-shadow:
+    0 8px 25px #0008;
+
+  font-size:17px;
+}
+
+.logo span{
+  color:#888;
+}
+
+/* TEXT */
+
+.subtitle{
+  color:#888;
+  font-size:14px;
+  margin-bottom:10px;
+}
+
+.description{
+  color:#777;
+  line-height:1.7;
+  margin:0 0 25px;
+  font-size:14px;
+}
+
+/* CODE INPUT */
+
+.code-box{
+  position:relative;
+}
+
 input{
   width:100%;
-  padding:16px;
-  border-radius:11px;
-  border:1px solid #444;
-  background:#151515;
+  padding:17px;
+
+  border-radius:12px;
+  border:1px solid #363636;
+
+  background:#101010;
   color:#fff;
+
   text-align:center;
-  font-size:24px;
-  letter-spacing:8px;
+
+  font-size:25px;
+  font-weight:600;
+
+  letter-spacing:9px;
+
   outline:none;
+
+  transition:
+    border-color .2s,
+    box-shadow .2s,
+    transform .2s;
 }
+
+input::placeholder{
+  color:#333;
+}
+
+input:focus{
+  border-color:#777;
+
+  box-shadow:
+    0 0 0 3px #ffffff08,
+    0 10px 35px #0006;
+
+  transform:translateY(-1px);
+}
+
+/* BUTTON */
+
 button{
   width:100%;
   margin-top:20px;
   padding:14px;
-  border:0;
+
+  border:1px solid #fff;
   border-radius:11px;
+
   background:#fff;
   color:#111;
-  font-weight:bold;
+
+  font-size:15px;
+  font-weight:700;
+
   cursor:pointer;
+
+  transition:
+    transform .2s,
+    background .2s,
+    box-shadow .2s;
 }
-#msg{margin-top:16px;min-height:22px}
+
+button:hover{
+  background:#e8e8e8;
+
+  transform:translateY(-2px);
+
+  box-shadow:
+    0 10px 30px #fff2;
+}
+
+button:active{
+  transform:scale(.98);
+}
+
+button:disabled{
+  opacity:.6;
+  cursor:wait;
+}
+
+/* MESSAGE */
+
+#msg{
+  margin-top:16px;
+  min-height:22px;
+  font-size:14px;
+}
+
+/* BACK LINK */
+
+.back{
+  display:inline-block;
+  margin-top:20px;
+
+  color:#666;
+
+  font-size:13px;
+
+  transition:
+    color .2s,
+    transform .2s;
+}
+
+.back:hover{
+  color:#fff;
+  transform:translateX(-2px);
+}
+
+/* SUCCESS */
+
+.success{
+  animation:success .45s ease;
+}
+
+@keyframes success{
+  0%{
+    transform:scale(.96);
+  }
+
+  60%{
+    transform:scale(1.03);
+  }
+
+  100%{
+    transform:scale(1);
+  }
+}
+
+/* ERROR */
+
+.error{
+  animation:shake .35s ease;
+}
+
+@keyframes shake{
+  0%,100%{
+    transform:translateX(0);
+  }
+
+  25%{
+    transform:translateX(-6px);
+  }
+
+  75%{
+    transform:translateX(6px);
+  }
+}
+
+/* LOW-END MODE */
+
+.no-animations *,
+.no-animations *::before,
+.no-animations *::after{
+  animation:none!important;
+  transition:none!important;
+}
+
+/* MOBILE */
+
+@media(max-width:500px){
+
+  body{
+    padding:20px 0;
+    overflow:auto;
+  }
+
+  .card{
+    padding:28px 22px;
+  }
+
+  .logo{
+    font-size:27px;
+  }
+
+  input{
+    font-size:22px;
+    letter-spacing:7px;
+  }
+}
 </style>
+
 </head>
 
 <body>
-<div class="card">
-  <div class="logo">🌳 Tree<span>Bots</span></div>
 
-  <p>
-    أدخل كود التحقق المكون من 6 أرقام.
+<div class="bg">
+  <div class="glow one"></div>
+  <div class="glow two"></div>
+</div>
+
+<div class="card" id="card">
+
+  <div class="logo">
+    <span class="logo-mark">T</span>
+    Tree<span>Bots</span>
+  </div>
+
+  <div class="subtitle">
+    تأكيد الحساب
+  </div>
+
+  <p class="description">
+    أدخل كود التحقق المكون من 6 أرقام لتفعيل حسابك.
   </p>
 
-  <input
-    id="code"
-    maxlength="6"
-    inputmode="numeric"
-    placeholder="000000"
-  >
+  <div class="code-box">
 
-  <button onclick="verify()">تأكيد الحساب</button>
+```
+<input
+  id="code"
+  maxlength="6"
+  inputmode="numeric"
+  autocomplete="one-time-code"
+  placeholder="000000"
+  aria-label="كود التحقق"
+>
+```
+
+  </div>
+
+<button
+id="verifyButton"
+onclick="verify()"
+
+>
+
+```
+تأكيد الحساب
+```
+
+  </button>
 
   <div id="msg"></div>
+
+<a
+class="back"
+href="register.html"
+
+>
+
+```
+العودة لإنشاء الحساب
+```
+
+  </a>
+
 </div>
 
 <script>
-const API = "https://treebots-backend.505omerfive.workers.dev";
+
+const API =
+  "https://treebots-backend.505omerfive.workers.dev";
+
+
+const codeInput =
+  document.getElementById("code");
+
+const button =
+  document.getElementById("verifyButton");
+
+const msg =
+  document.getElementById("msg");
+
+const card =
+  document.getElementById("card");
+
+
+/*
+  السماح بالأرقام فقط
+*/
+
+codeInput.addEventListener("input", () => {
+
+  codeInput.value =
+    codeInput.value
+      .replace(/\D/g,"")
+      .slice(0,6);
+
+});
+
+
+/*
+  Enter = Verify
+*/
+
+codeInput.addEventListener("keydown", e => {
+
+  if(e.key === "Enter"){
+
+    e.preventDefault();
+
+    verify();
+
+  }
+
+});
+
 
 async function verify(){
 
-  const email = sessionStorage.getItem("verifyEmail");
-  const code = document.getElementById("code").value.trim();
-  const msg = document.getElementById("msg");
+  const email =
+    sessionStorage.getItem("verifyEmail");
+
+  const code =
+    codeInput.value.trim();
+
+
+  card.classList.remove(
+    "success",
+    "error"
+  );
+
 
   if(!email){
-    msg.textContent = "بيانات التسجيل غير موجودة";
-    msg.style.color = "#ff7777";
+
+    msg.textContent =
+      "بيانات التسجيل غير موجودة";
+
+    msg.style.color =
+      "#ff7777";
+
+    card.classList.add("error");
+
     return;
   }
 
-  if(code.length !== 6){
-    msg.textContent = "اكتب كود التحقق كاملًا";
-    msg.style.color = "#ff7777";
+
+  if(!/^\d{6}$/.test(code)){
+
+    msg.textContent =
+      "اكتب كود التحقق المكون من 6 أرقام";
+
+    msg.style.color =
+      "#ff7777";
+
+    card.classList.add("error");
+
+    codeInput.focus();
+
     return;
   }
 
-  msg.textContent = "جاري التحقق...";
-  msg.style.color = "#aaa";
+
+  msg.textContent =
+    "جاري التحقق...";
+
+  msg.style.color =
+    "#aaa";
+
+  button.disabled = true;
+
 
   try{
 
-    const res = await fetch(`${API}/api/auth/verify`,{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({
-        email,
-        code
-      })
-    });
+    const res =
+      await fetch(
+        `${API}/api/auth/verify`,
+        {
+          method:"POST",
 
-    const data = await res.json();
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:JSON.stringify({
+            email,
+            code
+          })
+        }
+      );
+
+
+    const data =
+      await res.json();
+
 
     if(!res.ok){
-      throw new Error(data.error || "كود غير صحيح");
+
+      throw new Error(
+        data.error ||
+        "كود التحقق غير صحيح"
+      );
+
     }
 
-    sessionStorage.removeItem("verifyEmail");
-    sessionStorage.removeItem("verificationCode");
 
-    msg.textContent = "تم تأكيد الحساب بنجاح ✓";
-    msg.style.color = "#8cff9a";
+    /*
+      تنظيف بيانات التحقق
+    */
 
-    setTimeout(()=>{
-      window.location.href = "login.html";
+    sessionStorage.removeItem(
+      "verifyEmail"
+    );
+
+    sessionStorage.removeItem(
+      "verificationCode"
+    );
+
+
+    msg.textContent =
+      "تم تأكيد الحساب بنجاح ✓";
+
+    msg.style.color =
+      "#8cff9a";
+
+
+    card.classList.add(
+      "success"
+    );
+
+
+    button.textContent =
+      "تم التأكيد ✓";
+
+
+    setTimeout(() => {
+
+      window.location.href =
+        "login.html";
+
     },1200);
 
+
   }catch(err){
-    msg.textContent = err.message;
-    msg.style.color = "#ff7777";
+
+    msg.textContent =
+      err.message ||
+      "حدث خطأ أثناء التحقق";
+
+    msg.style.color =
+      "#ff7777";
+
+    card.classList.add(
+      "error"
+    );
+
+    button.disabled = false;
+
   }
+
 }
+
 </script>
+
 </body>
 </html>
