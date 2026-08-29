@@ -1,689 +1,1767 @@
+
+
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>TreeBots</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TreeBots - Minecraft Bots</title>
 
-<style>
-*{box-sizing:border-box}
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-body{
-  margin:0;
-  background:#171717;
-  color:#fff;
-  font-family:Arial,sans-serif;
-}
+    html {
+      scroll-behavior: smooth;
+    }
 
-header{
-  height:70px;
-  background:#202020;
-  border-bottom:1px solid #333;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 25px;
-}
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+        BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #000;
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-.logo{
-  font-size:24px;
-  font-weight:bold;
-}
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-.logo span{
-  color:#999;
-}
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
 
-.user{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  color:#ccc;
-}
+    .container {
+      width: min(1120px, calc(100% - 40px));
+      margin: auto;
+    }
 
-.logout{
-  border:0;
-  background:#333;
-  color:#fff;
-  padding:9px 14px;
-  border-radius:9px;
-  cursor:pointer;
-}
+    /* =========================
+       ANIMATION SYSTEM
+    ========================= */
 
-.container{
-  max-width:1200px;
-  margin:auto;
-  padding:35px 20px;
-}
+    :root {
+      --animation-speed: 1;
+    }
 
-.welcome{
-  margin-bottom:30px;
-}
+    body.animations-off *,
+    body.animations-off *::before,
+    body.animations-off *::after {
+      animation: none !important;
+      transition: none !important;
+      scroll-behavior: auto !important;
+    }
 
-.welcome h1{
-  margin:0 0 8px;
-  font-size:32px;
-}
+    .animation-toggle {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9999;
 
-.welcome p{
-  color:#999;
-  margin:0;
-}
+      display: flex;
+      align-items: center;
+      gap: 8px;
 
-.stats{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px;
-  margin-bottom:30px;
-}
+      padding: 10px 14px;
+      border: 1px solid #292929;
+      border-radius: 999px;
 
-.stat{
-  background:#222;
-  border:1px solid #333;
-  border-radius:16px;
-  padding:22px;
-}
+      background: rgba(10, 10, 10, .88);
+      backdrop-filter: blur(15px);
 
-.stat-title{
-  color:#999;
-  font-size:14px;
-}
+      color: #aaa;
+      font-size: 12px;
+      cursor: pointer;
 
-.stat-value{
-  font-size:30px;
-  font-weight:bold;
-  margin-top:8px;
-}
+      box-shadow:
+        0 10px 35px rgba(0,0,0,.5),
+        0 0 25px rgba(255,255,255,.04);
 
-.section{
-  background:#222;
-  border:1px solid #333;
-  border-radius:18px;
-  padding:24px;
-}
+      transition: .25s;
+    }
 
-.section-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:20px;
-}
+    .animation-toggle:hover {
+      color: white;
+      border-color: #555;
+      transform: translateY(-2px);
+    }
 
-.section-head h2{
-  margin:0;
-}
+    .toggle-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 12px #fff;
+    }
 
-.add{
-  border:0;
-  background:#fff;
-  color:#111;
-  padding:11px 16px;
-  border-radius:10px;
-  font-weight:bold;
-  cursor:pointer;
-}
+    /* Floating particles */
 
-.bots{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
-  gap:16px;
-}
+    .particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
 
-.bot{
-  background:#181818;
-  border:1px solid #333;
-  border-radius:15px;
-  padding:20px;
-}
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: #fff;
+      border-radius: 50%;
+      opacity: .25;
 
-.bot-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
+      animation:
+        floatParticle linear infinite,
+        blinkParticle ease-in-out infinite alternate;
+    }
 
-.bot-name{
-  font-size:19px;
-  font-weight:bold;
-}
+    .particle:nth-child(1) {
+      left: 8%;
+      top: 20%;
+      animation-duration: 15s, 2s;
+    }
 
-.status{
-  font-size:12px;
-  padding:5px 9px;
-  border-radius:20px;
-  background:#333;
-  color:#aaa;
-}
+    .particle:nth-child(2) {
+      left: 18%;
+      top: 70%;
+      animation-duration: 19s, 3s;
+    }
 
-.status.online{
-  color:#fff;
-  background:#343434;
-}
+    .particle:nth-child(3) {
+      left: 32%;
+      top: 35%;
+      animation-duration: 13s, 2.5s;
+    }
 
-.info{
-  margin-top:18px;
-  color:#aaa;
-  line-height:1.9;
-  font-size:14px;
-}
+    .particle:nth-child(4) {
+      left: 47%;
+      top: 15%;
+      animation-duration: 21s, 2s;
+    }
 
-.actions{
-  display:flex;
-  gap:8px;
-  margin-top:18px;
-}
+    .particle:nth-child(5) {
+      left: 62%;
+      top: 75%;
+      animation-duration: 17s, 3s;
+    }
 
-.actions button{
-  flex:1;
-  border:1px solid #444;
-  background:#252525;
-  color:#fff;
-  padding:10px;
-  border-radius:9px;
-  cursor:pointer;
-}
+    .particle:nth-child(6) {
+      left: 75%;
+      top: 30%;
+      animation-duration: 14s, 2s;
+    }
 
-.actions button:hover{
-  background:#333;
-}
+    .particle:nth-child(7) {
+      left: 86%;
+      top: 60%;
+      animation-duration: 18s, 3s;
+    }
 
-.empty{
-  text-align:center;
-  padding:45px 10px;
-  color:#777;
-}
+    .particle:nth-child(8) {
+      left: 93%;
+      top: 15%;
+      animation-duration: 22s, 2.5s;
+    }
 
-.modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:#000b;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-}
+    @keyframes floatParticle {
+      0% {
+        transform: translateY(0) translateX(0);
+      }
 
-.modal-box{
-  width:min(430px,100%);
-  background:#222;
-  border:1px solid #333;
-  border-radius:18px;
-  padding:25px;
-}
+      50% {
+        transform: translateY(-80px) translateX(30px);
+      }
 
-.modal-box h2{
-  margin-top:0;
-}
+      100% {
+        transform: translateY(-160px) translateX(-20px);
+      }
+    }
 
-.modal-box input{
-  width:100%;
-  margin:7px 0;
-  padding:13px;
-  border-radius:10px;
-  border:1px solid #444;
-  background:#151515;
-  color:#fff;
-  outline:none;
-}
+    @keyframes blinkParticle {
+      from {
+        opacity: .08;
+      }
 
-.modal-actions{
-  display:flex;
-  gap:10px;
-  margin-top:15px;
-}
+      to {
+        opacity: .5;
+      }
+    }
 
-.modal-actions button{
-  flex:1;
-  padding:12px;
-  border:0;
-  border-radius:10px;
-  cursor:pointer;
-}
+    /* =========================
+       NAVBAR
+    ========================= */
 
-.create{
-  background:#fff;
-  color:#111;
-}
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
 
-.cancel{
-  background:#333;
-  color:#fff;
-}
+      height: 72px;
 
-@media(max-width:700px){
-  .stats{
-    grid-template-columns:1fr;
-  }
+      border-bottom: 1px solid #222;
 
-  header{
-    padding:0 15px;
-  }
+      background: rgba(0, 0, 0, .78);
+      backdrop-filter: blur(16px);
 
-  .user-name{
-    display:none;
-  }
-}
-</style>
+      transition: background .3s, border-color .3s;
+    }
+
+    nav:hover {
+      border-color: #333;
+    }
+
+    .nav-inner {
+      height: 100%;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -.5px;
+
+      transition: transform .25s;
+    }
+
+    .logo:hover {
+      transform: translateY(-2px);
+    }
+
+    .logo-mark {
+      width: 28px;
+      height: 28px;
+
+      border: 1px solid #444;
+      border-radius: 8px;
+
+      display: grid;
+      place-items: center;
+
+      background: linear-gradient(145deg, #222, #050505);
+
+      font-size: 14px;
+
+      box-shadow: 0 0 0 rgba(255,255,255,0);
+
+      transition: .3s;
+    }
+
+    .logo:hover .logo-mark {
+      border-color: #777;
+
+      box-shadow:
+        0 0 20px rgba(255,255,255,.12),
+        inset 0 0 15px rgba(255,255,255,.05);
+
+      transform: rotate(-5deg) scale(1.08);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+
+      color: #a1a1a1;
+      font-size: 14px;
+    }
+
+    .nav-links a {
+      position: relative;
+      transition: color .2s;
+    }
+
+    .nav-links a::after {
+      content: "";
+
+      position: absolute;
+      left: 0;
+      bottom: -7px;
+
+      width: 0;
+      height: 1px;
+
+      background: white;
+
+      transition: width .25s;
+    }
+
+    .nav-links a:hover {
+      color: #fff;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      position: relative;
+      overflow: hidden;
+
+      border: 1px solid #333;
+      background: #111;
+      color: white;
+
+      padding: 9px 15px;
+      border-radius: 8px;
+
+      cursor: pointer;
+
+      transition:
+        transform .2s,
+        border-color .2s,
+        background .2s,
+        box-shadow .2s;
+
+      font-size: 14px;
+    }
+
+    .btn::before {
+      content: "";
+
+      position: absolute;
+      top: 0;
+      left: -120%;
+
+      width: 80%;
+      height: 100%;
+
+      background: linear-gradient(
+        100deg,
+        transparent,
+        rgba(255,255,255,.2),
+        transparent
+      );
+
+      transform: skewX(-20deg);
+
+      transition: left .5s;
+    }
+
+    .btn:hover::before {
+      left: 140%;
+    }
+
+    .btn:hover {
+      border-color: #555;
+      background: #181818;
+
+      transform: translateY(-2px);
+
+      box-shadow:
+        0 10px 30px rgba(0,0,0,.35),
+        0 0 20px rgba(255,255,255,.04);
+    }
+
+    .btn-white {
+      background: #fff;
+      color: #000;
+      border-color: #fff;
+      font-weight: 600;
+    }
+
+    .btn-white:hover {
+      background: #eaeaea;
+      box-shadow: 0 10px 35px rgba(255,255,255,.12);
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+
+      padding: 130px 0 110px;
+
+      text-align: center;
+    }
+
+    .hero::before {
+      content: "";
+
+      position: absolute;
+
+      width: 700px;
+      height: 350px;
+
+      left: 50%;
+      top: 40px;
+
+      transform: translateX(-50%);
+
+      background:
+        radial-gradient(
+          ellipse,
+          rgba(255,255,255,.12),
+          transparent 68%
+        );
+
+      pointer-events: none;
+
+      animation: heroGlow 6s ease-in-out infinite;
+    }
+
+    @keyframes heroGlow {
+      0%, 100% {
+        opacity: .55;
+        transform: translateX(-50%) scale(1);
+      }
+
+      50% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1.12);
+      }
+    }
+
+    .badge {
+      position: relative;
+
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+
+      border: 1px solid #292929;
+      background: #0b0b0b;
+
+      padding: 7px 12px;
+
+      border-radius: 999px;
+
+      color: #b5b5b5;
+      font-size: 13px;
+
+      margin-bottom: 25px;
+
+      animation: fadeUp .8s ease both;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+
+      background: #fff;
+      border-radius: 50%;
+
+      box-shadow: 0 0 12px #fff;
+
+      animation: pulseDot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 8px #fff;
+      }
+
+      50% {
+        transform: scale(1.5);
+        box-shadow: 0 0 20px #fff;
+      }
+    }
+
+    .hero h1 {
+      position: relative;
+
+      font-size: clamp(48px, 8vw, 86px);
+      line-height: .98;
+
+      letter-spacing: -5px;
+
+      max-width: 900px;
+      margin: auto;
+
+      font-weight: 700;
+
+      animation: fadeUp .8s .1s ease both;
+    }
+
+    .gradient-text {
+      background: linear-gradient(
+        180deg,
+        #fff 20%,
+        #777
+      );
+
+      -webkit-background-clip: text;
+      color: transparent;
+
+      background-size: 100% 200%;
+
+      animation: gradientMove 5s ease-in-out infinite;
+    }
+
+    @keyframes gradientMove {
+      0%, 100% {
+        background-position: 0 0;
+      }
+
+      50% {
+        background-position: 0 100%;
+      }
+    }
+
+    .hero p {
+      position: relative;
+
+      max-width: 650px;
+
+      margin: 30px auto 35px;
+
+      color: #8d8d8d;
+
+      font-size: 18px;
+      line-height: 1.7;
+
+      animation: fadeUp .8s .2s ease both;
+    }
+
+    .hero-buttons {
+      position: relative;
+
+      display: flex;
+      justify-content: center;
+
+      gap: 12px;
+
+      flex-wrap: wrap;
+
+      animation: fadeUp .8s .3s ease both;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(25px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* =========================
+       GRID
+    ========================= */
+
+    .grid-bg {
+      border-top: 1px solid #171717;
+      border-bottom: 1px solid #171717;
+
+      background-image:
+        linear-gradient(#111 1px, transparent 1px),
+        linear-gradient(90deg, #111 1px, transparent 1px);
+
+      background-size: 48px 48px;
+
+      animation: gridMove 25s linear infinite;
+    }
+
+    @keyframes gridMove {
+      from {
+        background-position: 0 0;
+      }
+
+      to {
+        background-position: 48px 48px;
+      }
+    }
+
+    section {
+      padding: 110px 0;
+    }
+
+    .section-heading {
+      margin-bottom: 45px;
+    }
+
+    .eyebrow {
+      color: #777;
+
+      text-transform: uppercase;
+      letter-spacing: 2px;
+
+      font-size: 11px;
+
+      margin-bottom: 14px;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(32px, 5vw, 52px);
+      letter-spacing: -2px;
+    }
+
+    .section-heading p {
+      color: #777;
+
+      margin-top: 14px;
+
+      max-width: 600px;
+
+      line-height: 1.7;
+    }
+
+    /* =========================
+       SERVICES
+    ========================= */
+
+    .services {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+
+      gap: 1px;
+
+      border: 1px solid #222;
+
+      background: #222;
+    }
+
+    .service {
+      position: relative;
+      overflow: hidden;
+
+      background: #050505;
+
+      min-height: 280px;
+
+      padding: 30px;
+
+      transition:
+        background .3s,
+        transform .3s;
+    }
+
+    .service::before {
+      content: "";
+
+      position: absolute;
+
+      width: 150px;
+      height: 150px;
+
+      right: -70px;
+      top: -70px;
+
+      background: radial-gradient(
+        circle,
+        rgba(255,255,255,.08),
+        transparent 70%
+      );
+
+      transition: transform .5s;
+    }
+
+    .service:hover {
+      background: #0a0a0a;
+      transform: translateY(-5px);
+    }
+
+    .service:hover::before {
+      transform: scale(2);
+    }
+
+    /* REAL ICONS */
+
+    .service-icon {
+      width: 48px;
+      height: 48px;
+
+      border: 1px solid #292929;
+
+      border-radius: 12px;
+
+      display: grid;
+      place-items: center;
+
+      margin-bottom: 55px;
+
+      background: #0b0b0b;
+
+      transition: .3s;
+    }
+
+    .service-icon svg {
+      width: 23px;
+      height: 23px;
+
+      stroke: #ddd;
+      stroke-width: 1.6;
+
+      fill: none;
+
+      transition: .3s;
+    }
+
+    .service:hover .service-icon {
+      transform: translateY(-4px) rotate(-3deg);
+
+      border-color: #555;
+
+      box-shadow:
+        0 10px 30px rgba(255,255,255,.07);
+    }
+
+    .service:hover .service-icon svg {
+      stroke: white;
+      transform: scale(1.12);
+    }
+
+    .service h3 {
+      font-size: 19px;
+      margin-bottom: 10px;
+    }
+
+    .service p {
+      color: #777;
+
+      line-height: 1.6;
+
+      font-size: 14px;
+    }
+
+    /* =========================
+       AI
+    ========================= */
+
+    .ai-section {
+      background: #030303;
+    }
+
+    .ai-box {
+      position: relative;
+
+      border: 1px solid #292929;
+
+      border-radius: 14px;
+
+      overflow: hidden;
+
+      background: #070707;
+
+      box-shadow:
+        0 30px 100px rgba(0,0,0,.5);
+
+      transition: border-color .3s, box-shadow .3s;
+    }
+
+    .ai-box:hover {
+      border-color: #3a3a3a;
+
+      box-shadow:
+        0 30px 100px rgba(0,0,0,.65),
+        0 0 60px rgba(255,255,255,.025);
+    }
+
+    .ai-header {
+      height: 62px;
+
+      border-bottom: 1px solid #242424;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 0 20px;
+    }
+
+    .ai-title {
+      display: flex;
+      align-items: center;
+
+      gap: 10px;
+
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .online {
+      width: 8px;
+      height: 8px;
+
+      border-radius: 50%;
+
+      background: #fff;
+
+      box-shadow: 0 0 15px #fff;
+
+      animation: pulseDot 2s infinite;
+    }
+
+    .ai-chat {
+      height: 390px;
+
+      padding: 25px;
+
+      overflow-y: auto;
+    }
+
+    .message {
+      max-width: 75%;
+
+      padding: 13px 15px;
+
+      border-radius: 10px;
+
+      margin-bottom: 15px;
+
+      font-size: 14px;
+
+      line-height: 1.6;
+
+      animation: messageIn .35s ease both;
+    }
+
+    @keyframes messageIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px) scale(.98);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .ai-message {
+      border: 1px solid #252525;
+
+      background: #0c0c0c;
+
+      color: #d2d2d2;
+    }
+
+    .user-message {
+      margin-left: auto;
+
+      background: #fff;
+
+      color: #000;
+    }
+
+    .ai-input {
+      border-top: 1px solid #242424;
+
+      padding: 14px;
+
+      display: flex;
+
+      gap: 10px;
+    }
+
+    .ai-input input {
+      flex: 1;
+
+      background: #0c0c0c;
+
+      border: 1px solid #292929;
+
+      color: white;
+
+      outline: none;
+
+      border-radius: 8px;
+
+      padding: 12px;
+
+      transition: border-color .2s, box-shadow .2s;
+    }
+
+    .ai-input input:focus {
+      border-color: #555;
+
+      box-shadow:
+        0 0 25px rgba(255,255,255,.035);
+    }
+
+    /* =========================
+       SUPPORT
+    ========================= */
+
+    .support-grid {
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
+      gap: 20px;
+    }
+
+    .support-card {
+      position: relative;
+      overflow: hidden;
+
+      border: 1px solid #252525;
+
+      border-radius: 12px;
+
+      padding: 32px;
+
+      background: #050505;
+
+      transition:
+        transform .3s,
+        border-color .3s,
+        box-shadow .3s;
+    }
+
+    .support-card:hover {
+      transform: translateY(-5px);
+
+      border-color: #3a3a3a;
+
+      box-shadow:
+        0 25px 60px rgba(0,0,0,.4);
+    }
+
+    .support-card h3 {
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+
+    .support-card p {
+      color: #777;
+
+      line-height: 1.7;
+
+      margin-bottom: 25px;
+    }
+
+    form {
+      display: grid;
+      gap: 12px;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+
+      background: #090909;
+
+      border: 1px solid #292929;
+
+      color: #fff;
+
+      border-radius: 8px;
+
+      padding: 12px;
+
+      outline: none;
+
+      transition:
+        border-color .2s,
+        box-shadow .2s;
+    }
+
+    textarea {
+      resize: vertical;
+
+      min-height: 130px;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #555;
+
+      box-shadow:
+        0 0 25px rgba(255,255,255,.025);
+    }
+
+    /* =========================
+       CONTACT
+    ========================= */
+
+    .contact {
+      text-align: center;
+
+      border-top: 1px solid #171717;
+    }
+
+    .email {
+      display: inline-block;
+
+      margin-top: 20px;
+
+      font-size: clamp(22px, 4vw, 38px);
+
+      font-weight: 600;
+
+      letter-spacing: -1px;
+
+      transition:
+        transform .25s,
+        text-shadow .25s;
+    }
+
+    .email:hover {
+      text-decoration: underline;
+
+      transform: translateY(-3px);
+
+      text-shadow:
+        0 0 25px rgba(255,255,255,.2);
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      border-top: 1px solid #222;
+
+      padding: 30px 0;
+
+      color: #666;
+
+      font-size: 13px;
+    }
+
+    .footer-inner {
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+    }
+
+    .footer-links {
+      display: flex;
+
+      gap: 20px;
+    }
+
+    .footer-links a {
+      transition: color .2s, transform .2s;
+    }
+
+    .footer-links a:hover {
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 800px) {
+
+      .nav-links {
+        display: none;
+      }
+
+      .nav-actions .btn:first-child {
+        display: none;
+      }
+
+      .hero {
+        padding: 95px 0 80px;
+      }
+
+      .hero h1 {
+        letter-spacing: -3px;
+      }
+
+      .services {
+        grid-template-columns: 1fr;
+      }
+
+      .support-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .animation-toggle {
+        right: 12px;
+        bottom: 12px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<header>
-  <div class="logo">🌳 Tree<span>Bots</span></div>
+  <!-- PARTICLES -->
 
-  <div class="user">
-    <span class="user-name" id="userName">...</span>
-    <button class="logout" onclick="logout()">خروج</button>
-  </div>
-</header>
-
-<main class="container">
-
-  <div class="welcome">
-    <h1 id="welcome">مرحبًا 👋</h1>
-    <p>إدارة بوتات Minecraft الخاصة بك من مكان واحد.</p>
+  <div class="particles" aria-hidden="true">
+    <span class="particle"></span>
+    <span class="particle"></span>
+    <span class="particle"></span>
+    <span class="particle"></span>
+    <span class="particle"></span>
+    <span class="particle"></span>
+    <span class="particle"></span>
+    <span class="particle"></span>
   </div>
 
-  <div class="stats">
+  <!-- ANIMATION TOGGLE -->
 
-    <div class="stat">
-      <div class="stat-title">إجمالي البوتات</div>
-      <div class="stat-value" id="totalBots">0</div>
+  <button
+    class="animation-toggle"
+    id="animationToggle"
+    onclick="toggleAnimations()"
+  >
+    <span class="toggle-dot"></span>
+    <span id="animationText">Animations: ON</span>
+  </button>
+
+
+  <!-- NAVBAR -->
+
+  <nav>
+    <div class="container nav-inner">
+
+      <a href="#" class="logo">
+        <span class="logo-mark">T</span>
+        TreeBots
+      </a>
+
+      <div class="nav-links">
+        <a href="#services">Services</a>
+        <a href="#ai">AI Assistant</a>
+        <a href="#support">Support</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <div class="nav-actions">
+        <a class="btn" href="#ai">AI Assistant</a>
+
+        <a class="btn btn-white" href="#services">
+          Get Started
+        </a>
+      </div>
+
     </div>
-
-    <div class="stat">
-      <div class="stat-title">البوتات المتصلة</div>
-      <div class="stat-value" id="onlineBots">0</div>
-    </div>
-
-    <div class="stat">
-      <div class="stat-title">حالة الخدمة</div>
-      <div class="stat-value">Online</div>
-    </div>
-
-  </div>
-
-  <section class="section">
-
-    <div class="section-head">
-      <h2>My Bots</h2>
-      <button class="add" onclick="openModal()">+ إضافة بوت</button>
-    </div>
-
-    <div id="bots" class="bots"></div>
-
-  </section>
-
-</main>
+  </nav>
 
 
-<div id="modal" class="modal">
+  <!-- HERO -->
 
-  <div class="modal-box">
+  <main>
 
-    <h2>إضافة بوت</h2>
+    <section class="hero">
 
-    <input id="botName" placeholder="اسم البوت">
+      <div class="container">
 
-    <input id="username" placeholder="Minecraft Username">
+        <div class="badge">
+          <span class="dot"></span>
+          Minecraft Bot Platform
+        </div>
 
-    <input id="ip" placeholder="Server IP">
+        <h1>
+          <span class="gradient-text">
+            Powerful Minecraft Bots.
+          </span>
+          <br>
+          Made Simple.
+        </h1>
 
-    <input id="port" placeholder="Port" value="25565">
+        <p>
+          Build, configure and manage Minecraft bots designed
+          for the tasks your server actually needs.
+        </p>
 
-    <input id="version" placeholder="Version" value="1.21.x">
+        <div class="hero-buttons">
 
-    <div class="modal-actions">
-      <button class="cancel" onclick="closeModal()">إلغاء</button>
-      <button class="create" onclick="createBot()">إنشاء</button>
-    </div>
+          <a href="#services" class="btn btn-white">
+            Explore Services
+          </a>
 
-  </div>
+          <a href="#ai" class="btn">
+            Talk to AI
+          </a>
 
-</div>
+        </div>
 
+      </div>
 
-<script>
-
-const API = "https://treebots-backend.505omerfive.workers.dev";
-
-const token = localStorage.getItem("treebots_token");
-
-if(!token){
-  window.location.href = "login.html";
-}
-
-
-function authHeaders(){
-  return {
-    "Content-Type":"application/json",
-    "Authorization":"Bearer " + token
-  };
-}
+    </section>
 
 
-async function loadUser(){
+    <!-- SERVICES -->
 
-  try{
+    <section id="services" class="grid-bg">
 
-    const res = await fetch(
-      API + "/api/auth/me",
-      {
-        headers:authHeaders()
-      }
-    );
+      <div class="container">
 
-    if(!res.ok){
-      localStorage.removeItem("treebots_token");
-      localStorage.removeItem("treebots_user");
-      window.location.href="login.html";
-      return;
-    }
+        <div class="section-heading">
 
-    const data = await res.json();
+          <div class="eyebrow">
+            Services
+          </div>
 
-    document.getElementById("userName").textContent =
-      data.user.fullName;
+          <h2>
+            Minecraft bots,
+            <br>
+            built your way.
+          </h2>
 
-    document.getElementById("welcome").textContent =
-      "مرحبًا، " + data.user.fullName + " 👋";
+          <p>
+            Choose the service that fits your server or request
+            a custom configuration for your specific needs.
+          </p>
 
-  }catch(e){
-
-    console.error(e);
-
-  }
-}
+        </div>
 
 
-async function loadBots(){
+        <div class="services">
 
-  const container =
-    document.getElementById("bots");
 
-  container.innerHTML =
-    '<div class="empty">جاري تحميل البوتات...</div>';
+          <!-- BOT -->
 
-  try{
+          <div class="service">
 
-    const res = await fetch(
-      API + "/api/bots",
-      {
-        headers:authHeaders()
-      }
-    );
+            <div class="service-icon">
 
-    if(res.status === 401){
-      logout();
-      return;
-    }
+              <svg viewBox="0 0 24 24">
+                <rect x="4" y="6" width="16" height="13" rx="3"></rect>
+                <path d="M8 10h.01"></path>
+                <path d="M16 10h.01"></path>
+                <path d="M8 15h8"></path>
+                <path d="M12 6V3"></path>
+              </svg>
 
-    const bots = await res.json();
-
-    document.getElementById("totalBots").textContent =
-      bots.length;
-
-    document.getElementById("onlineBots").textContent =
-      bots.filter(b => b.status === "online").length;
-
-    if(!bots.length){
-
-      container.innerHTML =
-        '<div class="empty">لا توجد بوتات حتى الآن.<br>أضف أول بوت 🚀</div>';
-
-      return;
-    }
-
-    container.innerHTML =
-      bots.map(bot => `
-
-        <div class="bot">
-
-          <div class="bot-top">
-
-            <div class="bot-name">
-              🤖 ${escapeHtml(bot.name)}
             </div>
 
-            <div class="status ${bot.status === "online" ? "online" : ""}">
-              ${bot.status}
+            <h3>
+              Custom Minecraft Bot
+            </h3>
+
+            <p>
+              A Minecraft bot configured around the tasks
+              and requirements of your server.
+            </p>
+
+          </div>
+
+
+          <!-- CONFIG -->
+
+          <div class="service">
+
+            <div class="service-icon">
+
+              <svg viewBox="0 0 24 24">
+                <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"></path>
+
+                <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.42 1.42-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.04 1.56V20h-2v-.48a1.7 1.7 0 0 0-1.04-1.56 1.7 1.7 0 0 0-1.88.34l-.06.06-1.42-1.42.06-.06A1.7 1.7 0 0 0 9.4 15a1.7 1.7 0 0 0-1.56-1.04H7v-2h.84A1.7 1.7 0 0 0 9.4 10.9a1.7 1.7 0 0 0-.34-1.88L9 8.96l1.42-1.42.06.06a1.7 1.7 0 0 0 1.88.34A1.7 1.7 0 0 0 13.4 6.4V6h2v.4a1.7 1.7 0 0 0 1.04 1.54 1.7 1.7 0 0 0 1.88-.34l.06-.06 1.42 1.42-.06.06A1.7 1.7 0 0 0 19.4 10.9a1.7 1.7 0 0 0 1.56 1.04H21v2h-.04A1.7 1.7 0 0 0 19.4 15z"></path>
+              </svg>
+
+            </div>
+
+            <h3>
+              Bot Configuration
+            </h3>
+
+            <p>
+              Customize your bot's behavior, commands,
+              connection settings and tasks.
+            </p>
+
+          </div>
+
+
+          <!-- MANAGEMENT -->
+
+          <div class="service">
+
+            <div class="service-icon">
+
+              <svg viewBox="0 0 24 24">
+                <path d="M4 12a8 8 0 0 1 13.66-5.66L20 8"></path>
+                <path d="M20 4v4h-4"></path>
+
+                <path d="M20 12a8 8 0 0 1-13.66 5.66L4 16"></path>
+                <path d="M4 20v-4h4"></path>
+              </svg>
+
+            </div>
+
+            <h3>
+              Bot Management
+            </h3>
+
+            <p>
+              Manage your bot, monitor its status and
+              restart it when needed.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- AI -->
+
+    <section id="ai" class="ai-section">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <div class="eyebrow">
+            TreeBots AI
+          </div>
+
+          <h2>
+            Your intelligent assistant.
+          </h2>
+
+          <p>
+            Ask questions about TreeBots, our services,
+            your bot or get help with a problem.
+          </p>
+
+        </div>
+
+
+        <div class="ai-box">
+
+          <div class="ai-header">
+
+            <div class="ai-title">
+
+              <span class="online"></span>
+
+              TreeBots AI
+
+            </div>
+
+            <span style="color:#666;font-size:12px;">
+              Online
+            </span>
+
+          </div>
+
+
+          <div class="ai-chat" id="chat">
+
+            <div class="message ai-message">
+              Hi! I'm TreeBots AI. How can I help you today?
             </div>
 
           </div>
 
-          <div class="info">
 
-            👤 Username:
-            ${escapeHtml(bot.username)}
-            <br>
+          <div class="ai-input">
 
-            🌐 Server:
-            ${escapeHtml(bot.ip)}:${escapeHtml(bot.port)}
-            <br>
+            <input
+              id="aiInput"
+              type="text"
+              placeholder="Ask TreeBots AI..."
+            />
 
-            🎮 Version:
-            ${escapeHtml(bot.version)}
-            <br>
-
-            📡 Ping:
-            ${escapeHtml(bot.ping)}
-            <br>
-
-            ⏱️ Uptime:
-            ${escapeHtml(bot.uptime)}
-
-          </div>
-
-          <div class="actions">
-
-            <button onclick="toggleBot(
-              '${bot.id}',
-              '${bot.status === "online" ? "offline" : "online"}'
-            )">
-              ${bot.status === "online" ? "إيقاف" : "تشغيل"}
-            </button>
-
-            <button onclick="deleteBot('${bot.id}')">
-              حذف
+            <button
+              class="btn btn-white"
+              onclick="sendMessage()"
+            >
+              Send
             </button>
 
           </div>
 
         </div>
 
-      `).join("");
+      </div>
 
-  }catch(e){
-
-    container.innerHTML =
-      '<div class="empty">حدث خطأ أثناء تحميل البوتات.</div>';
-
-    console.error(e);
-
-  }
-}
+    </section>
 
 
-async function createBot(){
+    <!-- SUPPORT -->
 
-  const name =
-    document.getElementById("botName").value.trim();
+    <section id="support">
 
-  const username =
-    document.getElementById("username").value.trim();
+      <div class="container">
 
-  const ip =
-    document.getElementById("ip").value.trim();
+        <div class="section-heading">
 
-  const port =
-    document.getElementById("port").value.trim();
+          <div class="eyebrow">
+            Support
+          </div>
 
-  const version =
-    document.getElementById("version").value.trim();
+          <h2>
+            Need help?
+          </h2>
 
-  if(!name){
+          <p>
+            Have a problem with your service?
+            Contact support or submit a complaint.
+          </p>
 
-    alert("اكتب اسم البوت");
+        </div>
 
-    return;
-  }
 
-  try{
+        <div class="support-grid">
 
-    const res = await fetch(
-      API + "/api/bots",
-      {
-        method:"POST",
-        headers:authHeaders(),
-        body:JSON.stringify({
-          name,
-          username,
-          ip,
-          port,
-          version
-        })
-      }
-    );
 
-    const data = await res.json();
+          <div class="support-card">
 
-    if(!res.ok){
+            <h3>
+              Contact Support
+            </h3>
 
-      alert(data.error || "حدث خطأ");
+            <p>
+              Get help with your TreeBots service,
+              account or Minecraft bot.
+            </p>
 
-      return;
+            <a
+              href="#contact"
+              class="btn btn-white"
+            >
+              Contact Us
+            </a>
+
+          </div>
+
+
+          <div class="support-card">
+
+            <h3>
+              Submit a Complaint
+            </h3>
+
+            <p>
+              Tell us about a problem and our team
+              can review it.
+            </p>
+
+
+            <form onsubmit="submitComplaint(event)">
+
+              <input
+                type="text"
+                placeholder="Your name"
+                required
+              >
+
+              <input
+                type="email"
+                placeholder="Your email"
+                required
+              >
+
+              <select required>
+
+                <option value="">
+                  Complaint type
+                </option>
+
+                <option>
+                  Service problem
+                </option>
+
+                <option>
+                  Bot problem
+                </option>
+
+                <option>
+                  Payment problem
+                </option>
+
+                <option>
+                  Other
+                </option>
+
+              </select>
+
+
+              <textarea
+                placeholder="Describe your problem..."
+                required
+              ></textarea>
+
+
+              <button class="btn btn-white">
+                Submit Complaint
+              </button>
+
+            </form>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- CONTACT -->
+
+    <section id="contact" class="contact">
+
+      <div class="container">
+
+        <div class="eyebrow">
+          Contact
+        </div>
+
+        <h2>
+          We're here to help.
+        </h2>
+
+        <p style="color:#777;margin-top:15px;">
+          For questions, support or business inquiries.
+        </p>
+
+
+        <a
+          class="email"
+          href="mailto:treebots.app@gmail.com"
+        >
+          treebots.app@gmail.com
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    <div class="container footer-inner">
+
+      <div>
+        © 2026 TreeBots. All rights reserved.
+      </div>
+
+      <div class="footer-links">
+
+        <a href="#services">
+          Services
+        </a>
+
+        <a href="#ai">
+          AI
+        </a>
+
+        <a href="#support">
+          Support
+        </a>
+
+        <a href="#contact">
+          Contact
+        </a>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <script>
+
+    /* =========================
+       AI CHAT
+    ========================= */
+
+    function sendMessage() {
+
+      const input =
+        document.getElementById("aiInput");
+
+      const chat =
+        document.getElementById("chat");
+
+      const text =
+        input.value.trim();
+
+      if (!text) return;
+
+
+      const userMessage =
+        document.createElement("div");
+
+      userMessage.className =
+        "message user-message";
+
+      userMessage.textContent =
+        text;
+
+      chat.appendChild(userMessage);
+
+      input.value = "";
+
+
+      const aiMessage =
+        document.createElement("div");
+
+      aiMessage.className =
+        "message ai-message";
+
+      aiMessage.textContent =
+        "AI is not connected yet. This chat area is ready for the TreeBots AI API.";
+
+      chat.appendChild(aiMessage);
+
+      chat.scrollTop =
+        chat.scrollHeight;
     }
 
-    closeModal();
 
-    document.getElementById("botName").value="";
-    document.getElementById("username").value="";
-    document.getElementById("ip").value="";
-    document.getElementById("port").value="25565";
-    document.getElementById("version").value="1.21.x";
+    /* =========================
+       COMPLAINT
+    ========================= */
 
-    loadBots();
+    function submitComplaint(event) {
 
-  }catch(e){
+      event.preventDefault();
 
-    alert("تعذر الاتصال بالسيرفر");
+      alert(
+        "Your complaint form is ready. Backend connection will be added later."
+      );
 
-  }
-}
-
-
-async function toggleBot(id,status){
-
-  try{
-
-    const res = await fetch(
-      API + "/api/bots/" + id + "/status",
-      {
-        method:"POST",
-        headers:authHeaders(),
-        body:JSON.stringify({status})
-      }
-    );
-
-    const data = await res.json();
-
-    if(!res.ok){
-
-      alert(data.error || "حدث خطأ");
-
-      return;
     }
 
-    loadBots();
 
-  }catch(e){
+    /* =========================
+       ENTER TO SEND
+    ========================= */
 
-    alert("تعذر الاتصال بالسيرفر");
+    document
+      .getElementById("aiInput")
+      .addEventListener(
+        "keydown",
+        function(event) {
 
-  }
-}
+          if (event.key === "Enter") {
+
+            event.preventDefault();
+
+            sendMessage();
+
+          }
+
+        }
+      );
 
 
-async function deleteBot(id){
+    /* =========================
+       ANIMATION TOGGLE
+    ========================= */
 
-  if(!confirm("هل تريد حذف هذا البوت؟")) return;
+    function toggleAnimations() {
 
-  try{
+      const body =
+        document.body;
 
-    const res = await fetch(
-      API + "/api/bots/" + id,
-      {
-        method:"DELETE",
-        headers:authHeaders()
+      const text =
+        document.getElementById("animationText");
+
+      const particles =
+        document.querySelector(".particles");
+
+
+      body.classList.toggle(
+        "animations-off"
+      );
+
+
+      const disabled =
+        body.classList.contains(
+          "animations-off"
+        );
+
+
+      if (disabled) {
+
+        text.textContent =
+          "Animations: OFF";
+
+        particles.style.display =
+          "none";
+
+      } else {
+
+        text.textContent =
+          "Animations: ON";
+
+        particles.style.display =
+          "block";
+
       }
-    );
 
-    const data = await res.json();
 
-    if(!res.ok){
+      localStorage.setItem(
+        "treebotsAnimations",
+        disabled ? "off" : "on"
+      );
 
-      alert(data.error || "حدث خطأ");
-
-      return;
     }
 
-    loadBots();
 
-  }catch(e){
+    /* =========================
+       REMEMBER USER CHOICE
+    ========================= */
 
-    alert("تعذر الاتصال بالسيرفر");
-
-  }
-}
-
-
-async function logout(){
-
-  try{
-
-    await fetch(
-      API + "/api/auth/logout",
-      {
-        method:"POST",
-        headers:authHeaders()
-      }
-    );
-
-  }catch(e){}
-
-  localStorage.removeItem("treebots_token");
-  localStorage.removeItem("treebots_user");
-
-  window.location.href="login.html";
-}
+    const savedAnimationSetting =
+      localStorage.getItem(
+        "treebotsAnimations"
+      );
 
 
-function openModal(){
-  document.getElementById("modal").style.display="flex";
-}
+    if (savedAnimationSetting === "off") {
 
+      document.body.classList.add(
+        "animations-off"
+      );
 
-function closeModal(){
-  document.getElementById("modal").style.display="none";
-}
+      document.querySelector(
+        ".particles"
+      ).style.display = "none";
 
+      document.getElementById(
+        "animationText"
+      ).textContent =
+        "Animations: OFF";
 
-function escapeHtml(value){
+    }
 
-  return String(value ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-
-}
-
-
-loadUser();
-loadBots();
-
-</script>
+  </script>
 
 </body>
 </html>
+```
